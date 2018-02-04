@@ -1,0 +1,82 @@
+package de.maxhenkel.advancedtools;
+
+import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
+import de.maxhenkel.advancedtools.items.tools.AbstractTool;
+import de.maxhenkel.advancedtools.items.tools.StackUtils;
+import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReciepeEnchantTool implements IRecipe {
+
+    private ResourceLocation resourceLocation;
+
+    @Override
+    public boolean matches(InventoryCrafting inv, World worldIn) {
+        return !getCraftingResult(inv).equals(ItemStack.EMPTY);
+    }
+
+    @Override
+    public ItemStack getCraftingResult(InventoryCrafting inv) {
+        ItemStack tool = null;
+        ItemStack enchantment = null;
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+
+            if (stack.getItem() instanceof AbstractTool) {
+                if (tool != null) {
+                    return ItemStack.EMPTY;
+                }
+                tool = stack;
+            } else if(stack.getItem() instanceof ItemEnchantment){
+                if (enchantment != null) {
+                    return ItemStack.EMPTY;
+                }
+                enchantment = stack;
+            }else{
+                if(!StackUtils.isEmpty(stack)){
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+
+        if (tool == null||enchantment==null) {
+            return ItemStack.EMPTY;
+        }
+        return ((AbstractTool) tool.getItem()).applyEnchantment(tool, enchantment);
+    }
+
+    @Override
+    public boolean canFit(int width, int height) {
+        return width >= 2 && height >= 2;
+    }
+
+    @Override
+    public ItemStack getRecipeOutput() {
+        return new ItemStack(ModItems.PICKAXE);
+    }
+
+    @Override
+    public IRecipe setRegistryName(ResourceLocation name) {
+        this.resourceLocation = name;
+        return this;
+    }
+
+    @Nullable
+    @Override
+    public ResourceLocation getRegistryName() {
+        return resourceLocation;
+    }
+
+    @Override
+    public Class<IRecipe> getRegistryType() {
+        return IRecipe.class;
+    }
+}

@@ -1,0 +1,15 @@
+material.diamond.name=Diamond
+material.iron.name=Iron
+material.gold.name=Gold
+material.stone.name=Stone
+material.wood.name=Wood
+
+tool.pickaxe.name=Pickaxe
+
+tooltip.material=Material: %s
+tooltip.durability_left=Durability left: %s
+tooltip.broken=Broken
+tooltips.enchantments=Enchantments
+
+item.enchantment.name=Enchantment
+item.pickaxe.name=Pickaxe
