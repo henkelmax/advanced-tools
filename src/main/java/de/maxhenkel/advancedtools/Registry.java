@@ -3,6 +3,8 @@ package de.maxhenkel.advancedtools;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import de.maxhenkel.advancedtools.items.tools.matcher.OredictMatcher;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -14,6 +16,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -67,41 +70,65 @@ public class Registry {
         registerItem(event.getRegistry(), ModItems.HOE);
         registerItem(event.getRegistry(), ModItems.ENCHANTMENT);
 
-
         IForgeRegistryModifiable<IRecipe> registry=(IForgeRegistryModifiable<IRecipe>)GameRegistry.findRegistry(IRecipe.class);
         registry.register(new ReciepeRepairTool().setRegistryName(new ResourceLocation(Main.MODID, "modify_tool")));
         registry.register(new ReciepeEnchantTool().setRegistryName(new ResourceLocation(Main.MODID, "enchant_tool")));
         registry.register(new ReciepeConvertBook().setRegistryName(new ResourceLocation(Main.MODID, "convert_book")));
 
         registry.remove(new ResourceLocation("wooden_pickaxe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("wooden_pickaxe")));
         registry.remove(new ResourceLocation("stone_pickaxe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("stone_pickaxe")));
         registry.remove(new ResourceLocation("golden_pickaxe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("golden_pickaxe")));
         registry.remove(new ResourceLocation("iron_pickaxe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("iron_pickaxe")));
         registry.remove(new ResourceLocation("diamond_pickaxe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("diamond_pickaxe")));
 
         registry.remove(new ResourceLocation("wooden_axe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("wooden_axe")));
         registry.remove(new ResourceLocation("stone_axe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("stone_axe")));
         registry.remove(new ResourceLocation("golden_axe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("golden_axe")));
         registry.remove(new ResourceLocation("iron_axe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("iron_axe")));
         registry.remove(new ResourceLocation("diamond_axe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("diamond_axe")));
 
         registry.remove(new ResourceLocation("wooden_shovel"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("wooden_shovel")));
         registry.remove(new ResourceLocation("stone_shovel"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("stone_shovel")));
         registry.remove(new ResourceLocation("golden_shovel"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("golden_shovel")));
         registry.remove(new ResourceLocation("iron_shovel"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("iron_shovel")));
         registry.remove(new ResourceLocation("diamond_shovel"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("diamond_shovel")));
 
         registry.remove(new ResourceLocation("wooden_sword"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("wooden_sword")));
         registry.remove(new ResourceLocation("stone_sword"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("stone_sword")));
         registry.remove(new ResourceLocation("golden_sword"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("golden_sword")));
         registry.remove(new ResourceLocation("iron_sword"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("iron_sword")));
         registry.remove(new ResourceLocation("diamond_sword"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("diamond_sword")));
 
         registry.remove(new ResourceLocation("wooden_hoe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("wooden_hoe")));
         registry.remove(new ResourceLocation("stone_hoe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("stone_hoe")));
         registry.remove(new ResourceLocation("golden_hoe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("golden_hoe")));
         registry.remove(new ResourceLocation("iron_hoe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("iron_hoe")));
         registry.remove(new ResourceLocation("diamond_hoe"));
+        registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("diamond_hoe")));
 
 
         //Pickaxe
