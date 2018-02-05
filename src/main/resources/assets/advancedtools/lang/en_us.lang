@@ -11,8 +11,10 @@ tooltip.durability_left=Durability left: %s
 tooltip.broken=Broken
 tooltips.enchantments=Enchantments
 
-item.enchantment.name=Enchantment
+item.enchantment.name=Enchantment Template
 item.pickaxe.name=Pickaxe
+
+enchantment.empty=Empty Enchantment Template
 
 itemGroup.advanced_tools=Advanced Tools
 

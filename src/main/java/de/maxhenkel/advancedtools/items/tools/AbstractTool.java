@@ -5,8 +5,10 @@ import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -179,5 +181,21 @@ public abstract class AbstractTool extends ItemTool {
         } else {
             super.setDamage(stack, damage);
         }
+    }
+
+    @Override
+    public boolean hasCustomEntity(ItemStack stack) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Entity createEntity(World world, Entity location, ItemStack itemstack) {
+        if(location instanceof EntityItem){
+            EntityItem item= (EntityItem) location;
+            item.lifespan=Integer.MAX_VALUE;
+            item.setEntityInvulnerable(true);
+        }
+        return null;
     }
 }

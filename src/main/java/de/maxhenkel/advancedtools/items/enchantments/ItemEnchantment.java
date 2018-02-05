@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
@@ -19,6 +20,15 @@ public class ItemEnchantment extends Item {
         setUnlocalizedName("enchantment");
         setRegistryName("enchantment");
         setCreativeTab(ModCreativeTabs.TAB_ADVANCED_TOOLS);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        EnchantmentData data=getEnchantment(stack);
+        if(data==null){
+            return new TextComponentTranslation("enchantment.empty").getUnformattedText();
+        }
+        return super.getItemStackDisplayName(stack);
     }
 
     @Override
