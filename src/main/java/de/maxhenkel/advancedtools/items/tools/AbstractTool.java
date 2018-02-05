@@ -128,7 +128,10 @@ public abstract class AbstractTool extends ItemTool {
             return ItemStack.EMPTY;
         }
 
-        return StackUtils.setMaterial(in.copy(), material);
+        ItemStack newStack=in.copy();
+        newStack.setItemDamage(0);
+
+        return StackUtils.setMaterial(newStack, material);
     }
 
     public ItemStack applyEnchantment(ItemStack tool, ItemStack enchantment) {
