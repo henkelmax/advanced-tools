@@ -12,6 +12,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
@@ -20,6 +21,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
@@ -55,6 +57,14 @@ public abstract class AbstractTool extends ItemTool {
             tooltip.add(new TextComponentTranslation("tooltips.enchantments").getFormattedText());
             for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
                 tooltip.add("  - " + entry.getKey().getTranslatedName(entry.getValue()));
+            }
+        }
+
+        Map<String, Integer> stats = StackUtils.getToolStats(stack);
+        if (!stats.isEmpty()) {
+            tooltip.add(new TextComponentTranslation("tooltips.stats").getFormattedText());
+            for (Map.Entry<String, Integer> entry : stats.entrySet()) {
+                tooltip.add("  - " +new TextComponentTranslation("stat." +entry.getKey(), entry.getValue()).getFormattedText());
             }
         }
     }
@@ -176,6 +186,10 @@ public abstract class AbstractTool extends ItemTool {
         return false;
     }
 
+    public boolean countBreakStats(ItemStack stack){
+        return true;
+    }
+
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
@@ -241,4 +255,14 @@ public abstract class AbstractTool extends ItemTool {
         }
         return null;
     }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+        boolean flag=super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+        if(flag&&countBreakStats(stack)){
+            StackUtils.incrementToolStat(stack, StackUtils.STAT_BLOCKS_MINED, 1);
+        }
+        return flag;
+    }
+
 }

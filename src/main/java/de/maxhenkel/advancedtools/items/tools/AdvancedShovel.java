@@ -10,11 +10,18 @@ import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 
 import java.util.Set;
 
@@ -97,4 +104,14 @@ public class AdvancedShovel extends AbstractTool {
     public int getRepairCost(ItemStack stack) {
         return 1;
     }
+
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        EnumActionResult result= Items.DIAMOND_SHOVEL.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+        if(result.equals(EnumActionResult.SUCCESS)){
+            StackUtils.incrementToolStat(player.getHeldItem(hand), StackUtils.STAT_PATHS_CREATED, 1);
+        }
+        return result;
+    }
+
 }

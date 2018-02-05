@@ -44,6 +44,11 @@ public class AdvancedSword extends AbstractTool {
     }
 
     @Override
+    public boolean countBreakStats(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public Set<String> getToolClasses(ItemStack stack) {
         return ImmutableSet.of(AdvancedToolMaterial.SWORD);
     }
@@ -121,6 +126,7 @@ public class AdvancedSword extends AbstractTool {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         stack.damageItem(1, attacker);
+        StackUtils.incrementToolStat(stack, StackUtils.STAT_MOBS_HIT, 1);
         return true;
     }
 

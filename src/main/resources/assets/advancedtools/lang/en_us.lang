@@ -14,6 +14,12 @@ tooltip.material=Material: %s
 tooltip.durability_left=Durability left: %s
 tooltip.broken=Broken
 tooltips.enchantments=Enchantments
+tooltips.stats=Statistics:
+
+stat.blocks_mined=Blocks Mined: %s
+stat.mobs_hit=Mobs Hit: %s
+stat.farmland_hoed=Farmland Hoed: %s
+stat.paths_created=Paths Created: %s
 
 item.enchantment.name=Enchantment Template
 item.pickaxe.name=Pickaxe
