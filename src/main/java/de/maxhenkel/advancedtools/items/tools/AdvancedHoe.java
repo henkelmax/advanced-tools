@@ -38,9 +38,14 @@ public class AdvancedHoe extends AbstractTool {
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack=player.getHeldItem(hand);
+        if(isBroken(stack)){
+            return EnumActionResult.PASS;
+        }
+
         EnumActionResult result=Items.DIAMOND_HOE.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
         if(result.equals(EnumActionResult.SUCCESS)){
-            StackUtils.incrementToolStat(player.getHeldItem(hand), StackUtils.STAT_HOED, 1);
+            StackUtils.incrementToolStat(stack, StackUtils.STAT_HOED, 1);
         }
         return result;
     }
