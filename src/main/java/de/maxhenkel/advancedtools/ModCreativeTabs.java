@@ -39,6 +39,12 @@ public class ModCreativeTabs {
                 list.add(stack);
             }
 
+            for(AdvancedToolMaterial material: AdvancedToolMaterial.getAll()){
+                ItemStack stack=new ItemStack(ModItems.SWORD);
+                StackUtils.setMaterial(stack, material);
+                list.add(stack);
+            }
+
             Iterator<Enchantment> iterator=Enchantment.REGISTRY.iterator();
             while(iterator.hasNext()){
                 Enchantment enchantment=iterator.next();

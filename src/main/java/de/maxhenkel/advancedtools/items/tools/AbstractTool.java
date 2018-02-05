@@ -3,6 +3,7 @@ package de.maxhenkel.advancedtools.items.tools;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -79,7 +80,13 @@ public abstract class AbstractTool extends ItemTool {
     public abstract int getMaxDamage(ItemStack stack);
 
     @Override
-    public abstract String getItemStackDisplayName(ItemStack stack);
+    public String getItemStackDisplayName(ItemStack stack) {
+        AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
+        if (mat != null) {
+            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getUnformattedText();
+        }
+        return ChatFormatting.WHITE + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getFormattedText();
+    }
 
     public abstract int getRepairCost(ItemStack stack);
 

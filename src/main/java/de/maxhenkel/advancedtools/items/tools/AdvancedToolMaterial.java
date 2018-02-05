@@ -37,6 +37,7 @@ public class AdvancedToolMaterial {
         diaTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/diamond_pickaxe_head"));
         diaTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/diamond_axe_head"));
         diaTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/diamond_shovel_head"));
+        diaTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/diamond_sword_head"));
         DIAMOND = new AdvancedToolMaterial("diamond",
                 8F, 3F, 3, 2048, MATCHER_DIAMOND, diaTextures);
         materials.put("diamond", DIAMOND);
@@ -45,6 +46,7 @@ public class AdvancedToolMaterial {
         ironTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/iron_pickaxe_head"));
         ironTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/iron_axe_head"));
         ironTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/iron_shovel_head"));
+        ironTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/iron_sword_head"));
         IRON = new AdvancedToolMaterial("iron",
                 12F, 2F, 2, 256, MATCHER_IRON, ironTextures);
         materials.put("iron", IRON);
@@ -53,6 +55,7 @@ public class AdvancedToolMaterial {
         goldTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/gold_pickaxe_head"));
         goldTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/gold_axe_head"));
         goldTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/gold_shovel_head"));
+        goldTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/gold_sword_head"));
         GOLD = new AdvancedToolMaterial("gold",
                 6F, 0F, 0, 32, MATCHER_GOLD, goldTextures);
         materials.put("gold", GOLD);
@@ -61,6 +64,7 @@ public class AdvancedToolMaterial {
         stoneTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/stone_pickaxe_head"));
         stoneTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/stone_axe_head"));
         stoneTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/stone_shovel_head"));
+        stoneTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/stone_sword_head"));
         STONE = new AdvancedToolMaterial("stone",
                 4F, 1F, 1, 128, MATCHER_STONE, stoneTextures);
         materials.put("stone", STONE);
@@ -69,6 +73,7 @@ public class AdvancedToolMaterial {
         woodTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/wood_pickaxe_head"));
         woodTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/wood_axe_head"));
         woodTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/wood_shovel_head"));
+        woodTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/wood_sword_head"));
         WOOD = new AdvancedToolMaterial("wood",
                 2F, 0F, 0, 64, MATCHER_WOOD, woodTextures);
         materials.put("wood", WOOD);

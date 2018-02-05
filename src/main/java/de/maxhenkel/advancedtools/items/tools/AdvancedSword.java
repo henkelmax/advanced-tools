@@ -5,11 +5,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.advancedtools.Main;
-import de.maxhenkel.advancedtools.items.tools.AbstractTool;
-import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
@@ -18,26 +17,26 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.Set;
 
-public class AdvancedShovel extends AbstractTool {
+public class AdvancedSword extends AbstractTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.CONCRETE_POWDER);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.MENDING);
+    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.WEB);
+    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING, Enchantments.KNOCKBACK, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING);
 
-    public AdvancedShovel() {
-        setUnlocalizedName("shovel");
-        setRegistryName(new ResourceLocation(Main.MODID, "shovel"));
+    public AdvancedSword() {
+        setUnlocalizedName("sword");
+        setRegistryName(new ResourceLocation(Main.MODID, "sword"));
     }
 
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of(AdvancedToolMaterial.SHOVEL);
+        return ImmutableSet.of(AdvancedToolMaterial.SWORD);
     }
 
     @Override
     public float getAttackDamage(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return mat.getAttackModifier();
+            return mat.getAttackModifier() + 3;
         }
         return 0F;
     }
@@ -46,7 +45,7 @@ public class AdvancedShovel extends AbstractTool {
     public float getAttackSpeed(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return -3F;
+            return -2F;
         }
         return 0F;
     }
@@ -76,7 +75,7 @@ public class AdvancedShovel extends AbstractTool {
 
     @Override
     public String getPrimaryToolType() {
-        return AdvancedToolMaterial.SHOVEL;
+        return AdvancedToolMaterial.SWORD;
     }
 
     @Override
@@ -95,6 +94,17 @@ public class AdvancedShovel extends AbstractTool {
 
     @Override
     public int getRepairCost(ItemStack stack) {
-        return 1;
+        return 2;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState blockIn) {
+        return blockIn.getBlock() == Blocks.WEB;
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+        stack.damageItem(1, attacker);
+        return true;
     }
 }

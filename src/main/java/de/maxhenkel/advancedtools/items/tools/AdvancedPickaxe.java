@@ -102,15 +102,6 @@ public class AdvancedPickaxe extends AbstractTool {
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
-        if (mat != null) {
-            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool.pickaxe.name").getUnformattedText();
-        }
-        return ChatFormatting.WHITE + new TextComponentTranslation("tool.pickaxe.name").getFormattedText();
-    }
-
-    @Override
     public int getRepairCost(ItemStack stack) {
         return 3;
     }

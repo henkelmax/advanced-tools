@@ -63,6 +63,7 @@ public class Registry {
         registerItem(event.getRegistry(), ModItems.PICKAXE);
         registerItem(event.getRegistry(), ModItems.AXE);
         registerItem(event.getRegistry(), ModItems.SHOVEL);
+        registerItem(event.getRegistry(), ModItems.SWORD);
         registerItem(event.getRegistry(), ModItems.ENCHANTMENT);
 
 
@@ -87,6 +88,12 @@ public class Registry {
         registry.remove(new ResourceLocation("golden_shovel"));
         registry.remove(new ResourceLocation("iron_shovel"));
         registry.remove(new ResourceLocation("diamond_shovel"));
+
+        registry.remove(new ResourceLocation("wooden_sword"));
+        registry.remove(new ResourceLocation("stone_sword"));
+        registry.remove(new ResourceLocation("golden_sword"));
+        registry.remove(new ResourceLocation("iron_sword"));
+        registry.remove(new ResourceLocation("diamond_sword"));
 
 
         //Pickaxe
@@ -119,13 +126,27 @@ public class Registry {
 
         //Shovel
         for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
-            ItemStack axe = new ItemStack(ModItems.SHOVEL);
-            StackUtils.setMaterial(axe, material);
-            OreDictionary.registerOre(material.getOredictName("shovel"), axe);
+            ItemStack shovel = new ItemStack(ModItems.SHOVEL);
+            StackUtils.setMaterial(shovel, material);
+            OreDictionary.registerOre(material.getOredictName("shovel"), shovel);
             if (material.getMatcher() instanceof OredictMatcher) {
                 OredictMatcher matcher = (OredictMatcher) material.getMatcher();
-                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_shovel"), null, axe,
+                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_shovel"), null, shovel,
                         "M", "S", "S",
+                        Character.valueOf('S'), "stickWood",
+                        Character.valueOf('M'), matcher.getOredict());
+            }
+        }
+
+        //Sword
+        for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
+            ItemStack sword = new ItemStack(ModItems.SWORD);
+            StackUtils.setMaterial(sword, material);
+            OreDictionary.registerOre(material.getOredictName("sword"), sword);
+            if (material.getMatcher() instanceof OredictMatcher) {
+                OredictMatcher matcher = (OredictMatcher) material.getMatcher();
+                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_sword"), null, sword,
+                        "M", "M", "S",
                         Character.valueOf('S'), "stickWood",
                         Character.valueOf('M'), matcher.getOredict());
             }
@@ -137,6 +158,7 @@ public class Registry {
         addRenderItem(ModItems.PICKAXE);
         addRenderItem(ModItems.AXE);
         addRenderItem(ModItems.SHOVEL);
+        addRenderItem(ModItems.SWORD);
         addRenderItem(ModItems.ENCHANTMENT);
     }
 

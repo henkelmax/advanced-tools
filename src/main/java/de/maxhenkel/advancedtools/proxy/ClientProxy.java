@@ -29,6 +29,11 @@ public class ClientProxy extends CommonProxy{
                 new ResourceLocation(Main.MODID, "items/shovel/empty_shovel"),
                 new ResourceLocation(Main.MODID, "items/shovel/shovel_handle"),
                 ModItems.SHOVEL)));
+
+        ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
+                new ResourceLocation(Main.MODID, "items/sword/empty_sword"),
+                new ResourceLocation(Main.MODID, "items/sword/sword_handle"),
+                ModItems.SWORD)));
 	}
 	
 	public void init(FMLInitializationEvent event) {
