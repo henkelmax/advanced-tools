@@ -1,6 +1,7 @@
 package de.maxhenkel.advancedtools.proxy;
 
 import de.maxhenkel.advancedtools.ModItems;
+import de.maxhenkel.advancedtools.SwordEvents;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,7 +23,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(ModItems.SWORD);
+        MinecraftForge.EVENT_BUS.register(new SwordEvents());
     }
 
     public void postinit(FMLPostInitializationEvent event) {
