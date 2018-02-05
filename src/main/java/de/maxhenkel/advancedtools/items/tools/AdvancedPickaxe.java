@@ -1,5 +1,6 @@
 package de.maxhenkel.advancedtools.items.tools;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -26,22 +27,11 @@ public class AdvancedPickaxe extends AbstractTool {
 
     private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE);
 
+    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING);
+
     public AdvancedPickaxe() {
         setUnlocalizedName("pickaxe");
         setRegistryName(new ResourceLocation(Main.MODID, "pickaxe"));
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
-        if (!enchantments.isEmpty()) {
-            tooltip.add(new TextComponentTranslation("tooltips.enchantments").getFormattedText());
-            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                tooltip.add("  - " + entry.getKey().getTranslatedName(entry.getValue()));
-            }
-        }
     }
 
     @Override
@@ -62,7 +52,7 @@ public class AdvancedPickaxe extends AbstractTool {
     public float getAttackSpeed(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return mat.getAttackSpeedModifier();
+            return -2.8F;
         }
         return 0F;
     }
@@ -96,6 +86,11 @@ public class AdvancedPickaxe extends AbstractTool {
     }
 
     @Override
+    public ImmutableList<Enchantment> getValidEnchantments(ItemStack stack) {
+        return VALID_ENCHANTMENTS;
+    }
+
+    @Override
     public int getMaxDamage(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
@@ -116,27 +111,6 @@ public class AdvancedPickaxe extends AbstractTool {
     @Override
     public int getRepairCost(ItemStack stack) {
         return 3;
-    }
-
-    @Override
-    public ItemStack applyEnchantment(ItemStack tool, ItemStack enchantment) {
-        ItemStack newTool = tool.copy();
-        EnchantmentData data = ModItems.ENCHANTMENT.getEnchantment(enchantment);
-        if (data != null) {
-            if (data.enchantment == Enchantments.EFFICIENCY
-                    || data.enchantment == Enchantments.FORTUNE
-                    || data.enchantment == Enchantments.SILK_TOUCH
-                    || data.enchantment == Enchantments.UNBREAKING) {
-
-                List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(newTool);
-                EnchantmentHelper.removeIncompatible(enchantments, data);
-                enchantments.add(data);
-                //newTool.addEnchantment(data.enchantment, data.enchantmentLevel);
-                EnchantmentTools.setEnchantments(enchantments, newTool);
-                return newTool;
-            }
-        }
-        return ItemStack.EMPTY;
     }
 
 }

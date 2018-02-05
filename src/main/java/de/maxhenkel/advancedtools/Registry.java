@@ -98,12 +98,12 @@ public class Registry {
 
         //Axe
         for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
-            ItemStack pickaxe = new ItemStack(ModItems.AXE);
-            StackUtils.setMaterial(pickaxe, material);
-            OreDictionary.registerOre(material.getOredictName("axe"), pickaxe);
+            ItemStack axe = new ItemStack(ModItems.AXE);
+            StackUtils.setMaterial(axe, material);
+            OreDictionary.registerOre(material.getOredictName("axe"), axe);
             if (material.getMatcher() instanceof OredictMatcher) {
                 OredictMatcher matcher = (OredictMatcher) material.getMatcher();
-                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_axe"), null, pickaxe,
+                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_axe"), null, axe,
                         " MM", " SM", " S ",
                         Character.valueOf('S'), "stickWood",
                         Character.valueOf('M'), matcher.getOredict());

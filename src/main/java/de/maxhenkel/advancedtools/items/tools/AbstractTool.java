@@ -1,15 +1,21 @@
 package de.maxhenkel.advancedtools.items.tools;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -18,6 +24,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractTool extends ItemTool {
@@ -41,6 +48,14 @@ public abstract class AbstractTool extends ItemTool {
                 tooltip.add(new TextComponentTranslation("tooltip.durability_left", getMaxDamage(stack)-stack.getItemDamage()).getFormattedText());
             }
         }
+
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+        if (!enchantments.isEmpty()) {
+            tooltip.add(new TextComponentTranslation("tooltips.enchantments").getFormattedText());
+            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                tooltip.add("  - " + entry.getKey().getTranslatedName(entry.getValue()));
+            }
+        }
     }
 
     @Override
@@ -57,6 +72,8 @@ public abstract class AbstractTool extends ItemTool {
     public abstract int getHarvestLevel(ItemStack stack);
 
     public abstract String getPrimaryToolType();
+
+    public abstract ImmutableList<Enchantment> getValidEnchantments(ItemStack stack);
 
     @Override
     public abstract int getMaxDamage(ItemStack stack);
@@ -101,7 +118,20 @@ public abstract class AbstractTool extends ItemTool {
         return StackUtils.setMaterial(in.copy(), material);
     }
 
-    public abstract ItemStack applyEnchantment(ItemStack tool, ItemStack enchantment);
+    public ItemStack applyEnchantment(ItemStack tool, ItemStack enchantment) {
+        ItemStack newTool = tool.copy();
+        EnchantmentData data = ModItems.ENCHANTMENT.getEnchantment(enchantment);
+        if (data != null) {
+            if (getValidEnchantments(tool).contains(data.enchantment)) {
+                List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(newTool);
+                EnchantmentHelper.removeIncompatible(enchantments, data);
+                enchantments.add(data);
+                EnchantmentTools.setEnchantments(enchantments, newTool);
+                return newTool;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
 
     @Override
     public int getMaxDamage() {
