@@ -1,5 +1,7 @@
 package de.maxhenkel.advancedtools.proxy;
 
+import de.maxhenkel.advancedtools.ModItems;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -20,7 +22,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
-
+        MinecraftForge.EVENT_BUS.register(ModItems.SWORD);
     }
 
     public void postinit(FMLPostInitializationEvent event) {
