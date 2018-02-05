@@ -64,6 +64,7 @@ public class Registry {
         registerItem(event.getRegistry(), ModItems.AXE);
         registerItem(event.getRegistry(), ModItems.SHOVEL);
         registerItem(event.getRegistry(), ModItems.SWORD);
+        registerItem(event.getRegistry(), ModItems.HOE);
         registerItem(event.getRegistry(), ModItems.ENCHANTMENT);
 
 
@@ -94,6 +95,12 @@ public class Registry {
         registry.remove(new ResourceLocation("golden_sword"));
         registry.remove(new ResourceLocation("iron_sword"));
         registry.remove(new ResourceLocation("diamond_sword"));
+
+        registry.remove(new ResourceLocation("wooden_hoe"));
+        registry.remove(new ResourceLocation("stone_hoe"));
+        registry.remove(new ResourceLocation("golden_hoe"));
+        registry.remove(new ResourceLocation("iron_hoe"));
+        registry.remove(new ResourceLocation("diamond_hoe"));
 
 
         //Pickaxe
@@ -151,6 +158,20 @@ public class Registry {
                         Character.valueOf('M'), matcher.getOredict());
             }
         }
+
+        //Hoe
+        for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
+            ItemStack sword = new ItemStack(ModItems.HOE);
+            StackUtils.setMaterial(sword, material);
+            OreDictionary.registerOre(material.getOredictName("hoe"), sword);
+            if (material.getMatcher() instanceof OredictMatcher) {
+                OredictMatcher matcher = (OredictMatcher) material.getMatcher();
+                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_hoe"), null, sword,
+                        "MM", " S", " S",
+                        Character.valueOf('S'), "stickWood",
+                        Character.valueOf('M'), matcher.getOredict());
+            }
+        }
     }
 
     @SubscribeEvent
@@ -159,6 +180,7 @@ public class Registry {
         addRenderItem(ModItems.AXE);
         addRenderItem(ModItems.SHOVEL);
         addRenderItem(ModItems.SWORD);
+        addRenderItem(ModItems.HOE);
         addRenderItem(ModItems.ENCHANTMENT);
     }
 

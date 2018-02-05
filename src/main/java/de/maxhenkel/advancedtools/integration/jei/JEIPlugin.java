@@ -58,12 +58,16 @@ public class JEIPlugin implements IModPlugin {
         blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_SWORD));
         blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_SWORD));
 
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_HOE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_HOE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_HOE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_HOE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_HOE));
+
 		registry.handleRecipes(EnchantmentRecipe.class, new ApplyEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANT);
 
-        AbstractTool[] tools=new AbstractTool[]{ModItems.PICKAXE, ModItems.AXE, ModItems.SHOVEL, ModItems.SWORD};
-
 		List<ApplyEnchantmentRecipeWrapper> enchants = new ArrayList<ApplyEnchantmentRecipeWrapper>();
-		for(AbstractTool tool:tools){
+		for(AbstractTool tool:AdvancedToolMaterial.TOOLS){
             for (AdvancedToolMaterial material: AdvancedToolMaterial.getAll()) {
                 Iterator<Enchantment> i=Enchantment.REGISTRY.iterator();
                 while(i.hasNext()){
@@ -83,7 +87,7 @@ public class JEIPlugin implements IModPlugin {
 
 		//Upgrade
         List<UpgradeRecipeWrapper> upgrades = new ArrayList<UpgradeRecipeWrapper>();
-        for(AbstractTool tool:tools) {
+        for(AbstractTool tool:AdvancedToolMaterial.TOOLS) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
                 for (AdvancedToolMaterial material1 : AdvancedToolMaterial.getAll()) {
                     if(!material.equals(material1)){
@@ -94,7 +98,7 @@ public class JEIPlugin implements IModPlugin {
         }
 
         registry.addRecipes(upgrades, JEIPlugin.CATEGORY_UPGRADE);
-        for(AbstractTool tool:tools){
+        for(AbstractTool tool:AdvancedToolMaterial.TOOLS){
             ItemStack stack=new ItemStack(tool);
             StackUtils.setMaterial(stack, AdvancedToolMaterial.DIAMOND);
             registry.addRecipeCatalyst(stack, JEIPlugin.CATEGORY_UPGRADE);

@@ -8,6 +8,7 @@ tool.pickaxe.name=Pickaxe
 tool.axe.name=Axe
 tool.shovel.name=Shovel
 tool.sword.name=Sword
+tool.hoe.name=Hoe
 
 tooltip.material=Material: %s
 tooltip.durability_left=Durability left: %s

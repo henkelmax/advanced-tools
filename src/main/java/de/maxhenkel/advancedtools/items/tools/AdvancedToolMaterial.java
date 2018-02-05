@@ -2,6 +2,7 @@ package de.maxhenkel.advancedtools.items.tools;
 
 import com.google.common.collect.ImmutableList;
 import de.maxhenkel.advancedtools.Main;
+import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.tools.matcher.MaterialMatcher;
 import de.maxhenkel.advancedtools.items.tools.matcher.OredictMatcher;
 import net.minecraft.util.ResourceLocation;
@@ -15,8 +16,9 @@ public class AdvancedToolMaterial {
     public static final String AXE = "axe";
     public static final String SWORD = "sword";
     public static final String SHOVEL = "shovel";
+    public static final String HOE = "hoe";
 
-    public static final ImmutableList<String> TOOLS = ImmutableList.of(PICKAXE, AXE, SWORD, SHOVEL);
+    public static final ImmutableList<AbstractTool> TOOLS = ImmutableList.of(ModItems.PICKAXE, ModItems.AXE, ModItems.SWORD, ModItems.SHOVEL, ModItems.HOE);
 
     private static Map<String, AdvancedToolMaterial> materials = new HashMap<>();
 
@@ -38,6 +40,7 @@ public class AdvancedToolMaterial {
         diaTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/diamond_axe_head"));
         diaTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/diamond_shovel_head"));
         diaTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/diamond_sword_head"));
+        diaTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/diamond_hoe_head"));
         DIAMOND = new AdvancedToolMaterial("diamond",
                 8F, 3F, 3, 2048, MATCHER_DIAMOND, diaTextures);
         materials.put("diamond", DIAMOND);
@@ -47,6 +50,7 @@ public class AdvancedToolMaterial {
         ironTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/iron_axe_head"));
         ironTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/iron_shovel_head"));
         ironTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/iron_sword_head"));
+        ironTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/iron_hoe_head"));
         IRON = new AdvancedToolMaterial("iron",
                 12F, 2F, 2, 256, MATCHER_IRON, ironTextures);
         materials.put("iron", IRON);
@@ -56,6 +60,7 @@ public class AdvancedToolMaterial {
         goldTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/gold_axe_head"));
         goldTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/gold_shovel_head"));
         goldTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/gold_sword_head"));
+        goldTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/gold_hoe_head"));
         GOLD = new AdvancedToolMaterial("gold",
                 6F, 0F, 0, 32, MATCHER_GOLD, goldTextures);
         materials.put("gold", GOLD);
@@ -65,6 +70,7 @@ public class AdvancedToolMaterial {
         stoneTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/stone_axe_head"));
         stoneTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/stone_shovel_head"));
         stoneTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/stone_sword_head"));
+        stoneTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/stone_hoe_head"));
         STONE = new AdvancedToolMaterial("stone",
                 4F, 1F, 1, 128, MATCHER_STONE, stoneTextures);
         materials.put("stone", STONE);
@@ -74,6 +80,7 @@ public class AdvancedToolMaterial {
         woodTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/wood_axe_head"));
         woodTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/wood_shovel_head"));
         woodTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/wood_sword_head"));
+        woodTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/wood_hoe_head"));
         WOOD = new AdvancedToolMaterial("wood",
                 2F, 0F, 0, 64, MATCHER_WOOD, woodTextures);
         materials.put("wood", WOOD);
