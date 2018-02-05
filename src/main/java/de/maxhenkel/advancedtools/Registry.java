@@ -71,6 +71,7 @@ public class Registry {
         IForgeRegistryModifiable<IRecipe> registry=(IForgeRegistryModifiable<IRecipe>)GameRegistry.findRegistry(IRecipe.class);
         registry.register(new ReciepeRepairTool().setRegistryName(new ResourceLocation(Main.MODID, "modify_tool")));
         registry.register(new ReciepeEnchantTool().setRegistryName(new ResourceLocation(Main.MODID, "enchant_tool")));
+        registry.register(new ReciepeConvertBook().setRegistryName(new ResourceLocation(Main.MODID, "convert_book")));
 
         registry.remove(new ResourceLocation("wooden_pickaxe"));
         registry.remove(new ResourceLocation("stone_pickaxe"));

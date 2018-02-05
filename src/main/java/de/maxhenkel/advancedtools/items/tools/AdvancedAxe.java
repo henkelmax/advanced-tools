@@ -3,29 +3,16 @@ package de.maxhenkel.advancedtools.items.tools;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.advancedtools.Main;
-import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class AdvancedAxe extends AbstractTool {

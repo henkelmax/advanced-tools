@@ -5,7 +5,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

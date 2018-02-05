@@ -7,7 +7,6 @@ import de.maxhenkel.advancedtools.items.tools.matcher.MaterialMatcher;
 import de.maxhenkel.advancedtools.items.tools.matcher.OredictMatcher;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
-
 import java.util.*;
 
 public class AdvancedToolMaterial {

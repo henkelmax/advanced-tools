@@ -17,14 +17,12 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
@@ -118,8 +116,6 @@ public abstract class AbstractTool extends ItemTool {
             ItemStack newStack = in.copy();
             int maxDamage = getMaxDamage(newStack);
             int damageRev = newStack.getItemDamage();
-
-            //int damage=maxDamage-damageRev;
 
             int repairPerCount = (maxDamage / repairCost) + 1;
 
