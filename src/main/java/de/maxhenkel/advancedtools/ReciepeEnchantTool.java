@@ -3,7 +3,6 @@ package de.maxhenkel.advancedtools;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -11,8 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReciepeEnchantTool implements IRecipe {
 
@@ -60,7 +57,7 @@ public class ReciepeEnchantTool implements IRecipe {
 
     @Override
     public ItemStack getRecipeOutput() {
-        return new ItemStack(ModItems.PICKAXE);
+        return ItemStack.EMPTY;
     }
 
     @Override

@@ -2,7 +2,7 @@ package de.maxhenkel.advancedtools;
 
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReciepeRepairPickaxe implements IRecipe {
+public class ReciepeRepairTool implements IRecipe {
 
     private ResourceLocation resourceLocation;
 
@@ -45,11 +45,11 @@ public class ReciepeRepairPickaxe implements IRecipe {
         }
 
 
-        ToolMaterial fMaterial = null;
+        AdvancedToolMaterial fMaterial = null;
         int fCount = 0;
 
-        for (ToolMaterial mat : ToolMaterial.getAll()) {
-            ToolMaterial material = null;
+        for (AdvancedToolMaterial mat : AdvancedToolMaterial.getAll()) {
+            AdvancedToolMaterial material = null;
             int count = 0;
             for (ItemStack stack : otherItems) {
                 if (mat.getMatcher().isMaterial(stack)) {
@@ -85,7 +85,7 @@ public class ReciepeRepairPickaxe implements IRecipe {
 
     @Override
     public ItemStack getRecipeOutput() {
-        return new ItemStack(ModItems.PICKAXE);
+        return ItemStack.EMPTY; //TODO maybe fix
     }
 
     @Override

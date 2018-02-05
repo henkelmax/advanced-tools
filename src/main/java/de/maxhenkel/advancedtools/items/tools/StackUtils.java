@@ -2,9 +2,7 @@ package de.maxhenkel.advancedtools.items.tools;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -27,11 +25,11 @@ public class StackUtils {
         compound.setInteger("HideFlags", compound.getInteger("HideFlags") | 1 );
     }
 
-    public static ToolMaterial getMaterial(ItemStack stack) {
-        return ToolMaterial.byName(getStackToolData(stack).getString("material"));
+    public static AdvancedToolMaterial getMaterial(ItemStack stack) {
+        return AdvancedToolMaterial.byName(getStackToolData(stack).getString("material"));
     }
 
-    public static ItemStack setMaterial(ItemStack stack, ToolMaterial material) {
+    public static ItemStack setMaterial(ItemStack stack, AdvancedToolMaterial material) {
 
         NBTTagCompound toolData = getStackToolData(stack);
 

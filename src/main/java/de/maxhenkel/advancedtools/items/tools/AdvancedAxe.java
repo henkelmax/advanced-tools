@@ -12,6 +12,7 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -22,13 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AdvancedPickaxe extends AbstractTool {
+public class AdvancedAxe extends AbstractTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE);
+    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE);
 
-    public AdvancedPickaxe() {
-        setUnlocalizedName("pickaxe");
-        setRegistryName(new ResourceLocation(Main.MODID, "pickaxe"));
+    public AdvancedAxe() {
+        setUnlocalizedName("axe");
+        setRegistryName(new ResourceLocation(Main.MODID, "axe"));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class AdvancedPickaxe extends AbstractTool {
 
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of(AdvancedToolMaterial.PICKAXE);
+        return ImmutableSet.of(AdvancedToolMaterial.AXE);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class AdvancedPickaxe extends AbstractTool {
 
     @Override
     public String getPrimaryToolType() {
-        return AdvancedToolMaterial.PICKAXE;
+        return AdvancedToolMaterial.AXE;
     }
 
     @Override
@@ -108,9 +109,9 @@ public class AdvancedPickaxe extends AbstractTool {
     public String getItemStackDisplayName(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool.pickaxe.name").getUnformattedText();
+            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool.axe.name").getUnformattedText();
         }
-        return ChatFormatting.WHITE + new TextComponentTranslation("tool.pickaxe.name").getFormattedText();
+        return ChatFormatting.WHITE + new TextComponentTranslation("tool.axe.name").getFormattedText();
     }
 
     @Override
@@ -126,7 +127,10 @@ public class AdvancedPickaxe extends AbstractTool {
             if (data.enchantment == Enchantments.EFFICIENCY
                     || data.enchantment == Enchantments.FORTUNE
                     || data.enchantment == Enchantments.SILK_TOUCH
-                    || data.enchantment == Enchantments.UNBREAKING) {
+                    || data.enchantment == Enchantments.UNBREAKING
+                    || data.enchantment == Enchantments.SHARPNESS
+                    || data.enchantment == Enchantments.SMITE
+                    || data.enchantment == Enchantments.BANE_OF_ARTHROPODS) {
 
                 List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(newTool);
                 EnchantmentHelper.removeIncompatible(enchantments, data);

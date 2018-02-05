@@ -25,7 +25,7 @@ public class ApplyEnchantmentRecipeWrapper implements IRecipeWrapper{
         ItemStack tool=new ItemStack(recipe.getAbstractTool());
         StackUtils.setMaterial(tool, recipe.getMaterial());
         ingredients.setInputs(ItemStack.class, ImmutableList.of(enchantment, tool));
-        ItemStack tool2=ModItems.PICKAXE.applyEnchantment(tool, enchantment);
+        ItemStack tool2=recipe.getAbstractTool().applyEnchantment(tool, enchantment);
         ingredients.setOutput(ItemStack.class, tool2);
     }
 

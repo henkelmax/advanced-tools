@@ -34,7 +34,7 @@ public abstract class AbstractTool extends ItemTool {
             tooltip.add(new TextComponentTranslation("tooltip.broken").getFormattedText());
         }
 
-        de.maxhenkel.advancedtools.items.tools.ToolMaterial mat=StackUtils.getMaterial(stack);
+        AdvancedToolMaterial mat=StackUtils.getMaterial(stack);
         if(mat!=null){
             tooltip.add(new TextComponentTranslation("tooltip.material", mat.getLocalizedName()).getFormattedText());
             if(!flagIn.isAdvanced()){
@@ -56,6 +56,8 @@ public abstract class AbstractTool extends ItemTool {
 
     public abstract int getHarvestLevel(ItemStack stack);
 
+    public abstract String getPrimaryToolType();
+
     @Override
     public abstract int getMaxDamage(ItemStack stack);
 
@@ -64,8 +66,8 @@ public abstract class AbstractTool extends ItemTool {
 
     public abstract int getRepairCost(ItemStack stack);
 
-    public ItemStack repair(ItemStack in, de.maxhenkel.advancedtools.items.tools.ToolMaterial material, int count){
-        de.maxhenkel.advancedtools.items.tools.ToolMaterial currMat = StackUtils.getMaterial(in);
+    public ItemStack repair(ItemStack in, AdvancedToolMaterial material, int count){
+        AdvancedToolMaterial currMat = StackUtils.getMaterial(in);
         if (currMat == null) {
             return ItemStack.EMPTY;
         }

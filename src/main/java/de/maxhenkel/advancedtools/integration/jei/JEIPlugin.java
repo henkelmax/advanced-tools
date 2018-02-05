@@ -3,18 +3,17 @@ package de.maxhenkel.advancedtools.integration.jei;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.ingredients.IIngredientBlacklist;
-import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,14 +40,13 @@ public class JEIPlugin implements IModPlugin {
         blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_PICKAXE));
         blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_PICKAXE));
 
-
 		registry.handleRecipes(EnchantmentRecipe.class, new ApplyEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANT);
 
         AbstractTool[] tools=new AbstractTool[]{ModItems.PICKAXE};
 
 		List<ApplyEnchantmentRecipeWrapper> enchants = new ArrayList<ApplyEnchantmentRecipeWrapper>();
 		for(AbstractTool tool:tools){
-            for (ToolMaterial material:ToolMaterial.getAll()) {
+            for (AdvancedToolMaterial material: AdvancedToolMaterial.getAll()) {
                 Iterator<Enchantment> i=Enchantment.REGISTRY.iterator();
                 while(i.hasNext()){
                     Enchantment enchantment=i.next();
@@ -68,8 +66,8 @@ public class JEIPlugin implements IModPlugin {
 		//Upgrade
         List<UpgradeRecipeWrapper> upgrades = new ArrayList<UpgradeRecipeWrapper>();
         for(AbstractTool tool:tools) {
-            for (ToolMaterial material : ToolMaterial.getAll()) {
-                for (ToolMaterial material1 : ToolMaterial.getAll()) {
+            for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
+                for (AdvancedToolMaterial material1 : AdvancedToolMaterial.getAll()) {
                     if(!material.equals(material1)){
                         upgrades.add(new UpgradeRecipeWrapper(new UpgradeRecipe(tool, material, material1)));
                     }
@@ -79,7 +77,9 @@ public class JEIPlugin implements IModPlugin {
 
         registry.addRecipes(upgrades, JEIPlugin.CATEGORY_UPGRADE);
         for(AbstractTool tool:tools){
-            registry.addRecipeCatalyst(new ItemStack(tool), JEIPlugin.CATEGORY_UPGRADE);
+            ItemStack stack=new ItemStack(tool);
+            StackUtils.setMaterial(stack, AdvancedToolMaterial.DIAMOND);
+            registry.addRecipeCatalyst(stack, JEIPlugin.CATEGORY_UPGRADE);
         }
 
 	}

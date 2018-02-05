@@ -1,16 +1,16 @@
 package de.maxhenkel.advancedtools.integration.jei;
 
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
-import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import net.minecraft.enchantment.Enchantment;
 
 public class EnchantmentRecipe {
 
     private Enchantment enchantment;
     private AbstractTool abstractTool;
-    private ToolMaterial material;
+    private AdvancedToolMaterial material;
 
-    public EnchantmentRecipe(Enchantment enchantment, AbstractTool abstractTool, ToolMaterial material) {
+    public EnchantmentRecipe(Enchantment enchantment, AbstractTool abstractTool, AdvancedToolMaterial material) {
         this.enchantment = enchantment;
         this.abstractTool = abstractTool;
         this.material = material;
@@ -24,7 +24,7 @@ public class EnchantmentRecipe {
         return abstractTool;
     }
 
-    public ToolMaterial getMaterial() {
+    public AdvancedToolMaterial getMaterial() {
         return material;
     }
 }

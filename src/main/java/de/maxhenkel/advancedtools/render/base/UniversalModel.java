@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import de.maxhenkel.advancedtools.ModItems;
+import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -124,7 +125,7 @@ public class UniversalModel implements ICustomModelLoader {
         @Nonnull
         public IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
 
-            if (stack.getItem() != ModItems.PICKAXE) {
+            if (!(stack.getItem() instanceof AbstractTool)) {
                 return originalModel;
             }
 

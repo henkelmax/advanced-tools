@@ -1,10 +1,9 @@
 package de.maxhenkel.advancedtools;
 
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -16,14 +15,20 @@ public class ModCreativeTabs {
 		@Override
 		public ItemStack getTabIconItem() {
 			ItemStack stack=new ItemStack(ModItems.PICKAXE);
-            StackUtils.setMaterial(stack, ToolMaterial.DIAMOND);
+            StackUtils.setMaterial(stack, AdvancedToolMaterial.DIAMOND);
 			return stack;
 		}
 		
 		@Override
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
-		    for(ToolMaterial material:ToolMaterial.getAll()){
+		    for(AdvancedToolMaterial material: AdvancedToolMaterial.getAll()){
                 ItemStack stack=new ItemStack(ModItems.PICKAXE);
+                StackUtils.setMaterial(stack, material);
+                list.add(stack);
+            }
+
+            for(AdvancedToolMaterial material: AdvancedToolMaterial.getAll()){
+                ItemStack stack=new ItemStack(ModItems.AXE);
                 StackUtils.setMaterial(stack, material);
                 list.add(stack);
             }

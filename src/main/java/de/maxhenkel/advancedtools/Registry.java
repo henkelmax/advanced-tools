@@ -1,7 +1,7 @@
 package de.maxhenkel.advancedtools;
 
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import de.maxhenkel.advancedtools.items.tools.matcher.OredictMatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -61,11 +61,12 @@ public class Registry {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         registerItem(event.getRegistry(), ModItems.PICKAXE);
+        registerItem(event.getRegistry(), ModItems.AXE);
         registerItem(event.getRegistry(), ModItems.ENCHANTMENT);
 
 
         IForgeRegistryModifiable<IRecipe> registry=(IForgeRegistryModifiable<IRecipe>)GameRegistry.findRegistry(IRecipe.class);
-        registry.register(new ReciepeRepairPickaxe().setRegistryName(new ResourceLocation(Main.MODID, "modify_pickaxe")));
+        registry.register(new ReciepeRepairTool().setRegistryName(new ResourceLocation(Main.MODID, "modify_tool")));
         registry.register(new ReciepeEnchantTool().setRegistryName(new ResourceLocation(Main.MODID, "enchant_tool")));
 
         registry.remove(new ResourceLocation("wooden_pickaxe"));
@@ -74,8 +75,15 @@ public class Registry {
         registry.remove(new ResourceLocation("iron_pickaxe"));
         registry.remove(new ResourceLocation("diamond_pickaxe"));
 
+        registry.remove(new ResourceLocation("wooden_axe"));
+        registry.remove(new ResourceLocation("stone_axe"));
+        registry.remove(new ResourceLocation("golden_axe"));
+        registry.remove(new ResourceLocation("iron_axe"));
+        registry.remove(new ResourceLocation("diamond_axe"));
 
-        for (ToolMaterial material : ToolMaterial.getAll()) {
+
+        //Pickaxe
+        for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
             ItemStack pickaxe = new ItemStack(ModItems.PICKAXE);
             StackUtils.setMaterial(pickaxe, material);
             OreDictionary.registerOre(material.getOredictName("pickaxe"), pickaxe);
@@ -87,11 +95,26 @@ public class Registry {
                         Character.valueOf('M'), matcher.getOredict());
             }
         }
+
+        //Axe
+        for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
+            ItemStack pickaxe = new ItemStack(ModItems.AXE);
+            StackUtils.setMaterial(pickaxe, material);
+            OreDictionary.registerOre(material.getOredictName("axe"), pickaxe);
+            if (material.getMatcher() instanceof OredictMatcher) {
+                OredictMatcher matcher = (OredictMatcher) material.getMatcher();
+                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_axe"), null, pickaxe,
+                        " MM", " SM", " S ",
+                        Character.valueOf('S'), "stickWood",
+                        Character.valueOf('M'), matcher.getOredict());
+            }
+        }
     }
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         addRenderItem(ModItems.PICKAXE);
+        addRenderItem(ModItems.AXE);
         addRenderItem(ModItems.ENCHANTMENT);
     }
 
