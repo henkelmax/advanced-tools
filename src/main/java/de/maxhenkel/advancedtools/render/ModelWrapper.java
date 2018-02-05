@@ -22,7 +22,7 @@ public class ModelWrapper {
 
     public ImmutableList<ResourceLocation> getAllTextures(){
         ImmutableList.Builder<ResourceLocation> texBuilder = ImmutableList.builder();
-        ToolMaterial mat= ToolMaterial.byName("diamond");
+        ToolMaterial mat= ToolMaterial.DIAMOND;
         if(mat!=null){
             texBuilder.add(mat.getTextureFor("pickaxe"));
         }

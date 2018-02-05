@@ -20,26 +20,37 @@ public class ToolMaterial {
     public static final MaterialMatcher MATCHER_WOOD = new OredictMatcher("plankWood");
     public static final MaterialMatcher MATCHER_STONE = new OredictMatcher("cobblestone");
 
+    public static final ToolMaterial DIAMOND;
+    public static final ToolMaterial IRON;
+    public static final ToolMaterial GOLD;
+    public static final ToolMaterial WOOD;
+    public static final ToolMaterial STONE;
+
     static {
         Map<String, ResourceLocation> diaTextures = new HashMap<>();
         diaTextures.put("pickaxe", new ResourceLocation(Main.MODID, "items/pickaxe/diamond_pickaxe_head"));
-        materials.put("diamond", new ToolMaterial("diamond", 8F, 3F, -2.8F, 3, 2048, MATCHER_DIAMOND, diaTextures));
+        DIAMOND=new ToolMaterial("diamond", 8F, 3F, -2.8F, 3, 2048, MATCHER_DIAMOND, diaTextures);
+        materials.put("diamond", DIAMOND);
 
         Map<String, ResourceLocation> ironTextures = new HashMap<>();
         ironTextures.put("pickaxe", new ResourceLocation(Main.MODID, "items/pickaxe/iron_pickaxe_head"));
-        materials.put("iron", new ToolMaterial("iron", 12F, 2F, -2.8F, 2, 256, MATCHER_IRON, ironTextures));
+        IRON=new ToolMaterial("iron", 12F, 2F, -2.8F, 2, 256, MATCHER_IRON, ironTextures);
+        materials.put("iron", IRON);
 
         Map<String, ResourceLocation> goldTextures = new HashMap<>();
         goldTextures.put("pickaxe", new ResourceLocation(Main.MODID, "items/pickaxe/gold_pickaxe_head"));
-        materials.put("gold", new ToolMaterial("gold", 6F, 0F, -2.8F, 0, 32, MATCHER_GOLD, goldTextures));
+        GOLD=new ToolMaterial("gold", 6F, 0F, -2.8F, 0, 32, MATCHER_GOLD, goldTextures);
+        materials.put("gold", GOLD);
 
         Map<String, ResourceLocation> stoneTextures = new HashMap<>();
         stoneTextures.put("pickaxe", new ResourceLocation(Main.MODID, "items/pickaxe/stone_pickaxe_head"));
-        materials.put("stone", new ToolMaterial("stone", 4F, 1F, -2.8F, 1, 128, MATCHER_STONE, stoneTextures));
+        STONE=new ToolMaterial("stone", 4F, 1F, -2.8F, 1, 128, MATCHER_STONE, stoneTextures);
+        materials.put("stone", STONE);
 
         Map<String, ResourceLocation> woodTextures = new HashMap<>();
         woodTextures.put("pickaxe", new ResourceLocation(Main.MODID, "items/pickaxe/wood_pickaxe_head"));
-        materials.put("wood", new ToolMaterial("wood", 2F, 0F, -2.8F, 0, 64, MATCHER_WOOD, woodTextures));
+        WOOD=new ToolMaterial("wood", 2F, 0F, -2.8F, 0, 64, MATCHER_WOOD, woodTextures);
+        materials.put("wood", WOOD);
     }
 
     private String name;

@@ -17,6 +17,8 @@ public class PickaxeModel implements IAdvancedModel {
         ToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
             texBuilder.add(mat.getTextureFor(Constants.PICKAXE));
+        }else{
+            texBuilder.add(ToolMaterial.DIAMOND.getTextureFor(Constants.PICKAXE));
         }
 
         texBuilder.add(new ResourceLocation(Main.MODID, "items/wood_handle"));

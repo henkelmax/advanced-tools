@@ -13,3 +13,8 @@ tooltips.enchantments=Enchantments
 
 item.enchantment.name=Enchantment
 item.pickaxe.name=Pickaxe
+
+itemGroup.advanced_tools=Advanced Tools
+
+jei.enchanting=Enchanting
+jei.upgrading=Upgrading

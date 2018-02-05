@@ -1,5 +1,6 @@
 package de.maxhenkel.advancedtools.items.enchantments;
 
+import de.maxhenkel.advancedtools.ModCreativeTabs;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -17,6 +18,7 @@ public class ItemEnchantment extends Item {
     public ItemEnchantment() {
         setUnlocalizedName("enchantment");
         setRegistryName("enchantment");
+        setCreativeTab(ModCreativeTabs.TAB_ADVANCED_TOOLS);
     }
 
     @Override

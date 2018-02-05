@@ -1,7 +1,10 @@
 package de.maxhenkel.advancedtools.items.tools.matcher;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
 
 public class OredictMatcher implements MaterialMatcher{
 
@@ -20,6 +23,11 @@ public class OredictMatcher implements MaterialMatcher{
         }
         return false;
         //return OreDictionary.containsMatch(false, OreDictionary.getOres(oredict), stack);
+    }
+
+    @Override
+    public List<ItemStack> getAll() {
+        return OreDictionary.getOres(oredict);
     }
 
 }

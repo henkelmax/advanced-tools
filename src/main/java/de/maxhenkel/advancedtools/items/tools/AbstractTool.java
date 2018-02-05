@@ -28,7 +28,6 @@ public abstract class AbstractTool extends ItemTool {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         StackUtils.updateFlags(stack);
-
         if(isBroken(stack)){
             tooltip.add(new TextComponentTranslation("tooltip.broken").getFormattedText());
         }
@@ -61,7 +60,42 @@ public abstract class AbstractTool extends ItemTool {
     @Override
     public abstract String getItemStackDisplayName(ItemStack stack);
 
-    public abstract ItemStack repair(ItemStack in, de.maxhenkel.advancedtools.items.tools.ToolMaterial material, int count);
+    public abstract int getRepairCost(ItemStack stack);
+
+    public ItemStack repair(ItemStack in, de.maxhenkel.advancedtools.items.tools.ToolMaterial material, int count){
+        de.maxhenkel.advancedtools.items.tools.ToolMaterial currMat = StackUtils.getMaterial(in);
+        if (currMat == null) {
+            return ItemStack.EMPTY;
+        }
+
+        int repairCost=getRepairCost(in);
+        if(repairCost<1){
+            repairCost=1;
+        }
+        if(repairCost>8){
+            repairCost=8;
+        }
+
+        if (currMat.equals(material)) {
+            ItemStack newStack = in.copy();
+            int maxDamage = getMaxDamage(newStack);
+            int damageRev = newStack.getItemDamage();
+
+            //int damage=maxDamage-damageRev;
+
+            int repairPerCount = (maxDamage / repairCost) + 1;
+
+            newStack.setItemDamage(damageRev - (repairPerCount * count));
+
+            return newStack;
+        }
+
+        if (count < repairCost) {
+            return ItemStack.EMPTY;
+        }
+
+        return StackUtils.setMaterial(in.copy(), material);
+    }
 
     public abstract ItemStack applyEnchantment(ItemStack tool, ItemStack enchantment);
 
@@ -84,6 +118,16 @@ public abstract class AbstractTool extends ItemTool {
     @Override
     public String getToolMaterialName() {
         return "";
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
     }
 
     @Override

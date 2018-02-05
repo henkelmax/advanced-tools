@@ -10,6 +10,7 @@ import net.minecraft.command.CommandEnchant;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemEnchantedBook;
@@ -35,6 +36,13 @@ public class AdvancedPickaxe extends AbstractTool {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
+
+        //DEFAULT
+        de.maxhenkel.advancedtools.items.tools.ToolMaterial mat = StackUtils.getMaterial(stack);
+        if (mat == null) {
+            StackUtils.setMaterial(stack, de.maxhenkel.advancedtools.items.tools.ToolMaterial.DIAMOND);
+        }
+
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
         if (!enchantments.isEmpty()) {
             tooltip.add(new TextComponentTranslation("tooltips.enchantments").getFormattedText());
@@ -109,31 +117,8 @@ public class AdvancedPickaxe extends AbstractTool {
     }
 
     @Override
-    public ItemStack repair(ItemStack in, de.maxhenkel.advancedtools.items.tools.ToolMaterial material, int count) {
-        de.maxhenkel.advancedtools.items.tools.ToolMaterial currMat = StackUtils.getMaterial(in);
-        if (currMat == null) {
-            return ItemStack.EMPTY;
-        }
-
-        if (currMat.equals(material)) {
-            ItemStack newStack = in.copy();
-            int maxDamage = getMaxDamage(newStack);
-            int damageRev = newStack.getItemDamage();
-
-            //int damage=maxDamage-damageRev;
-
-            int repairPerCount = (maxDamage / 3) + 1;
-
-            newStack.setItemDamage(damageRev - (repairPerCount * count));
-
-            return newStack;
-        }
-
-        if (count < 3) {
-            return ItemStack.EMPTY;
-        }
-
-        return StackUtils.setMaterial(in.copy(), material);
+    public int getRepairCost(ItemStack stack) {
+        return 3;
     }
 
     @Override
