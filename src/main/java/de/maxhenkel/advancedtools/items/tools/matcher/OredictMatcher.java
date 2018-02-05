@@ -30,4 +30,7 @@ public class OredictMatcher implements MaterialMatcher{
         return OreDictionary.getOres(oredict);
     }
 
+    public String getOredict() {
+        return oredict;
+    }
 }

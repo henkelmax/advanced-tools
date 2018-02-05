@@ -8,9 +8,13 @@ import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,6 +33,15 @@ public class JEIPlugin implements IModPlugin {
 
 	@Override
 	public void register(IModRegistry registry) {
+
+        IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_PICKAXE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_PICKAXE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_PICKAXE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_PICKAXE));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_PICKAXE));
+
+
 		registry.handleRecipes(EnchantmentRecipe.class, new ApplyEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANT);
 
         AbstractTool[] tools=new AbstractTool[]{ModItems.PICKAXE};

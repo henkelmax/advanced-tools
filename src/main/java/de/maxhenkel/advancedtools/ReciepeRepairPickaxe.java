@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReciepePickaxe implements IRecipe {
+public class ReciepeRepairPickaxe implements IRecipe {
 
     private ResourceLocation resourceLocation;
 
@@ -23,16 +23,16 @@ public class ReciepePickaxe implements IRecipe {
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-        ItemStack pick = null;
+        ItemStack tool = null;
         List<ItemStack> otherItems = new ArrayList<>();
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (stack.getItem().equals(ModItems.PICKAXE)) {
-                if (pick != null) {
+            if (stack.getItem() instanceof AbstractTool) {
+                if (tool != null) {
                     return ItemStack.EMPTY;
                 }
-                pick = stack;
+                tool = stack;
             } else {
                 if (!StackUtils.isEmpty(stack)) {
                     otherItems.add(stack);
@@ -40,7 +40,7 @@ public class ReciepePickaxe implements IRecipe {
             }
         }
 
-        if (pick == null) {
+        if (tool == null) {
             return ItemStack.EMPTY;
         }
 
@@ -75,7 +75,7 @@ public class ReciepePickaxe implements IRecipe {
             return ItemStack.EMPTY;
         }
 
-        return ((AbstractTool) pick.getItem()).repair(pick, fMaterial, fCount);
+        return ((AbstractTool) tool.getItem()).repair(tool, fMaterial, fCount);
     }
 
     @Override

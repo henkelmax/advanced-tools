@@ -1,9 +1,13 @@
 package de.maxhenkel.advancedtools;
 
+import de.maxhenkel.advancedtools.items.tools.StackUtils;
+import de.maxhenkel.advancedtools.items.tools.ToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.matcher.OredictMatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -13,7 +17,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
 public class Registry {
@@ -57,8 +63,30 @@ public class Registry {
         registerItem(event.getRegistry(), ModItems.PICKAXE);
         registerItem(event.getRegistry(), ModItems.ENCHANTMENT);
 
-        GameRegistry.findRegistry(IRecipe.class).register(new ReciepePickaxe().setRegistryName(new ResourceLocation(Main.MODID, "modify_pickaxe")));
-        GameRegistry.findRegistry(IRecipe.class).register(new ReciepeEnchantTool().setRegistryName(new ResourceLocation(Main.MODID, "enchant_tool")));
+
+        IForgeRegistryModifiable<IRecipe> registry=(IForgeRegistryModifiable<IRecipe>)GameRegistry.findRegistry(IRecipe.class);
+        registry.register(new ReciepeRepairPickaxe().setRegistryName(new ResourceLocation(Main.MODID, "modify_pickaxe")));
+        registry.register(new ReciepeEnchantTool().setRegistryName(new ResourceLocation(Main.MODID, "enchant_tool")));
+
+        registry.remove(new ResourceLocation("wooden_pickaxe"));
+        registry.remove(new ResourceLocation("stone_pickaxe"));
+        registry.remove(new ResourceLocation("golden_pickaxe"));
+        registry.remove(new ResourceLocation("iron_pickaxe"));
+        registry.remove(new ResourceLocation("diamond_pickaxe"));
+
+
+        for (ToolMaterial material : ToolMaterial.getAll()) {
+            ItemStack pickaxe = new ItemStack(ModItems.PICKAXE);
+            StackUtils.setMaterial(pickaxe, material);
+            OreDictionary.registerOre(material.getOredictName("pickaxe"), pickaxe);
+            if (material.getMatcher() instanceof OredictMatcher) {
+                OredictMatcher matcher = (OredictMatcher) material.getMatcher();
+                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_pickaxe"), null, pickaxe,
+                        "MMM", " S ", " S ",
+                        Character.valueOf('S'), "stickWood",
+                        Character.valueOf('M'), matcher.getOredict());
+            }
+        }
     }
 
     @SubscribeEvent

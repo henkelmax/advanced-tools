@@ -101,6 +101,10 @@ public class ToolMaterial {
         return name;
     }
 
+    public String getOredictName(String tool){
+        return tool + name.substring(0, 1).toUpperCase() +name.substring(1);
+    }
+
     public String getLocalizedName(){
         return new TextComponentTranslation("material." +name +".name").getUnformattedText();
     }
