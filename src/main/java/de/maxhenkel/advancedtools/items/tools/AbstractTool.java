@@ -3,6 +3,7 @@ package de.maxhenkel.advancedtools.items.tools;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -22,6 +23,9 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
@@ -86,13 +90,14 @@ public abstract class AbstractTool extends ItemTool {
     @Override
     public abstract int getMaxDamage(ItemStack stack);
 
+    @SideOnly(Side.CLIENT)
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return "§f"/*ChatFormatting.WHITE*/ + mat.getLocalizedName() + " " + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getUnformattedText();
+            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getUnformattedText();
         }
-        return "§f"/*ChatFormatting.WHITE*/ + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getFormattedText();
+        return ChatFormatting.WHITE + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getFormattedText();
     }
 
     public abstract int getRepairCost(ItemStack stack);
