@@ -21,7 +21,7 @@ public class PickaxeModel implements IAdvancedModel {
             texBuilder.add(ToolMaterial.DIAMOND.getTextureFor(Constants.PICKAXE));
         }
 
-        texBuilder.add(new ResourceLocation(Main.MODID, "items/wood_handle"));
+        texBuilder.add(new ResourceLocation(Main.MODID, "items/pickaxe/wood_handle"));
         return texBuilder.build();
     }
 
@@ -32,7 +32,7 @@ public class PickaxeModel implements IAdvancedModel {
             texBuilder.add(mat.getTextureFor(Constants.PICKAXE));
         }
 
-        texBuilder.add(new ResourceLocation(Main.MODID, "items/wood_handle"));
+        texBuilder.add(new ResourceLocation(Main.MODID, "items/pickaxe/wood_handle"));
         return texBuilder.build();
     }
 
