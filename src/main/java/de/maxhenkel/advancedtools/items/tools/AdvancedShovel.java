@@ -5,48 +5,39 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.advancedtools.Main;
-import de.maxhenkel.advancedtools.ModItems;
+import de.maxhenkel.advancedtools.items.tools.AbstractTool;
+import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-public class AdvancedAxe extends AbstractTool {
+public class AdvancedShovel extends AbstractTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING);
+    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.CONCRETE_POWDER);
+    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.MENDING);
 
-    public AdvancedAxe() {
-        setUnlocalizedName("axe");
-        setRegistryName(new ResourceLocation(Main.MODID, "axe"));
+    public AdvancedShovel() {
+        setUnlocalizedName("shovel");
+        setRegistryName(new ResourceLocation(Main.MODID, "shovel"));
     }
 
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of(AdvancedToolMaterial.AXE);
+        return ImmutableSet.of(AdvancedToolMaterial.SHOVEL);
     }
 
     @Override
     public float getAttackDamage(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return mat.getAttackModifier() * 2.5F;
+            return mat.getAttackModifier();
         }
         return 0F;
     }
@@ -85,7 +76,7 @@ public class AdvancedAxe extends AbstractTool {
 
     @Override
     public String getPrimaryToolType() {
-        return AdvancedToolMaterial.AXE;
+        return AdvancedToolMaterial.SHOVEL;
     }
 
     @Override
@@ -106,22 +97,13 @@ public class AdvancedAxe extends AbstractTool {
     public String getItemStackDisplayName(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool.axe.name").getUnformattedText();
+            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool.shovel.name").getUnformattedText();
         }
-        return ChatFormatting.WHITE + new TextComponentTranslation("tool.axe.name").getFormattedText();
+        return ChatFormatting.WHITE + new TextComponentTranslation("tool.shovel.name").getFormattedText();
     }
 
     @Override
     public int getRepairCost(ItemStack stack) {
-        return 3;
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if (isBroken(stack)) {
-            return super.getDestroySpeed(stack, state);
-        }
-        Material material = state.getMaterial();
-        return material != Material.WOOD && material != Material.PLANTS && material != Material.VINE ? super.getDestroySpeed(stack, state) : getEfficiency(stack);
+        return 1;
     }
 }

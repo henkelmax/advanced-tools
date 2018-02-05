@@ -197,7 +197,11 @@ public abstract class AbstractTool extends ItemTool {
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
-        return getHarvestLevel(stack);
+        if( getToolClasses(stack).contains(toolClass)){
+            return getHarvestLevel(stack);
+        }else{
+            return -1;
+        }
     }
 
     public boolean isBroken(ItemStack stack) {

@@ -6,6 +6,7 @@ material.wood.name=Wood
 
 tool.pickaxe.name=Pickaxe
 tool.axe.name=Axe
+tool.shovel.name=Shovel
 
 tooltip.material=Material: %s
 tooltip.durability_left=Durability left: %s

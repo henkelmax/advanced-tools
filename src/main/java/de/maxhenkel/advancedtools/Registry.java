@@ -62,6 +62,7 @@ public class Registry {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         registerItem(event.getRegistry(), ModItems.PICKAXE);
         registerItem(event.getRegistry(), ModItems.AXE);
+        registerItem(event.getRegistry(), ModItems.SHOVEL);
         registerItem(event.getRegistry(), ModItems.ENCHANTMENT);
 
 
@@ -80,6 +81,12 @@ public class Registry {
         registry.remove(new ResourceLocation("golden_axe"));
         registry.remove(new ResourceLocation("iron_axe"));
         registry.remove(new ResourceLocation("diamond_axe"));
+
+        registry.remove(new ResourceLocation("wooden_shovel"));
+        registry.remove(new ResourceLocation("stone_shovel"));
+        registry.remove(new ResourceLocation("golden_shovel"));
+        registry.remove(new ResourceLocation("iron_shovel"));
+        registry.remove(new ResourceLocation("diamond_shovel"));
 
 
         //Pickaxe
@@ -104,7 +111,21 @@ public class Registry {
             if (material.getMatcher() instanceof OredictMatcher) {
                 OredictMatcher matcher = (OredictMatcher) material.getMatcher();
                 GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_axe"), null, axe,
-                        " MM", " SM", " S ",
+                        "MM", "SM", "S ",
+                        Character.valueOf('S'), "stickWood",
+                        Character.valueOf('M'), matcher.getOredict());
+            }
+        }
+
+        //Shovel
+        for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
+            ItemStack axe = new ItemStack(ModItems.SHOVEL);
+            StackUtils.setMaterial(axe, material);
+            OreDictionary.registerOre(material.getOredictName("shovel"), axe);
+            if (material.getMatcher() instanceof OredictMatcher) {
+                OredictMatcher matcher = (OredictMatcher) material.getMatcher();
+                GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, material.getName() +"_shovel"), null, axe,
+                        "M", "S", "S",
                         Character.valueOf('S'), "stickWood",
                         Character.valueOf('M'), matcher.getOredict());
             }
@@ -115,6 +136,7 @@ public class Registry {
     public static void registerModels(ModelRegistryEvent event) {
         addRenderItem(ModItems.PICKAXE);
         addRenderItem(ModItems.AXE);
+        addRenderItem(ModItems.SHOVEL);
         addRenderItem(ModItems.ENCHANTMENT);
     }
 

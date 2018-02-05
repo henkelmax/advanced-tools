@@ -46,9 +46,15 @@ public class JEIPlugin implements IModPlugin {
         blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_AXE));
         blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_AXE));
 
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_SHOVEL));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_SHOVEL));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_SHOVEL));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_SHOVEL));
+        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_SHOVEL));
+
 		registry.handleRecipes(EnchantmentRecipe.class, new ApplyEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANT);
 
-        AbstractTool[] tools=new AbstractTool[]{ModItems.PICKAXE, ModItems.AXE};
+        AbstractTool[] tools=new AbstractTool[]{ModItems.PICKAXE, ModItems.AXE, ModItems.SHOVEL};
 
 		List<ApplyEnchantmentRecipeWrapper> enchants = new ArrayList<ApplyEnchantmentRecipeWrapper>();
 		for(AbstractTool tool:tools){
