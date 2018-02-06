@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class AdvancedAxe extends AbstractTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WOOD);
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING);
 
     public AdvancedAxe() {
@@ -58,7 +58,7 @@ public class AdvancedAxe extends AbstractTool {
     }
 
     @Override
-    public Set<Block> getEffectiveBlocks(ItemStack stack) {
+    public Set<Material> getEffectiveMaterials(ItemStack stack) {
         return EFFECTIVE_ON;
     }
 
@@ -93,15 +93,6 @@ public class AdvancedAxe extends AbstractTool {
     @Override
     public int getRepairCost(ItemStack stack) {
         return 3;
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if (isBroken(stack)) {
-            return super.getDestroySpeed(stack, state);
-        }
-        Material material = state.getMaterial();
-        return material != Material.WOOD && material != Material.PLANTS && material != Material.VINE ? super.getDestroySpeed(stack, state) : getEfficiency(stack);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -26,7 +27,7 @@ import java.util.Set;
 
 public class AdvancedSword extends AbstractTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.WEB);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WEB, Material.GOURD);
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING, Enchantments.KNOCKBACK, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING);
 
     public AdvancedSword() {
@@ -72,7 +73,7 @@ public class AdvancedSword extends AbstractTool {
     }
 
     @Override
-    public Set<Block> getEffectiveBlocks(ItemStack stack) {
+    public Set<Material> getEffectiveMaterials(ItemStack stack) {
         return EFFECTIVE_ON;
     }
 

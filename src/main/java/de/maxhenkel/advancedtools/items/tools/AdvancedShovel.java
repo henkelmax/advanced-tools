@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,7 +24,7 @@ import java.util.Set;
 
 public class AdvancedShovel extends AbstractTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND, Blocks.GRASS_PATH, Blocks.CONCRETE_POWDER);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.CLAY, Material.CRAFTED_SNOW, Material.GRASS, Material.GROUND, Material.SAND, Material.SNOW);
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.MENDING);
 
     public AdvancedShovel() {
@@ -63,7 +65,7 @@ public class AdvancedShovel extends AbstractTool {
     }
 
     @Override
-    public Set<Block> getEffectiveBlocks(ItemStack stack) {
+    public Set<Material> getEffectiveMaterials(ItemStack stack) {
         return EFFECTIVE_ON;
     }
 
@@ -102,16 +104,27 @@ public class AdvancedShovel extends AbstractTool {
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack stack=player.getHeldItem(hand);
-        if(isBroken(stack)){
+        ItemStack stack = player.getHeldItem(hand);
+        if (isBroken(stack)) {
             return EnumActionResult.PASS;
         }
 
-        EnumActionResult result= Items.DIAMOND_SHOVEL.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        if(result.equals(EnumActionResult.SUCCESS)){
+        EnumActionResult result = Items.DIAMOND_SHOVEL.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+        if (result.equals(EnumActionResult.SUCCESS)) {
             StackUtils.incrementToolStat(stack, StackUtils.STAT_PATHS_CREATED, 1);
         }
         return result;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState blockIn) {
+        Block block = blockIn.getBlock();
+
+        if (block == Blocks.SNOW_LAYER) {
+            return true;
+        } else {
+            return block == Blocks.SNOW;
+        }
     }
 
 }

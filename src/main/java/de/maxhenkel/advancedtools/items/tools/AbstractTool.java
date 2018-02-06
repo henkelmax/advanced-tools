@@ -6,6 +6,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -18,7 +19,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -80,7 +83,7 @@ public abstract class AbstractTool extends ItemTool {
 
     public abstract float getEfficiency(ItemStack stack);
 
-    public abstract Set<Block> getEffectiveBlocks(ItemStack stack);
+    public abstract Set<Material> getEffectiveMaterials(ItemStack stack);
 
     public abstract int getHarvestLevel(ItemStack stack);
 
@@ -241,7 +244,7 @@ public abstract class AbstractTool extends ItemTool {
             if (state.getBlock().isToolEffective(type, state))
                 return getEfficiency(stack);
         }
-        return getEffectiveBlocks(stack).contains(state.getBlock()) ? getEfficiency(stack) : 1.0F;
+        return getEffectiveMaterials(stack).contains(state.getMaterial()) ? getEfficiency(stack) : 1.0F;
     }
 
     @Override
@@ -291,6 +294,15 @@ public abstract class AbstractTool extends ItemTool {
             StackUtils.incrementToolStat(stack, StackUtils.STAT_BLOCKS_MINED, 1);
         }
         return flag;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        for (String type : getToolClasses(stack)) {
+            if (state.getBlock().isToolEffective(type, state))
+                return true;
+        }
+        return super.canHarvestBlock(state, stack);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,7 @@ import java.util.Set;
 
 public class AdvancedHoe extends AbstractTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet();
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet();
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.MENDING);
 
     public AdvancedHoe() {
@@ -82,7 +83,7 @@ public class AdvancedHoe extends AbstractTool {
     }
 
     @Override
-    public Set<Block> getEffectiveBlocks(ItemStack stack) {
+    public Set<Material> getEffectiveMaterials(ItemStack stack) {
         return EFFECTIVE_ON;
     }
 

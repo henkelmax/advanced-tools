@@ -51,7 +51,7 @@ public class AdvancedToolMaterial {
         ironTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/iron_sword_head"));
         ironTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/iron_hoe_head"));
         IRON = new AdvancedToolMaterial("iron",
-                12F, 2F, 2, 256, MATCHER_IRON, ironTextures);
+                6F, 2F, 2, 256, MATCHER_IRON, ironTextures);
         materials.put("iron", IRON);
 
         Map<String, ResourceLocation> goldTextures = new HashMap<>();
@@ -61,7 +61,7 @@ public class AdvancedToolMaterial {
         goldTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/gold_sword_head"));
         goldTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/gold_hoe_head"));
         GOLD = new AdvancedToolMaterial("gold",
-                6F, 0F, 0, 32, MATCHER_GOLD, goldTextures);
+                12F, 0F, 0, 32, MATCHER_GOLD, goldTextures);
         materials.put("gold", GOLD);
 
         Map<String, ResourceLocation> stoneTextures = new HashMap<>();
