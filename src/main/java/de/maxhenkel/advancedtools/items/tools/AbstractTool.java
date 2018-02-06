@@ -27,6 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,15 +42,15 @@ public abstract class AbstractTool extends ItemTool {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         StackUtils.updateFlags(stack);
-        if(isBroken(stack)){
+        if (isBroken(stack)) {
             tooltip.add(new TextComponentTranslation("tooltip.broken").getFormattedText());
         }
 
-        AdvancedToolMaterial mat=StackUtils.getMaterial(stack);
-        if(mat!=null){
+        AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
+        if (mat != null) {
             tooltip.add(new TextComponentTranslation("tooltip.material", mat.getLocalizedName()).getFormattedText());
-            if(!flagIn.isAdvanced()){
-                tooltip.add(new TextComponentTranslation("tooltip.durability_left", getMaxDamage(stack)-stack.getItemDamage()).getFormattedText());
+            if (!flagIn.isAdvanced()) {
+                tooltip.add(new TextComponentTranslation("tooltip.durability_left", getMaxDamage(stack) - stack.getItemDamage()).getFormattedText());
             }
         }
 
@@ -65,7 +66,7 @@ public abstract class AbstractTool extends ItemTool {
         if (!stats.isEmpty()) {
             tooltip.add(new TextComponentTranslation("tooltips.stats").getFormattedText());
             for (Map.Entry<String, Integer> entry : stats.entrySet()) {
-                tooltip.add("  - " +new TextComponentTranslation("stat." +entry.getKey(), entry.getValue()).getFormattedText());
+                tooltip.add("  - " + new TextComponentTranslation("stat." + entry.getKey(), entry.getValue()).getFormattedText());
             }
         }
     }
@@ -95,25 +96,25 @@ public abstract class AbstractTool extends ItemTool {
     public String getItemStackDisplayName(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getUnformattedText();
+            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool." + getPrimaryToolType() + ".name").getUnformattedText();
         }
-        return ChatFormatting.WHITE + new TextComponentTranslation("tool." +getPrimaryToolType() +".name").getFormattedText();
+        return ChatFormatting.WHITE + new TextComponentTranslation("tool." + getPrimaryToolType() + ".name").getFormattedText();
     }
 
     public abstract int getRepairCost(ItemStack stack);
 
-    public ItemStack repair(ItemStack in, AdvancedToolMaterial material, int count){
+    public ItemStack repair(ItemStack in, AdvancedToolMaterial material, int count) {
         AdvancedToolMaterial currMat = StackUtils.getMaterial(in);
         if (currMat == null) {
             return ItemStack.EMPTY;
         }
 
-        int repairCost=getRepairCost(in);
-        if(repairCost<1){
-            repairCost=1;
+        int repairCost = getRepairCost(in);
+        if (repairCost < 1) {
+            repairCost = 1;
         }
-        if(repairCost>8){
-            repairCost=8;
+        if (repairCost > 8) {
+            repairCost = 8;
         }
 
         if (currMat.equals(material)) {
@@ -132,7 +133,7 @@ public abstract class AbstractTool extends ItemTool {
             return ItemStack.EMPTY;
         }
 
-        ItemStack newStack=in.copy();
+        ItemStack newStack = in.copy();
         newStack.setItemDamage(0);
 
         return StackUtils.setMaterial(newStack, material);
@@ -149,6 +150,25 @@ public abstract class AbstractTool extends ItemTool {
                 EnchantmentTools.setEnchantments(enchantments, newTool);
                 return newTool;
             }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public ItemStack removeEnchantment(ItemStack tool, ItemStack enchantmentRemover) {
+        ItemStack newTool = tool.copy();
+        Enchantment ench = ModItems.ENCHANTMENT_REMOVER.getEnchantment(enchantmentRemover);
+        if (ench != null) {
+            List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(tool);
+            Iterator<EnchantmentData> iterator=enchantments.iterator();
+            while(iterator.hasNext()){
+                EnchantmentData data=iterator.next();
+                if(data.enchantment.equals(ench)){
+                    iterator.remove();
+                }
+            }
+            EnchantmentTools.setEnchantments(enchantments, newTool);
+            return newTool;
+
         }
         return ItemStack.EMPTY;
     }
@@ -189,7 +209,7 @@ public abstract class AbstractTool extends ItemTool {
         return false;
     }
 
-    public boolean countBreakStats(ItemStack stack){
+    public boolean countBreakStats(ItemStack stack) {
         return true;
     }
 
@@ -198,7 +218,7 @@ public abstract class AbstractTool extends ItemTool {
         Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
         if (slot == EntityEquipmentSlot.MAINHAND) {
-            if(!isBroken(stack)){
+            if (!isBroken(stack)) {
                 multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double) getAttackDamage(stack), 0));
                 multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double) getAttackSpeed(stack), 0));
             }
@@ -209,7 +229,7 @@ public abstract class AbstractTool extends ItemTool {
 
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if(isBroken(stack)){
+        if (isBroken(stack)) {
             return 0F;//TODO fix normal speed?
         }
         for (String type : getToolClasses(stack)) {
@@ -221,9 +241,9 @@ public abstract class AbstractTool extends ItemTool {
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
-        if( getToolClasses(stack).contains(toolClass)){
+        if (getToolClasses(stack).contains(toolClass)) {
             return getHarvestLevel(stack);
-        }else{
+        } else {
             return -1;
         }
     }
@@ -251,9 +271,9 @@ public abstract class AbstractTool extends ItemTool {
     @Nullable
     @Override
     public Entity createEntity(World world, Entity location, ItemStack itemstack) {
-        if(location instanceof EntityItem){
-            EntityItem item= (EntityItem) location;
-            item.lifespan=Integer.MAX_VALUE;
+        if (location instanceof EntityItem) {
+            EntityItem item = (EntityItem) location;
+            item.lifespan = Integer.MAX_VALUE;
             item.setEntityInvulnerable(true);
         }
         return null;
@@ -261,11 +281,15 @@ public abstract class AbstractTool extends ItemTool {
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
-        boolean flag=super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
-        if(flag&&countBreakStats(stack)){
+        boolean flag = super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
+        if (flag && countBreakStats(stack)) {
             StackUtils.incrementToolStat(stack, StackUtils.STAT_BLOCKS_MINED, 1);
         }
         return flag;
     }
 
+    @Override
+    public boolean isRepairable() {
+        return false;
+    }
 }

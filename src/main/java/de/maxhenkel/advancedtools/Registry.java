@@ -69,11 +69,13 @@ public class Registry {
         registerItem(event.getRegistry(), ModItems.SWORD);
         registerItem(event.getRegistry(), ModItems.HOE);
         registerItem(event.getRegistry(), ModItems.ENCHANTMENT);
+        registerItem(event.getRegistry(), ModItems.ENCHANTMENT_REMOVER);
 
         IForgeRegistryModifiable<IRecipe> registry=(IForgeRegistryModifiable<IRecipe>)GameRegistry.findRegistry(IRecipe.class);
         registry.register(new ReciepeRepairTool().setRegistryName(new ResourceLocation(Main.MODID, "modify_tool")));
         registry.register(new ReciepeEnchantTool().setRegistryName(new ResourceLocation(Main.MODID, "enchant_tool")));
         registry.register(new ReciepeConvertBook().setRegistryName(new ResourceLocation(Main.MODID, "convert_book")));
+        registry.register(new ReciepeRemoveEnchantment().setRegistryName(new ResourceLocation(Main.MODID, "remove_enchantment")));
 
         registry.remove(new ResourceLocation("wooden_pickaxe"));
         registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("wooden_pickaxe")));
@@ -210,6 +212,7 @@ public class Registry {
         addRenderItem(ModItems.SWORD);
         addRenderItem(ModItems.HOE);
         addRenderItem(ModItems.ENCHANTMENT);
+        addRenderItem(ModItems.ENCHANTMENT_REMOVER);
     }
 
     @SubscribeEvent

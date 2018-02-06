@@ -13,8 +13,12 @@ tool.hoe.name=Hoe
 tooltip.material=Material: %s
 tooltip.durability_left=Durability left: %s
 tooltip.broken=Broken
+tooltip.enchantment_remover=Right-Click to change Enchantment
+
 tooltips.enchantments=Enchantments
 tooltips.stats=Statistics:
+
+statusbar.enchantment_remover=Enchantment: %s
 
 stat.blocks_mined=Blocks Mined: %s
 stat.mobs_hit=Mobs Hit: %s
@@ -23,6 +27,7 @@ stat.paths_created=Paths Created: %s
 
 item.enchantment.name=Enchantment Template
 item.pickaxe.name=Pickaxe
+item.enchantment_remover.name=Enchantment Remover
 
 enchantment.empty=Empty Enchantment Template
 
