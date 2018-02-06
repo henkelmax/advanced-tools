@@ -1,7 +1,6 @@
-package de.maxhenkel.advancedtools.integration.jei;
+package de.maxhenkel.advancedtools.integration.jei.category.upgrade;
 
 import com.google.common.collect.ImmutableList;
-import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;

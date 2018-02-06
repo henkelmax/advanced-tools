@@ -1,31 +1,37 @@
-package de.maxhenkel.advancedtools.integration.jei;
+package de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import de.maxhenkel.advancedtools.ModItems;
+import de.maxhenkel.advancedtools.integration.jei.category.apply_enchantment.EnchantmentRecipe;
+import de.maxhenkel.advancedtools.items.tools.EnchantmentTools;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.ItemStack;
+
 import java.util.Collections;
 import java.util.List;
 
-public class ApplyEnchantmentRecipeWrapper implements IRecipeWrapper{
+public class RemoveEnchantmentRecipeWrapper implements IRecipeWrapper{
 
-    private EnchantmentRecipe recipe;
+    private EnchantmentRemoveRecipe recipe;
 
-    public ApplyEnchantmentRecipeWrapper(EnchantmentRecipe recipe) {
+    public RemoveEnchantmentRecipeWrapper(EnchantmentRemoveRecipe recipe) {
         this.recipe = recipe;
     }
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ItemStack enchantment=new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.getEnchantment(), recipe.getEnchantment().getMaxLevel());
+        ItemStack enchantment=new ItemStack(ModItems.ENCHANTMENT_REMOVER);
+        ModItems.ENCHANTMENT_REMOVER.setEnchantment(enchantment, recipe.getEnchantment());
         ItemStack tool=new ItemStack(recipe.getAbstractTool());
         StackUtils.setMaterial(tool, recipe.getMaterial());
+        StackUtils.addEnchantment(tool, recipe.getEnchantment(), recipe.getEnchantment().getMaxLevel());
         ingredients.setInputs(ItemStack.class, ImmutableList.of(enchantment, tool));
-        ItemStack tool2=recipe.getAbstractTool().applyEnchantment(tool, enchantment);
+        ItemStack tool2=recipe.getAbstractTool().removeEnchantment(tool, enchantment);
         ingredients.setOutput(ItemStack.class, tool2);
     }
 
@@ -44,7 +50,7 @@ public class ApplyEnchantmentRecipeWrapper implements IRecipeWrapper{
         return false;
     }
 
-    public EnchantmentRecipe getRecipe() {
+    public EnchantmentRemoveRecipe getRecipe() {
         return recipe;
     }
 }

@@ -1,7 +1,7 @@
-package de.maxhenkel.advancedtools.integration.jei;
+package de.maxhenkel.advancedtools.integration.jei.category.upgrade;
 
 import de.maxhenkel.advancedtools.Main;
-import de.maxhenkel.advancedtools.ModItems;
+import de.maxhenkel.advancedtools.integration.jei.JEIPlugin;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -13,11 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class ApplyEnchantmentRecipeCategory implements IRecipeCategory<ApplyEnchantmentRecipeWrapper> {
+public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipeWrapper> {
 
 	private IGuiHelper helper;
 
-	public ApplyEnchantmentRecipeCategory(IGuiHelper helper) {
+	public UpgradeRecipeCategory(IGuiHelper helper) {
 		this.helper=helper;
 	}
 	
@@ -29,27 +29,24 @@ public class ApplyEnchantmentRecipeCategory implements IRecipeCategory<ApplyEnch
 
 	@Override
 	public String getTitle() {
-		return new TextComponentTranslation("jei.enchanting").getFormattedText();
+		return new TextComponentTranslation("jei.upgrading").getFormattedText();
 	}
 
 	@Override
 	public String getUid() {
-		return JEIPlugin.CATEGORY_ENCHANT;
+		return JEIPlugin.CATEGORY_UPGRADE;
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout layout, ApplyEnchantmentRecipeWrapper wrapper, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout layout, UpgradeRecipeWrapper wrapper, IIngredients ingredients) {
 		IGuiItemStackGroup group = layout.getItemStacks();
 		
 		group.init(0, true,  0,  0);
 		ItemStack stack=new ItemStack(wrapper.getRecipe().getAbstractTool());
-        StackUtils.setMaterial(stack, wrapper.getRecipe().getMaterial());
+        StackUtils.setMaterial(stack, wrapper.getRecipe().getMaterialOld());
 		group.set(0, stack);
 		
 		group.init(1, true, 18, 0);
-		ItemStack stack1=new ItemStack(ModItems.ENCHANTMENT);
-		ModItems.ENCHANTMENT.setEnchantment(stack1, wrapper.getRecipe().getEnchantment(), wrapper.getRecipe().getEnchantment().getMaxLevel());
-		group.set(1, stack1);
 
         group.init(2, true, 36, 0);
         group.init(3, true, 0, 18);
@@ -59,8 +56,15 @@ public class ApplyEnchantmentRecipeCategory implements IRecipeCategory<ApplyEnch
         group.init(7, true, 18, 36);
         group.init(8, true, 36, 36);
 
+        for(int i=1; i<=8&&i<=wrapper.getRecipe().getAbstractTool().getRepairCost(stack);i++){
+            group.set(i, wrapper.getRecipe().getMaterialNew().getMatcher().getAll());
+        }
+
         group.init(9, false, 94, 18);
-        group.set(9, wrapper.getRecipe().getAbstractTool().applyEnchantment(stack, stack1));
+
+		ItemStack stack1=new ItemStack(wrapper.getRecipe().getAbstractTool());
+		StackUtils.setMaterial(stack1, wrapper.getRecipe().getMaterialNew());
+		group.set(9, stack1);
 	}
 
 	@Override

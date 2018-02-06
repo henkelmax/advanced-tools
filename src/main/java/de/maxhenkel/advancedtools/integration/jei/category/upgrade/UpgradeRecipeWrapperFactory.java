@@ -1,4 +1,4 @@
-package de.maxhenkel.advancedtools.integration.jei;
+package de.maxhenkel.advancedtools.integration.jei.category.upgrade;
 
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapperFactory;

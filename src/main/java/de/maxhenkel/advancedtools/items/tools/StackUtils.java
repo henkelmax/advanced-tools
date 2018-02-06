@@ -20,7 +20,6 @@ public class StackUtils {
     public static final String STAT_PATHS_CREATED="paths_created";
 
     public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level) {
-
         stack.addEnchantment(enchantment, level);
     }
 

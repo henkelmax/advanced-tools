@@ -158,6 +158,11 @@ public abstract class AbstractTool extends ItemTool {
         ItemStack newTool = tool.copy();
         Enchantment ench = ModItems.ENCHANTMENT_REMOVER.getEnchantment(enchantmentRemover);
         if (ench != null) {
+
+            if(!getValidEnchantments(tool).contains(ench)){
+                return ItemStack.EMPTY;
+            }
+
             List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(tool);
             Iterator<EnchantmentData> iterator=enchantments.iterator();
             while(iterator.hasNext()){
