@@ -7,6 +7,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -202,6 +203,12 @@ public class Registry {
                         Character.valueOf('M'), matcher.getOredict());
             }
         }
+
+        //Enchantment remover
+        GameRegistry.addShapedRecipe(new ResourceLocation(Main.MODID, "enchantment_remover"), null, new ItemStack(ModItems.ENCHANTMENT_REMOVER),
+                "LLL", "LBL", "LLL",
+                Character.valueOf('L'), "gemLapis",
+                Character.valueOf('B'), Items.BOOK);
     }
 
     @SubscribeEvent
