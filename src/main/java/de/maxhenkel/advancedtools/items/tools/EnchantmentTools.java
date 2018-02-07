@@ -1,5 +1,6 @@
 package de.maxhenkel.advancedtools.items.tools;
 
+import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -38,5 +39,26 @@ public class EnchantmentTools {
         } else {
             stack.setTagInfo("ench", nbttaglist);
         }
+    }
+
+    public static ItemStack combineEnchantments(ItemStack enchantment1, ItemStack enchantment2){
+        EnchantmentData enchantmentData1= ModItems.ENCHANTMENT.getEnchantment(enchantment1);
+        EnchantmentData enchantmentData2= ModItems.ENCHANTMENT.getEnchantment(enchantment1);
+
+        if(!enchantmentData1.enchantment.equals(enchantmentData2.enchantment)){
+            return ItemStack.EMPTY;
+        }
+
+        if(enchantmentData1.enchantmentLevel!=enchantmentData2.enchantmentLevel){
+            return ItemStack.EMPTY;
+        }
+
+        if(enchantmentData1.enchantmentLevel>=enchantmentData1.enchantment.getMaxLevel()){
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack combined=new ItemStack(ModItems.ENCHANTMENT);
+        ModItems.ENCHANTMENT.setEnchantment(combined, enchantmentData1.enchantment, enchantmentData1.enchantmentLevel+1);
+        return combined;
     }
 }
