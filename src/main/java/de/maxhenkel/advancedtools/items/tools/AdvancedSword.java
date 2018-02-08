@@ -28,7 +28,7 @@ import java.util.Set;
 public class AdvancedSword extends AbstractTool {
 
     private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WEB, Material.GOURD);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING, Enchantments.KNOCKBACK, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING);
+    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING, Enchantments.KNOCKBACK, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING, Enchantments.LOOTING);
 
     public AdvancedSword() {
         setUnlocalizedName("sword");
