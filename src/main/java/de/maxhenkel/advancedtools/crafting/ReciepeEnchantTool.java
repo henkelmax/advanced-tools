@@ -1,30 +1,39 @@
-package de.maxhenkel.advancedtools;
+package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ReciepeRepairTool implements IRecipe {
+import javax.annotation.Nullable;
+
+public class ReciepeEnchantTool implements IRecipe {
 
     private ResourceLocation resourceLocation;
 
+    private RecipeHelper.RecipeIngredient[] ingredients;
+
+    public ReciepeEnchantTool(){
+        ingredients=new RecipeHelper.RecipeIngredient[]{
+                new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 1),
+                new RecipeHelper.RecipeIngredient(AbstractTool.class, 1)
+        };
+    }
+
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
-        return !getCraftingResult(inv).equals(ItemStack.EMPTY);
+        return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
         ItemStack tool = null;
-        List<ItemStack> otherItems = new ArrayList<>();
+        ItemStack enchantment = null;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
@@ -33,49 +42,22 @@ public class ReciepeRepairTool implements IRecipe {
                     return ItemStack.EMPTY;
                 }
                 tool = stack;
-            } else {
-                if (!StackUtils.isEmpty(stack)) {
-                    otherItems.add(stack);
+            } else if(stack.getItem() instanceof ItemEnchantment){
+                if (enchantment != null) {
+                    return ItemStack.EMPTY;
+                }
+                enchantment = stack;
+            }else{
+                if(!StackUtils.isEmpty(stack)){
+                    return ItemStack.EMPTY;
                 }
             }
         }
 
-        if (tool == null) {
+        if (tool == null||enchantment==null) {
             return ItemStack.EMPTY;
         }
-
-
-        AdvancedToolMaterial fMaterial = null;
-        int fCount = 0;
-
-        for (AdvancedToolMaterial mat : AdvancedToolMaterial.getAll()) {
-            AdvancedToolMaterial material = null;
-            int count = 0;
-            for (ItemStack stack : otherItems) {
-                if (mat.getMatcher().isMaterial(stack)) {
-                    if (material != null) {
-                        if (!material.equals(mat)) {
-                            return ItemStack.EMPTY;
-                        }
-                    }
-                    material = mat;
-                    count++;
-                } else {
-                    break;
-                }
-            }
-            if(material!=null){
-                fMaterial=material;
-                fCount=count;
-                break;
-            }
-        }
-
-        if (fMaterial == null) {
-            return ItemStack.EMPTY;
-        }
-
-        return ((AbstractTool) tool.getItem()).repair(tool, fMaterial, fCount);
+        return ((AbstractTool) tool.getItem()).applyEnchantment(tool, enchantment);
     }
 
     @Override
@@ -85,7 +67,7 @@ public class ReciepeRepairTool implements IRecipe {
 
     @Override
     public ItemStack getRecipeOutput() {
-        return ItemStack.EMPTY; //TODO maybe fix
+        return ItemStack.EMPTY;
     }
 
     @Override

@@ -1,10 +1,9 @@
 package de.maxhenkel.advancedtools;
 
+import de.maxhenkel.advancedtools.crafting.*;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import de.maxhenkel.advancedtools.items.tools.matcher.OredictMatcher;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
@@ -17,7 +16,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;

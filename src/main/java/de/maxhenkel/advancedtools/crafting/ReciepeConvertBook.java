@@ -1,5 +1,7 @@
-package de.maxhenkel.advancedtools;
+package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.ModItems;
+import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,9 +20,17 @@ public class ReciepeConvertBook implements IRecipe {
 
     private ResourceLocation resourceLocation;
 
+    private RecipeHelper.RecipeIngredient[] ingredients;
+
+    public ReciepeConvertBook(){
+        ingredients=new RecipeHelper.RecipeIngredient[]{
+                new RecipeHelper.RecipeIngredient(ItemEnchantedBook.class, 1)
+        };
+    }
+
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
-        return doCrafting(inv)!=null;
+        return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override

@@ -1,7 +1,8 @@
-package de.maxhenkel.advancedtools;
+package de.maxhenkel.advancedtools.crafting;
 
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
+import de.maxhenkel.advancedtools.items.tools.EnchantmentTools;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -11,32 +12,39 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class ReciepeEnchantTool implements IRecipe {
+public class ReciepeCombineEnchantments implements IRecipe {
 
     private ResourceLocation resourceLocation;
 
+    private RecipeHelper.RecipeIngredient[] ingredients;
+
+    public ReciepeCombineEnchantments(){
+        ingredients=new RecipeHelper.RecipeIngredient[]{
+                new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 2)
+        };
+    }
+
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
-        return !getCraftingResult(inv).equals(ItemStack.EMPTY);
+        return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-        ItemStack tool = null;
-        ItemStack enchantment = null;
+        ItemStack enchantment1 = null;
+        ItemStack enchantment2 = null;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (stack.getItem() instanceof AbstractTool) {
-                if (tool != null) {
+            if (stack.getItem() instanceof ItemEnchantment) {
+                if (enchantment1 != null && enchantment2 != null) {
                     return ItemStack.EMPTY;
                 }
-                tool = stack;
-            } else if(stack.getItem() instanceof ItemEnchantment){
-                if (enchantment != null) {
-                    return ItemStack.EMPTY;
+                if(enchantment1==null){
+                    enchantment1 = stack;
+                }else{
+                    enchantment2 = stack;
                 }
-                enchantment = stack;
             }else{
                 if(!StackUtils.isEmpty(stack)){
                     return ItemStack.EMPTY;
@@ -44,10 +52,10 @@ public class ReciepeEnchantTool implements IRecipe {
             }
         }
 
-        if (tool == null||enchantment==null) {
+        if (enchantment2 == null||enchantment1==null) {
             return ItemStack.EMPTY;
         }
-        return ((AbstractTool) tool.getItem()).applyEnchantment(tool, enchantment);
+        return EnchantmentTools.combineEnchantments(enchantment1, enchantment2);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package de.maxhenkel.advancedtools;
+package de.maxhenkel.advancedtools.crafting;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
