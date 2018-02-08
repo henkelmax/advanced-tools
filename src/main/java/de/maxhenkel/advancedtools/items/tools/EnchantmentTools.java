@@ -43,7 +43,7 @@ public class EnchantmentTools {
 
     public static ItemStack combineEnchantments(ItemStack enchantment1, ItemStack enchantment2){
         EnchantmentData enchantmentData1= ModItems.ENCHANTMENT.getEnchantment(enchantment1);
-        EnchantmentData enchantmentData2= ModItems.ENCHANTMENT.getEnchantment(enchantment1);
+        EnchantmentData enchantmentData2= ModItems.ENCHANTMENT.getEnchantment(enchantment2);
 
         if(!enchantmentData1.enchantment.equals(enchantmentData2.enchantment)){
             return ItemStack.EMPTY;
