@@ -76,6 +76,7 @@ public class Registry {
         registry.register(new ReciepeConvertBook().setRegistryName(new ResourceLocation(Main.MODID, "convert_book")));
         registry.register(new ReciepeRemoveEnchantment().setRegistryName(new ResourceLocation(Main.MODID, "remove_enchantment")));
         registry.register(new ReciepeCombineEnchantments().setRegistryName(new ResourceLocation(Main.MODID, "combine_enchantments")));
+        registry.register(new ReciepeConvertEnchantment().setRegistryName(new ResourceLocation(Main.MODID, "convert_enchantment")));
 
         registry.remove(new ResourceLocation("wooden_pickaxe"));
         registry.register(new ReciepeVoid().setRegistryName(new ResourceLocation("wooden_pickaxe")));

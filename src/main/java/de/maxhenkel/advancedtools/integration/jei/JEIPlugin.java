@@ -12,6 +12,8 @@ import de.maxhenkel.advancedtools.integration.jei.category.convert_book.ConvertB
 import de.maxhenkel.advancedtools.integration.jei.category.convert_book.ConvertBookRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.convert_book.ConvertBookRecipeWrapper;
 import de.maxhenkel.advancedtools.integration.jei.category.convert_book.ConvertBookRecipeWrapperFactory;
+import de.maxhenkel.advancedtools.integration.jei.category.convert_enchantment.ConvertEnchantmentRecipeCategory;
+import de.maxhenkel.advancedtools.integration.jei.category.convert_enchantment.ConvertEnchantmentRecipeWrapperFactory;
 import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.EnchantmentRemoveRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.RemoveEnchantmentRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.RemoveEnchantmentRecipeWrapper;
@@ -50,6 +52,7 @@ public class JEIPlugin implements IModPlugin {
     public static final String CATEGORY_UPGRADE = "advancedtools.upgrade";
     public static final String CATEGORY_REMOVE_ENCHANTING = "advancedtools.remove_enchanting";
     public static final String CATEGORY_BOOK_CONVERTING = "advancedtools.book_converting";
+    public static final String CATEGORY_ENCHANTMENT_CONVERTING = "advancedtools.enchantment_converting";
     public static final String CATEGORY_ENCHANTMENT_COMBINING = "advancedtools.enchantment_combining";
 
     @Override
@@ -96,6 +99,7 @@ public class JEIPlugin implements IModPlugin {
         registry.handleRecipes(UpgradeRecipe.class, new UpgradeRecipeWrapperFactory(), JEIPlugin.CATEGORY_UPGRADE);
         registry.handleRecipes(ConvertBookRecipe.class, new ConvertBookRecipeWrapperFactory(), JEIPlugin.CATEGORY_BOOK_CONVERTING);
         registry.handleRecipes(Enchantment.class, new CombineEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
+        registry.handleRecipes(EnchantmentData.class, new ConvertEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
 
         //Enchant
         List<ApplyEnchantmentRecipeWrapper> enchants = new ArrayList<ApplyEnchantmentRecipeWrapper>();
@@ -191,6 +195,17 @@ public class JEIPlugin implements IModPlugin {
 
         registry.addRecipes(enchantments, JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
         registry.addRecipeCatalyst(new ItemStack(ModItems.ENCHANTMENT), JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
+
+        //Convert enchantment
+        List<EnchantmentData> ed = new ArrayList<EnchantmentData>();
+        Iterator<Enchantment> enchIt = Enchantment.REGISTRY.iterator();
+        while (enchIt.hasNext()) {
+            Enchantment e=enchIt.next();
+            ed.add(new EnchantmentData(e, e.getMaxLevel()));
+        }
+
+        registry.addRecipes(ed, JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
+        registry.addRecipeCatalyst(new ItemStack(Items.ENCHANTED_BOOK), JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
     }
 
     @Override
@@ -210,6 +225,7 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipeCategories(new UpgradeRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new ConvertBookRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new CombineEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new ConvertEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
 }
