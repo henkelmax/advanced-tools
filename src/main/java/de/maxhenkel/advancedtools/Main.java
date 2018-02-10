@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Main {
 	
     public static final String MODID = "advancedtools";
-    public static final String VERSION = "1.0.3";
+    public static final String VERSION = "1.0.4";
     public static final String MC_VERSION = "[1.12.2]";
 
 	@Instance

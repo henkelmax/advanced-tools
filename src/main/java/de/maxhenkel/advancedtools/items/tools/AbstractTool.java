@@ -120,6 +120,10 @@ public abstract class AbstractTool extends ItemTool {
             repairCost = 8;
         }
 
+        if(count>repairCost){
+            return ItemStack.EMPTY;
+        }
+
         if (currMat.equals(material)) {
             ItemStack newStack = in.copy();
             int maxDamage = getMaxDamage(newStack);
