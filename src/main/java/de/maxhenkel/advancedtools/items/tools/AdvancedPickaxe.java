@@ -5,13 +5,14 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ToolType;
 
 import java.util.Set;
 
@@ -21,13 +22,12 @@ public class AdvancedPickaxe extends AbstractTool {
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.MENDING);
 
     public AdvancedPickaxe() {
-        setUnlocalizedName("pickaxe");
         setRegistryName(new ResourceLocation(Main.MODID, "pickaxe"));
     }
 
     @Override
-    public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of(AdvancedToolMaterial.PICKAXE);
+    public Set<ToolType> getToolTypes(ItemStack stack) {
+        return ImmutableSet.of(ToolType.PICKAXE);
     }
 
     @Override
@@ -96,17 +96,17 @@ public class AdvancedPickaxe extends AbstractTool {
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+    public boolean canHarvestBlock(ItemStack stack, BlockState state) {
         Block block = state.getBlock();
 
         if (block == Blocks.OBSIDIAN) {
-            return this.toolMaterial.getHarvestLevel() >= 3;
+            return getTier().getHarvestLevel() >= 3;
         } else if (block != Blocks.DIAMOND_BLOCK && block != Blocks.DIAMOND_ORE) {
             if (block != Blocks.EMERALD_ORE && block != Blocks.EMERALD_BLOCK) {
                 if (block != Blocks.GOLD_BLOCK && block != Blocks.GOLD_ORE) {
                     if (block != Blocks.IRON_BLOCK && block != Blocks.IRON_ORE) {
                         if (block != Blocks.LAPIS_BLOCK && block != Blocks.LAPIS_ORE) {
-                            if (block != Blocks.REDSTONE_ORE && block != Blocks.LIT_REDSTONE_ORE) {
+                            if (block != Blocks.REDSTONE_ORE) {
                                 Material material = state.getMaterial();
 
                                 if (material == Material.ROCK) {
@@ -117,22 +117,22 @@ public class AdvancedPickaxe extends AbstractTool {
                                     return material == Material.ANVIL;
                                 }
                             } else {
-                                return this.toolMaterial.getHarvestLevel() >= 2;
+                                return getTier().getHarvestLevel() >= 2;
                             }
                         } else {
-                            return this.toolMaterial.getHarvestLevel() >= 1;
+                            return getTier().getHarvestLevel() >= 1;
                         }
                     } else {
-                        return this.toolMaterial.getHarvestLevel() >= 1;
+                        return getTier().getHarvestLevel() >= 1;
                     }
                 } else {
-                    return this.toolMaterial.getHarvestLevel() >= 2;
+                    return getTier().getHarvestLevel() >= 2;
                 }
             } else {
-                return this.toolMaterial.getHarvestLevel() >= 2;
+                return getTier().getHarvestLevel() >= 2;
             }
         } else {
-            return this.toolMaterial.getHarvestLevel() >= 2;
+            return getTier().getHarvestLevel() >= 2;
         }
     }
 

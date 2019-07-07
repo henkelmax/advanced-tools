@@ -5,36 +5,32 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 import java.util.Set;
 
 public class AdvancedShovel extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.CLAY, Material.CRAFTED_SNOW, Material.GRASS, Material.GROUND, Material.SAND, Material.SNOW);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.CLAY, Material.SNOW, Material.SNOW_BLOCK, Material.EARTH, Material.SAND, Material.SNOW);
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.MENDING);
 
     public AdvancedShovel() {
-        setUnlocalizedName("shovel");
         setRegistryName(new ResourceLocation(Main.MODID, "shovel"));
     }
 
     @Override
-    public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of(AdvancedToolMaterial.SHOVEL);
+    public Set<ToolType> getToolTypes(ItemStack stack) {
+        return ImmutableSet.of(ToolType.SHOVEL);
     }
 
     @Override
@@ -103,24 +99,24 @@ public class AdvancedShovel extends AbstractTool {
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack stack = player.getHeldItem(hand);
+    public ActionResultType onItemUse(ItemUseContext context) {
+        ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
         if (isBroken(stack)) {
-            return EnumActionResult.PASS;
+            return ActionResultType.PASS;
         }
 
-        EnumActionResult result = Items.DIAMOND_SHOVEL.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        if (result.equals(EnumActionResult.SUCCESS)) {
+        ActionResultType result = Items.DIAMOND_SHOVEL.onItemUse(context);
+        if (result.equals(ActionResultType.SUCCESS)) {
             StackUtils.incrementToolStat(stack, StackUtils.STAT_PATHS_CREATED, 1);
         }
         return result;
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState blockIn) {
+    public boolean canHarvestBlock(BlockState blockIn) {
         Block block = blockIn.getBlock();
 
-        if (block == Blocks.SNOW_LAYER) {
+        if (block == Blocks.SNOW_BLOCK) {
             return true;
         } else {
             return block == Blocks.SNOW;

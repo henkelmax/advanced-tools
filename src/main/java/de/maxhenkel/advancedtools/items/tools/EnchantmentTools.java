@@ -5,8 +5,9 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,42 +24,42 @@ public class EnchantmentTools {
     }
 
     public static void setEnchantments(List<EnchantmentData> enchantments, ItemStack stack) {
-        NBTTagList nbttaglist = new NBTTagList();
+        ListNBT nbttaglist = new ListNBT();
 
         for (EnchantmentData data : enchantments) {
-            NBTTagCompound nbttagcompound = new NBTTagCompound();
-            nbttagcompound.setShort("id", (short) Enchantment.getEnchantmentID(data.enchantment));
-            nbttagcompound.setShort("lvl", (short) data.enchantmentLevel);
-            nbttaglist.appendTag(nbttagcompound);
+            CompoundNBT nbttagcompound = new CompoundNBT();
+            nbttagcompound.putString("id", data.enchantment.getRegistryName().toString());
+            nbttagcompound.putShort("lvl", (short) data.enchantmentLevel);
+            nbttaglist.add(nbttagcompound);
         }
 
-        if (nbttaglist.hasNoTags()) {
-            if (stack.hasTagCompound()) {
-                stack.getTagCompound().removeTag("ench");
+        if (nbttaglist.isEmpty()) {
+            if (stack.hasTag()) {
+                stack.getTag().remove("Enchantments");
             }
         } else {
-            stack.setTagInfo("ench", nbttaglist);
+            stack.setTagInfo("Enchantments", nbttaglist);
         }
     }
 
-    public static ItemStack combineEnchantments(ItemStack enchantment1, ItemStack enchantment2){
-        EnchantmentData enchantmentData1= ModItems.ENCHANTMENT.getEnchantment(enchantment1);
-        EnchantmentData enchantmentData2= ModItems.ENCHANTMENT.getEnchantment(enchantment2);
+    public static ItemStack combineEnchantments(ItemStack enchantment1, ItemStack enchantment2) {
+        EnchantmentData enchantmentData1 = ModItems.ENCHANTMENT.getEnchantment(enchantment1);
+        EnchantmentData enchantmentData2 = ModItems.ENCHANTMENT.getEnchantment(enchantment2);
 
-        if(!enchantmentData1.enchantment.equals(enchantmentData2.enchantment)){
+        if (!enchantmentData1.enchantment.equals(enchantmentData2.enchantment)) {
             return ItemStack.EMPTY;
         }
 
-        if(enchantmentData1.enchantmentLevel!=enchantmentData2.enchantmentLevel){
+        if (enchantmentData1.enchantmentLevel != enchantmentData2.enchantmentLevel) {
             return ItemStack.EMPTY;
         }
 
-        if(enchantmentData1.enchantmentLevel>=enchantmentData1.enchantment.getMaxLevel()){
+        if (enchantmentData1.enchantmentLevel >= enchantmentData1.enchantment.getMaxLevel()) {
             return ItemStack.EMPTY;
         }
 
-        ItemStack combined=new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(combined, enchantmentData1.enchantment, enchantmentData1.enchantmentLevel+1);
+        ItemStack combined = new ItemStack(ModItems.ENCHANTMENT);
+        ModItems.ENCHANTMENT.setEnchantment(combined, enchantmentData1.enchantment, enchantmentData1.enchantmentLevel + 1);
         return combined;
     }
 }

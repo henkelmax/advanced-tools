@@ -4,24 +4,15 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.common.ToolType;
 
 import java.util.Set;
 
@@ -31,18 +22,17 @@ public class AdvancedSword extends AbstractTool {
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING, Enchantments.KNOCKBACK, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING, Enchantments.LOOTING);
 
     public AdvancedSword() {
-        setUnlocalizedName("sword");
         setRegistryName(new ResourceLocation(Main.MODID, "sword"));
+    }
+
+    @Override
+    public Set<ToolType> getToolTypes(ItemStack stack) {
+        return ImmutableSet.of(ToolType.get("sword"));
     }
 
     @Override
     public boolean countBreakStats(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of(AdvancedToolMaterial.SWORD);
     }
 
     @Override
@@ -111,13 +101,14 @@ public class AdvancedSword extends AbstractTool {
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState blockIn) {
-        return blockIn.getBlock() == Blocks.WEB;
+    public boolean canHarvestBlock(BlockState blockIn) {
+        return blockIn.getBlock() == Blocks.COBWEB;
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        stack.damageItem(1, attacker);
+    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.damageItem(1, attacker, livingEntity -> {
+        });
         StackUtils.incrementToolStat(stack, StackUtils.STAT_MOBS_HIT, 1);
         return true;
     }

@@ -4,9 +4,14 @@ import com.google.common.collect.ImmutableList;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.tools.matcher.MaterialMatcher;
-import de.maxhenkel.advancedtools.items.tools.matcher.OredictMatcher;
+import de.maxhenkel.advancedtools.items.tools.matcher.SimpleMatcher;
+import de.maxhenkel.advancedtools.items.tools.matcher.TagMatcher;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+
 import java.util.*;
 
 public class AdvancedToolMaterial {
@@ -21,11 +26,11 @@ public class AdvancedToolMaterial {
 
     private static Map<String, AdvancedToolMaterial> materials = new HashMap<>();
 
-    public static final MaterialMatcher MATCHER_DIAMOND = new OredictMatcher("gemDiamond");
-    public static final MaterialMatcher MATCHER_IRON = new OredictMatcher("ingotIron");
-    public static final MaterialMatcher MATCHER_GOLD = new OredictMatcher("ingotGold");
-    public static final MaterialMatcher MATCHER_WOOD = new OredictMatcher("plankWood");
-    public static final MaterialMatcher MATCHER_STONE = new OredictMatcher("cobblestone");
+    public static final MaterialMatcher MATCHER_DIAMOND = new SimpleMatcher(Items.DIAMOND);
+    public static final MaterialMatcher MATCHER_IRON = new SimpleMatcher(Items.IRON_INGOT);
+    public static final MaterialMatcher MATCHER_GOLD = new SimpleMatcher(Items.GOLD_INGOT);
+    public static final MaterialMatcher MATCHER_WOOD = new TagMatcher(new ResourceLocation("minecraft", "planks"));
+    public static final MaterialMatcher MATCHER_STONE = new SimpleMatcher(Blocks.COBBLESTONE);
 
     public static final AdvancedToolMaterial DIAMOND;
     public static final AdvancedToolMaterial IRON;
@@ -131,8 +136,8 @@ public class AdvancedToolMaterial {
         return tool + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
-    public String getLocalizedName() {
-        return new TextComponentTranslation("material." + name + ".name").getUnformattedText();
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("material." + name);
     }
 
     public Map<String, ResourceLocation> getPartTextures() {

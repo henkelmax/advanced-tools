@@ -49,6 +49,6 @@ public class AdvancedToolModel implements IAdvancedModel {
 
     @Override
     public boolean isValid(ResourceLocation modelLocation) {
-        return modelLocation.getResourcePath().equals(tool.getPrimaryToolType()) && modelLocation.getResourceDomain().equals(Main.MODID);
+        return modelLocation.getPath().equals(tool.getPrimaryToolType()) && modelLocation.getNamespace().equals(Main.MODID);
     }
 }

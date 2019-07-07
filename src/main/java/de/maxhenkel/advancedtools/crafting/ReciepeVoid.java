@@ -1,23 +1,25 @@
 package de.maxhenkel.advancedtools.crafting;
 
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import javax.annotation.Nullable;
 
-public class ReciepeVoid implements IRecipe {
+public class ReciepeVoid extends SpecialRecipe {
 
-    private ResourceLocation resourceLocation;
+    public ReciepeVoid(ResourceLocation idIn) {
+        super(idIn);
+    }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         return false;
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         return ItemStack.EMPTY;
     }
 
@@ -32,19 +34,9 @@ public class ReciepeVoid implements IRecipe {
     }
 
     @Override
-    public IRecipe setRegistryName(ResourceLocation name) {
-        this.resourceLocation = name;
-        return this;
+    public IRecipeSerializer<?> getSerializer() {
+        return null;
     }
 
-    @Nullable
-    @Override
-    public ResourceLocation getRegistryName() {
-        return resourceLocation;
-    }
 
-    @Override
-    public Class<IRecipe> getRegistryType() {
-        return IRecipe.class;
-    }
 }

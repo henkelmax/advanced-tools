@@ -5,15 +5,15 @@ import de.maxhenkel.advancedtools.ModCreativeTabs;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -22,27 +22,26 @@ import java.util.List;
 public class ItemEnchantmentRemover extends Item {
 
     public ItemEnchantmentRemover() {
-        setUnlocalizedName("enchantment_remover");
+        super(new Item.Properties().group(ModCreativeTabs.TAB_ADVANCED_TOOLS));
         setRegistryName(new ResourceLocation(Main.MODID, "enchantment_remover"));
-        setCreativeTab(ModCreativeTabs.TAB_ADVANCED_TOOLS);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TextComponentTranslation("tooltip.enchantment_remover").getFormattedText());
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip.enchantment_remover"));
         Enchantment data = getEnchantment(stack);
         if (data != null) {
-            tooltip.add(new TextComponentTranslation(data.getName()).getFormattedText());
+            tooltip.add(new TranslationTextComponent(data.getName()));
         }
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         Enchantment enchantment = getEnchantment(stack);
 
-        Iterator<Enchantment> iterator = Enchantment.REGISTRY.iterator();
+        Iterator<Enchantment> iterator = ForgeRegistries.ENCHANTMENTS.iterator();
         while (iterator.hasNext()) {
             Enchantment e = iterator.next();
 
@@ -53,35 +52,35 @@ public class ItemEnchantmentRemover extends Item {
 
             if (e.equals(enchantment)) {
                 if (!iterator.hasNext()) {
-                    iterator = Enchantment.REGISTRY.iterator();
+                    iterator = ForgeRegistries.ENCHANTMENTS.iterator();
                     if (!iterator.hasNext()) {
                         break;
                     }
                 }
-                e=iterator.next();
+                e = iterator.next();
 
                 applyEnchantment(playerIn, stack, e);
                 break;
             }
         }
 
-        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+        return ActionResult.newResult(ActionResultType.SUCCESS, stack);
     }
 
-    private void applyEnchantment(EntityPlayer player, ItemStack stack, Enchantment e) {
+    private void applyEnchantment(PlayerEntity player, ItemStack stack, Enchantment e) {
         setEnchantment(stack, e);
-        player.sendStatusMessage(new TextComponentTranslation("statusbar.enchantment_remover", new TextComponentTranslation(e.getName()).getUnformattedText()), true);
+        player.sendStatusMessage(new TranslationTextComponent("statusbar.enchantment_remover", new TranslationTextComponent(e.getName())), true);
     }
 
     public void setEnchantment(ItemStack stack, Enchantment enchantment) {
-        NBTTagCompound compound = StackUtils.getStackCompound(stack);
-        compound.setString("enchantment", enchantment.getRegistryName().toString());
+        CompoundNBT compound = StackUtils.getStackCompound(stack);
+        compound.putString("enchantment", enchantment.getRegistryName().toString());
     }
 
     public Enchantment getEnchantment(ItemStack stack) {
-        NBTTagCompound compound = StackUtils.getStackCompound(stack);
+        CompoundNBT compound = StackUtils.getStackCompound(stack);
 
-        if (!compound.hasKey("enchantment")) {
+        if (!compound.contains("enchantment")) {
             return null;
         }
 
@@ -96,7 +95,7 @@ public class ItemEnchantmentRemover extends Item {
         if (split.length < 2) {
             return null;
         }
-        return Enchantment.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+        return ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(split[0], split[1]));
     }
 
 }

@@ -1,42 +1,42 @@
 package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
-import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantmentRemover;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.EnchantmentTools;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
-public class ReciepeRemoveEnchantment implements IRecipe {
+public class ReciepeRemoveEnchantment extends SpecialRecipe {
 
     private ResourceLocation resourceLocation;
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeRemoveEnchantment(){
-        ingredients=new RecipeHelper.RecipeIngredient[]{
+    public ReciepeRemoveEnchantment(ResourceLocation id) {
+        super(id);
+        ingredients = new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(ItemEnchantmentRemover.class, 1),
                 new RecipeHelper.RecipeIngredient(AbstractTool.class, 1)
         };
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         RecipeResult res = doCrafting(inv);
 
         if (res == null) {
@@ -46,7 +46,7 @@ public class ReciepeRemoveEnchantment implements IRecipe {
         return res.result;
     }
 
-    private RecipeResult doCrafting(InventoryCrafting inv) {
+    private RecipeResult doCrafting(CraftingInventory inv) {
         ItemStack tool = null;
         ItemStack enchantment = null;
         int toolSlot = -1;
@@ -108,12 +108,17 @@ public class ReciepeRemoveEnchantment implements IRecipe {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         RecipeResult res = doCrafting(inv);
         if (res == null) {
             return NonNullList.create();
         }
         return res.remaining;
+    }
+
+    @Override
+    public IRecipeSerializer<?> getSerializer() {
+        return Main.CRAFTING_EREMOVE_ENCHANTMENT;
     }
 
     @Override
@@ -126,22 +131,6 @@ public class ReciepeRemoveEnchantment implements IRecipe {
         return ItemStack.EMPTY;
     }
 
-    @Override
-    public IRecipe setRegistryName(ResourceLocation name) {
-        this.resourceLocation = name;
-        return this;
-    }
-
-    @Nullable
-    @Override
-    public ResourceLocation getRegistryName() {
-        return resourceLocation;
-    }
-
-    @Override
-    public Class<IRecipe> getRegistryType() {
-        return IRecipe.class;
-    }
 
     class RecipeResult {
         private NonNullList<ItemStack> remaining;

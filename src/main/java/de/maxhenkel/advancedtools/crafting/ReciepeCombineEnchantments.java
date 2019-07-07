@@ -1,36 +1,34 @@
 package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
-import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.EnchantmentTools;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
-public class ReciepeCombineEnchantments implements IRecipe {
-
-    private ResourceLocation resourceLocation;
+public class ReciepeCombineEnchantments extends SpecialRecipe {
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeCombineEnchantments(){
-        ingredients=new RecipeHelper.RecipeIngredient[]{
+    public ReciepeCombineEnchantments(ResourceLocation id) {
+        super(id);
+        ingredients = new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 2)
         };
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         ItemStack enchantment1 = null;
         ItemStack enchantment2 = null;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
@@ -40,19 +38,19 @@ public class ReciepeCombineEnchantments implements IRecipe {
                 if (enchantment1 != null && enchantment2 != null) {
                     return ItemStack.EMPTY;
                 }
-                if(enchantment1==null){
+                if (enchantment1 == null) {
                     enchantment1 = stack;
-                }else{
+                } else {
                     enchantment2 = stack;
                 }
-            }else{
-                if(!StackUtils.isEmpty(stack)){
+            } else {
+                if (!StackUtils.isEmpty(stack)) {
                     return ItemStack.EMPTY;
                 }
             }
         }
 
-        if (enchantment2 == null||enchantment1==null) {
+        if (enchantment2 == null || enchantment1 == null) {
             return ItemStack.EMPTY;
         }
         return EnchantmentTools.combineEnchantments(enchantment1, enchantment2);
@@ -69,19 +67,8 @@ public class ReciepeCombineEnchantments implements IRecipe {
     }
 
     @Override
-    public IRecipe setRegistryName(ResourceLocation name) {
-        this.resourceLocation = name;
-        return this;
+    public IRecipeSerializer<?> getSerializer() {
+        return Main.CRAFTING_COMBINE_ENCHANTMENTS;
     }
 
-    @Nullable
-    @Override
-    public ResourceLocation getRegistryName() {
-        return resourceLocation;
-    }
-
-    @Override
-    public Class<IRecipe> getRegistryType() {
-        return IRecipe.class;
-    }
 }

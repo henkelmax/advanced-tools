@@ -1,56 +1,49 @@
 package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemBook;
-import net.minecraft.item.ItemEnchantedBook;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.BookItem;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-public class ReciepeConvertEnchantment implements IRecipe {
-
-    private ResourceLocation resourceLocation;
+public class ReciepeConvertEnchantment extends SpecialRecipe {
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeConvertEnchantment() {
+    public ReciepeConvertEnchantment(ResourceLocation id) {
+        super(id);
         ingredients = new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 1),
-                new RecipeHelper.RecipeIngredient(ItemBook.class, 1)
+                new RecipeHelper.RecipeIngredient(BookItem.class, 1)
         };
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         return doCrafting(inv);
     }
 
-    public ItemStack doCrafting(InventoryCrafting inv) {
+    public ItemStack doCrafting(CraftingInventory inv) {
         ItemStack book = null;
         ItemStack enchantment = null;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (stack.getItem() instanceof ItemBook) {
+            if (stack.getItem() instanceof BookItem) {
                 if (book != null) {
                     return null;
                 }
@@ -76,7 +69,7 @@ public class ReciepeConvertEnchantment implements IRecipe {
         if(data==null){
             return ItemStack.EMPTY;
         }
-        ItemEnchantedBook.addEnchantment(retStack, data);
+        EnchantedBookItem.addEnchantment(retStack, data);
         return retStack;
     }
 
@@ -91,19 +84,8 @@ public class ReciepeConvertEnchantment implements IRecipe {
     }
 
     @Override
-    public IRecipe setRegistryName(ResourceLocation name) {
-        this.resourceLocation = name;
-        return this;
+    public IRecipeSerializer<?> getSerializer() {
+        return Main.CRAFTING_CONVERT_ENCHANTMENT;
     }
 
-    @Nullable
-    @Override
-    public ResourceLocation getRegistryName() {
-        return resourceLocation;
-    }
-
-    @Override
-    public Class<IRecipe> getRegistryType() {
-        return IRecipe.class;
-    }
 }

@@ -4,20 +4,16 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 import java.util.Set;
 
@@ -27,7 +23,6 @@ public class AdvancedHoe extends AbstractTool {
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.MENDING);
 
     public AdvancedHoe() {
-        setUnlocalizedName("hoe");
         setRegistryName(new ResourceLocation(Main.MODID, "hoe"));
     }
 
@@ -37,29 +32,29 @@ public class AdvancedHoe extends AbstractTool {
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack stack=player.getHeldItem(hand);
-        if(isBroken(stack)){
-            return EnumActionResult.PASS;
+    public ActionResultType onItemUse(ItemUseContext context) {
+        ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
+        if (isBroken(stack)) {
+            return ActionResultType.PASS;
         }
 
-        EnumActionResult result=Items.DIAMOND_HOE.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        if(result.equals(EnumActionResult.SUCCESS)){
+        ActionResultType result = Items.DIAMOND_HOE.onItemUse(context);
+        if (result.equals(ActionResultType.SUCCESS)) {
             StackUtils.incrementToolStat(stack, StackUtils.STAT_HOED, 1);
         }
         return result;
     }
 
     @Override
-    public Set<String> getToolClasses(ItemStack stack) {
-        return ImmutableSet.of(AdvancedToolMaterial.HOE);
+    public Set<ToolType> getToolTypes(ItemStack stack) {
+        return ImmutableSet.of(ToolType.get("hoe"));
     }
 
     @Override
     public float getAttackDamage(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return mat.getAttackModifier()+1;
+            return mat.getAttackModifier() + 1;
         }
         return 0F;
     }
@@ -121,9 +116,9 @@ public class AdvancedHoe extends AbstractTool {
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        stack.damageItem(1, attacker);
+    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.damageItem(1, attacker, livingEntity -> {
+        });
         return true;
     }
-
 }

@@ -8,64 +8,68 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemEnchantment extends Item {
 
     public ItemEnchantment() {
-        setUnlocalizedName("enchantment");
+        super(new Item.Properties().group(ModCreativeTabs.TAB_ADVANCED_TOOLS));
         setRegistryName(new ResourceLocation(Main.MODID, "enchantment"));
-        setCreativeTab(ModCreativeTabs.TAB_ADVANCED_TOOLS);
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack stack) {
+    public ITextComponent getDisplayName(ItemStack stack) {
         EnchantmentData data=getEnchantment(stack);
         if(data==null){
-            return new TextComponentTranslation("enchantment.empty").getUnformattedText();
+            return new TranslationTextComponent("enchantment.empty");
         }
-        return super.getItemStackDisplayName(stack);
+        return super.getDisplayName(stack);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-       EnchantmentData data=getEnchantment(stack);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        EnchantmentData data=getEnchantment(stack);
         if(data!=null){
-            tooltip.add(data.enchantment.getTranslatedName(data.enchantmentLevel));
+            tooltip.add(data.enchantment.getDisplayName(data.enchantmentLevel));
         }
+
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     public void setEnchantment(ItemStack stack, Enchantment enchantment, int level) {
-        NBTTagCompound compound = StackUtils.getStackCompound(stack);
+        CompoundNBT compound = StackUtils.getStackCompound(stack);
 
-        NBTTagCompound ench = new NBTTagCompound();
-        ench.setInteger("level", level);
-        ench.setString("name", enchantment.getRegistryName().toString());
+        CompoundNBT ench = new CompoundNBT();
+        ench.putInt("level", level);
+        ench.putString("name", enchantment.getRegistryName().toString());
 
-        compound.setTag("enchantment", ench);
+        compound.put("enchantment", ench);
     }
 
     public EnchantmentData getEnchantment(ItemStack stack) {
-        NBTTagCompound compound = StackUtils.getStackCompound(stack);
+        CompoundNBT compound = StackUtils.getStackCompound(stack);
 
-        if (!compound.hasKey("enchantment")) {
+        if (!compound.contains("enchantment")) {
             return null;
         }
 
-        NBTTagCompound ench = compound.getCompoundTag("enchantment");
+        CompoundNBT ench = compound.getCompound("enchantment");
 
-        if (!ench.hasKey("name")) {
+        if (!ench.contains("name")) {
             return null;
         }
 
         int level = 0;
-        if (ench.hasKey("level")) {
-            level = ench.getInteger("level");
+        if (ench.contains("level")) {
+            level = ench.getInt("level");
         }
 
         String name = ench.getString("name");
@@ -79,7 +83,7 @@ public class ItemEnchantment extends Item {
         if (split.length < 2) {
             return null;
         }
-        return new EnchantmentData(Enchantment.REGISTRY.getObject(new ResourceLocation(split[0], split[1])), level);
+        return new EnchantmentData(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(split[0], split[1])), level);
     }
 
 }

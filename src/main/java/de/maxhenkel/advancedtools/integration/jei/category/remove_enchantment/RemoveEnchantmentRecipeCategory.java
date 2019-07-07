@@ -1,57 +1,81 @@
 package de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment;
 
+import com.google.common.collect.ImmutableList;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.integration.jei.JEIPlugin;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<RemoveEnchantmentRecipeWrapper> {
+public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<EnchantmentRemoveRecipe> {
 
-	private IGuiHelper helper;
+    private IGuiHelper helper;
 
-	public RemoveEnchantmentRecipeCategory(IGuiHelper helper) {
-		this.helper=helper;
-	}
-	
-	@Override
-	public IDrawable getBackground() {
-		return helper.createDrawable(new ResourceLocation(Main.MODID,
-				"textures/gui/jei_crafting.png"), 0, 0, 116, 54);
-	}
+    public RemoveEnchantmentRecipeCategory(IGuiHelper helper) {
+        this.helper = helper;
+    }
 
-	@Override
-	public String getTitle() {
-		return new TextComponentTranslation("jei.remove_enchanting").getFormattedText();
-	}
+    @Override
+    public IDrawable getBackground() {
+        return helper.createDrawable(new ResourceLocation(Main.MODID,
+                "textures/gui/jei_crafting.png"), 0, 0, 116, 54);
+    }
 
-	@Override
-	public String getUid() {
-		return JEIPlugin.CATEGORY_REMOVE_ENCHANTING;
-	}
+    @Override
+    public IDrawable getIcon() {
+        return helper.createDrawableIngredient(new ItemStack(ModItems.ENCHANTMENT));
+    }
 
-	@Override
-	public void setRecipe(IRecipeLayout layout, RemoveEnchantmentRecipeWrapper wrapper, IIngredients ingredients) {
-		IGuiItemStackGroup group = layout.getItemStacks();
-		
-		group.init(0, true,  0,  0);
-		ItemStack stack=new ItemStack(wrapper.getRecipe().getAbstractTool());
-        StackUtils.setMaterial(stack, wrapper.getRecipe().getMaterial());
-        StackUtils.addEnchantment(stack, wrapper.getRecipe().getEnchantment(), wrapper.getRecipe().getEnchantment().getMaxLevel());
-		group.set(0, stack);
-		
-		group.init(1, true, 18, 0);
-		ItemStack stack1=new ItemStack(ModItems.ENCHANTMENT_REMOVER);
-		ModItems.ENCHANTMENT_REMOVER.setEnchantment(stack1, wrapper.getRecipe().getEnchantment());
-		group.set(1, stack1);
+    @Override
+    public void setIngredients(EnchantmentRemoveRecipe recipe, IIngredients ingredients) {
+        ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
+        ModItems.ENCHANTMENT_REMOVER.setEnchantment(enchantment, recipe.getEnchantment());
+        ItemStack tool = new ItemStack(recipe.getAbstractTool());
+        StackUtils.setMaterial(tool, recipe.getMaterial());
+        StackUtils.addEnchantment(tool, recipe.getEnchantment(), recipe.getEnchantment().getMaxLevel());
+        ingredients.setInputs(VanillaTypes.ITEM, ImmutableList.of(enchantment, tool));
+        ItemStack tool2 = recipe.getAbstractTool().removeEnchantment(tool, enchantment);
+        ingredients.setOutput(VanillaTypes.ITEM, tool2);
+    }
+
+    @Override
+    public String getTitle() {
+        return new TranslationTextComponent("jei.remove_enchanting").getFormattedText();
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+        return JEIPlugin.CATEGORY_REMOVE_ENCHANTING;
+    }
+
+    @Override
+    public Class<? extends EnchantmentRemoveRecipe> getRecipeClass() {
+        return EnchantmentRemoveRecipe.class;
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout layout, EnchantmentRemoveRecipe wrapper, IIngredients ingredients) {
+        IGuiItemStackGroup group = layout.getItemStacks();
+
+        group.init(0, true, 0, 0);
+        ItemStack stack = new ItemStack(wrapper.getAbstractTool());
+        StackUtils.setMaterial(stack, wrapper.getMaterial());
+        StackUtils.addEnchantment(stack, wrapper.getEnchantment(), wrapper.getEnchantment().getMaxLevel());
+        group.set(0, stack);
+
+        group.init(1, true, 18, 0);
+        ItemStack stack1 = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
+        ModItems.ENCHANTMENT_REMOVER.setEnchantment(stack1, wrapper.getEnchantment());
+        group.set(1, stack1);
 
         group.init(2, true, 36, 0);
         group.init(3, true, 0, 18);
@@ -62,12 +86,8 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<RemoveEn
         group.init(8, true, 36, 36);
 
         group.init(9, false, 94, 18);
-        group.set(9, wrapper.getRecipe().getAbstractTool().removeEnchantment(stack, stack1));
-	}
+        group.set(9, wrapper.getAbstractTool().removeEnchantment(stack, stack1));
+    }
 
-	@Override
-	public String getModName() {
-		return Main.MODID;
-	}
 
 }

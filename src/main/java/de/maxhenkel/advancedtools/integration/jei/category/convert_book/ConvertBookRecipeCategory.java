@@ -3,62 +3,74 @@ package de.maxhenkel.advancedtools.integration.jei.category.convert_book;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.integration.jei.JEIPlugin;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeCategory;
-import net.minecraft.enchantment.Enchantment;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemEnchantedBook;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Iterator;
 
-public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRecipeWrapper> {
+public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRecipe> {
 
-	private IGuiHelper helper;
+    private IGuiHelper helper;
 
-	public ConvertBookRecipeCategory(IGuiHelper helper) {
-		this.helper=helper;
-	}
-	
-	@Override
-	public IDrawable getBackground() {
-		return helper.createDrawable(new ResourceLocation(Main.MODID,
-				"textures/gui/jei_converting.png"), 0, 0, 186, 54);
-	}
+    public ConvertBookRecipeCategory(IGuiHelper helper) {
+        this.helper = helper;
+    }
 
-	@Override
-	public String getTitle() {
-		return new TextComponentTranslation("jei.converting").getFormattedText();
-	}
+    @Override
+    public IDrawable getBackground() {
+        return helper.createDrawable(new ResourceLocation(Main.MODID,
+                "textures/gui/jei_converting.png"), 0, 0, 186, 54);
+    }
 
-	@Override
-	public String getUid() {
-		return JEIPlugin.CATEGORY_BOOK_CONVERTING;
-	}
+    @Override
+    public IDrawable getIcon() {
+        return helper.createDrawableIngredient(new ItemStack(Items.ENCHANTED_BOOK));
+    }
 
-	@Override
-	public void setRecipe(IRecipeLayout layout, ConvertBookRecipeWrapper wrapper, IIngredients ingredients) {
-		IGuiItemStackGroup group = layout.getItemStacks();
-		
-		group.init(0, true,  0,  0);
-		group.init(1, true, 18, 0);
+    @Override
+    public void setIngredients(ConvertBookRecipe convertBookRecipeWrapper, IIngredients iIngredients) {
+
+    }
+
+    @Override
+    public String getTitle() {
+        return new TranslationTextComponent("jei.converting").getFormattedText();
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+        return JEIPlugin.CATEGORY_BOOK_CONVERTING;
+    }
+
+    @Override
+    public Class<? extends ConvertBookRecipe> getRecipeClass() {
+        return ConvertBookRecipe.class;
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout layout, ConvertBookRecipe wrapper, IIngredients ingredients) {
+        IGuiItemStackGroup group = layout.getItemStacks();
+
+        group.init(0, true, 0, 0);
+        group.init(1, true, 18, 0);
         group.init(2, true, 36, 0);
         group.init(3, true, 0, 18);
         group.init(4, true, 18, 18);
-		ItemStack stack=new ItemStack(Items.ENCHANTED_BOOK);
-		for(EnchantmentData data:wrapper.getRecipe().getEnchantments()){
-            ItemEnchantedBook.addEnchantment(stack, data);
+        ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
+        for (EnchantmentData data : wrapper.getEnchantments()) {
+            EnchantedBookItem.addEnchantment(stack, data);
         }
-		group.set(4, stack);
+        group.set(4, stack);
 
         group.init(5, true, 36, 18);
         group.init(6, true, 0, 36);
@@ -68,7 +80,7 @@ public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRec
         group.init(9, false, 94, 18);
         group.set(9, new ItemStack(Items.BOOK));
 
-        group.init(10, true,  132,  0);
+        group.init(10, true, 132, 0);
         group.init(11, true, 150, 0);
         group.init(12, true, 168, 0);
         group.init(13, true, 132, 18);
@@ -78,19 +90,15 @@ public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRec
         group.init(17, true, 150, 36);
         group.init(18, true, 168, 36);
 
-        Iterator<EnchantmentData> iterator=wrapper.getRecipe().getEnchantments().iterator();
+        Iterator<EnchantmentData> iterator = wrapper.getEnchantments().iterator();
 
-        for(int i=10; i<=18&&iterator.hasNext(); i++){
-            EnchantmentData data=iterator.next();
-            ItemStack ench=new ItemStack(ModItems.ENCHANTMENT);
+        for (int i = 10; i <= 18 && iterator.hasNext(); i++) {
+            EnchantmentData data = iterator.next();
+            ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
             ModItems.ENCHANTMENT.setEnchantment(ench, data.enchantment, data.enchantmentLevel);
             group.set(i, ench);
         }
-	}
+    }
 
-	@Override
-	public String getModName() {
-		return Main.MODID;
-	}
 
 }

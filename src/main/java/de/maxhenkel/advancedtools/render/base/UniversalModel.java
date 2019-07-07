@@ -4,24 +4,25 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.texture.ISprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.*;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-import javax.annotation.Nonnull;
+
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 public class UniversalModel implements ICustomModelLoader {
 
@@ -34,35 +35,36 @@ public class UniversalModel implements ICustomModelLoader {
     }
 
     @Override
+    public void onResourceManagerReload(IResourceManager resourceManager) {
+
+    }
+
+    @Override
     public boolean accepts(ResourceLocation modelLocation) {
         return wrapper.isValid(modelLocation);
     }
 
     @Override
-    public IModel loadModel(ResourceLocation modelLocation) {
+    public IUnbakedModel loadModel(ResourceLocation modelLocation) throws Exception {
         return model;
     }
 
-    @Override
-    public void onResourceManagerReload(IResourceManager resourceManager) {
-
-    }
-
-    public class UniversalIModel implements IModel {
+    public class UniversalIModel implements IUnbakedModel {
         private ImmutableList<ResourceLocation> textures;
         private IAdvancedModel wrapper;
+
         public UniversalIModel(IAdvancedModel wrapper) {
-            this.wrapper=wrapper;
+            this.wrapper = wrapper;
             textures = ImmutableList.of();
         }
 
         @Override
-        public IModel retexture(ImmutableMap<String, String> textures) {
+        public IUnbakedModel retexture(ImmutableMap<String, String> textures) {
             return this;
         }
 
         @Override
-        public IModel process(ImmutableMap<String, String> customData) {
+        public IUnbakedModel process(ImmutableMap<String, String> customData) {
             return this;
         }
 
@@ -77,18 +79,20 @@ public class UniversalModel implements ICustomModelLoader {
         }
 
         @Override
-        public Collection<ResourceLocation> getTextures() {
+        public Collection<ResourceLocation> getTextures(java.util.function.Function<ResourceLocation, IUnbakedModel> modelGetter, Set<String> missingTextureErrors) {
             return wrapper.getAllTextures();
         }
 
+        @Nullable
         @Override
-        public IBakedModel bake(IModelState state, VertexFormat format, java.util.function.Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-            ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformMap = PerspectiveMapWrapper.getTransforms(state);
+        public IBakedModel bake(ModelBakery bakery, java.util.function.Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ISprite sprite, VertexFormat format) {
+            ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformMap =
+                    ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder().build();//PerspectiveMapWrapper.getTransforms();
 
             ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
 
-            IBakedModel model = (new ItemLayerModel(textures)).bake(state, format, bakedTextureGetter);
-            builder.addAll(model.getQuads(null, null, 0));
+            IBakedModel model = (new ItemLayerModel(textures)).bake(bakery, spriteGetter, sprite, format);
+            builder.addAll(model.getQuads(null, null, new Random()));
 
             return new BakedUniversalModel(this, builder.build(), format, Maps.immutableEnumMap(transformMap), Maps.<String, IBakedModel>newHashMap());
         }
@@ -108,6 +112,11 @@ public class UniversalModel implements ICustomModelLoader {
         }
 
         @Override
+        public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
+            return quads;
+        }
+
+        @Override
         public ItemOverrideList getOverrides() {
             return BakedUniversalOverrideHandler.INSTANCE;
         }
@@ -117,14 +126,13 @@ public class UniversalModel implements ICustomModelLoader {
     private static final class BakedUniversalOverrideHandler extends ItemOverrideList {
         public static final BakedUniversalOverrideHandler INSTANCE = new BakedUniversalOverrideHandler();
 
-        private BakedUniversalOverrideHandler() {
-            super(ImmutableList.<ItemOverride>of());
+        public BakedUniversalOverrideHandler(){
+
         }
 
+        @Nullable
         @Override
-        @Nonnull
-        public IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
-
+        public IBakedModel getModelWithOverrides(IBakedModel originalModel, ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
             if (!(stack.getItem() instanceof AbstractTool)) {
                 return originalModel;
             }
@@ -133,13 +141,12 @@ public class UniversalModel implements ICustomModelLoader {
 
             IModel parent = ((UniversalIModel) model.parent).inject(stack);
             Function<ResourceLocation, TextureAtlasSprite> textureGetter;
-            textureGetter = new Function<ResourceLocation, TextureAtlasSprite>() {
-                public TextureAtlasSprite apply(ResourceLocation location) {
-                    return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                }
-            };
-            IBakedModel bakedModel = parent.bake(new SimpleModelState(model.transforms), model.format,
-                    textureGetter);
+            textureGetter = location -> Minecraft.getInstance().getTextureMap().getAtlasSprite(location.toString());
+
+
+            ModelLoader modelbakery = new ModelLoader(Minecraft.getInstance().getResourceManager(), Minecraft.getInstance().getTextureMap(), Minecraft.getInstance().getProfiler());
+
+            IBakedModel bakedModel = parent.bake(modelbakery, textureGetter, new SimpleModelState(model.transforms), model.format);
             return bakedModel;
         }
     }

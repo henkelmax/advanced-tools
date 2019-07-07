@@ -3,31 +3,30 @@ package de.maxhenkel.advancedtools.items.tools;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
-import com.mojang.realmsclient.gui.ChatFormatting;
+import de.maxhenkel.advancedtools.ModCreativeTabs;
 import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -35,47 +34,48 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractTool extends ItemTool {
+public abstract class AbstractTool extends ToolItem {
 
     public AbstractTool() {
-        super(ToolMaterial.DIAMOND, null);
-        setMaxDamage(100);
+        super(0F, 0F, ItemTier.DIAMOND, null, new Item.Properties().group(ModCreativeTabs.TAB_ADVANCED_TOOLS).maxDamage(100));
     }
 
+
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         StackUtils.updateFlags(stack);
         if (isBroken(stack)) {
-            tooltip.add(new TextComponentTranslation("tooltip.broken").getFormattedText());
+            tooltip.add(new TranslationTextComponent("tooltip.broken"));
         }
 
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            tooltip.add(new TextComponentTranslation("tooltip.material", mat.getLocalizedName()).getFormattedText());
+            tooltip.add(new TranslationTextComponent("tooltip.material", mat.getDisplayName()));
             if (!flagIn.isAdvanced()) {
-                tooltip.add(new TextComponentTranslation("tooltip.durability_left", getMaxDamage(stack) - stack.getItemDamage()).getFormattedText());
+                tooltip.add(new TranslationTextComponent("tooltip.durability_left", getMaxDamage(stack) - stack.getDamage()));
             }
         }
 
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
         if (!enchantments.isEmpty()) {
-            tooltip.add(new TextComponentTranslation("tooltips.enchantments").getFormattedText());
+            tooltip.add(new TranslationTextComponent("tooltips.enchantments"));
             for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                tooltip.add("  - " + entry.getKey().getTranslatedName(entry.getValue()));
+                tooltip.add(new StringTextComponent("  - " + entry.getKey().getDisplayName(entry.getValue()).getFormattedText()));
             }
         }
 
         Map<String, Integer> stats = StackUtils.getToolStats(stack);
         if (!stats.isEmpty()) {
-            tooltip.add(new TextComponentTranslation("tooltips.stats").getFormattedText());
+            tooltip.add(new TranslationTextComponent("tooltips.stats"));
             for (Map.Entry<String, Integer> entry : stats.entrySet()) {
-                tooltip.add("  - " + new TextComponentTranslation("stat." + entry.getKey(), entry.getValue()).getFormattedText());
+                tooltip.add(new StringTextComponent("  - " + new TranslationTextComponent("stat." + entry.getKey(), entry.getValue()).getFormattedText()));
             }
         }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public abstract Set<String> getToolClasses(ItemStack stack);
+    public abstract Set<ToolType> getToolTypes(ItemStack stack);
 
     public abstract float getAttackDamage(ItemStack stack);
 
@@ -94,14 +94,13 @@ public abstract class AbstractTool extends ItemTool {
     @Override
     public abstract int getMaxDamage(ItemStack stack);
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public String getItemStackDisplayName(ItemStack stack) {
+    public ITextComponent getDisplayName(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return ChatFormatting.WHITE + mat.getLocalizedName() + " " + new TextComponentTranslation("tool." + getPrimaryToolType() + ".name").getUnformattedText();
+            return new StringTextComponent(mat.getDisplayName().getFormattedText() + " " + new TranslationTextComponent("tool." + getPrimaryToolType()).getFormattedText()).applyTextStyle(TextFormatting.WHITE);
         }
-        return ChatFormatting.WHITE + new TextComponentTranslation("tool." + getPrimaryToolType() + ".name").getFormattedText();
+        return new TranslationTextComponent("tool." + getPrimaryToolType()).applyTextStyle(TextFormatting.WHITE);
     }
 
     public abstract int getRepairCost(ItemStack stack);
@@ -120,18 +119,18 @@ public abstract class AbstractTool extends ItemTool {
             repairCost = 8;
         }
 
-        if(count>repairCost){
+        if (count > repairCost) {
             return ItemStack.EMPTY;
         }
 
         if (currMat.equals(material)) {
             ItemStack newStack = in.copy();
             int maxDamage = getMaxDamage(newStack);
-            int damageRev = newStack.getItemDamage();
+            int damageRev = newStack.getDamage();
 
             int repairPerCount = (maxDamage / repairCost) + 1;
 
-            newStack.setItemDamage(damageRev - (repairPerCount * count));
+            newStack.setDamage(damageRev - (repairPerCount * count));
 
             return newStack;
         }
@@ -141,7 +140,7 @@ public abstract class AbstractTool extends ItemTool {
         }
 
         ItemStack newStack = in.copy();
-        newStack.setItemDamage(0);
+        newStack.setDamage(0);
 
         return StackUtils.setMaterial(newStack, material);
     }
@@ -166,15 +165,15 @@ public abstract class AbstractTool extends ItemTool {
         Enchantment ench = ModItems.ENCHANTMENT_REMOVER.getEnchantment(enchantmentRemover);
         if (ench != null) {
 
-            if(!getValidEnchantments(tool).contains(ench)){
+            if (!getValidEnchantments(tool).contains(ench)) {
                 return ItemStack.EMPTY;
             }
 
             List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(tool);
-            Iterator<EnchantmentData> iterator=enchantments.iterator();
-            while(iterator.hasNext()){
-                EnchantmentData data=iterator.next();
-                if(data.enchantment.equals(ench)){
+            Iterator<EnchantmentData> iterator = enchantments.iterator();
+            while (iterator.hasNext()) {
+                EnchantmentData data = iterator.next();
+                if (data.enchantment.equals(ench)) {
                     iterator.remove();
                 }
             }
@@ -185,11 +184,6 @@ public abstract class AbstractTool extends ItemTool {
         return ItemStack.EMPTY;
     }
 
-    @Override
-    public int getMaxDamage() {
-        new IllegalArgumentException("getMaxDamage() called without ItemStack").printStackTrace();
-        return 100;
-    }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
@@ -199,11 +193,6 @@ public abstract class AbstractTool extends ItemTool {
     @Override
     public int getItemEnchantability() {
         return 0;
-    }
-
-    @Override
-    public String getToolMaterialName() {
-        return "";
     }
 
     @Override
@@ -226,13 +215,13 @@ public abstract class AbstractTool extends ItemTool {
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 
-        if (slot == EntityEquipmentSlot.MAINHAND) {
+        if (slot == EquipmentSlotType.MAINHAND) {
             if (!isBroken(stack)) {
-                multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double) getAttackDamage(stack), 0));
-                multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double) getAttackSpeed(stack), 0));
+                multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double) getAttackDamage(stack), AttributeModifier.Operation.ADDITION));
+                multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double) getAttackSpeed(stack), AttributeModifier.Operation.ADDITION));
             }
         }
 
@@ -240,20 +229,20 @@ public abstract class AbstractTool extends ItemTool {
     }
 
     @Override
-    public float getDestroySpeed(ItemStack stack, IBlockState state) {
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
         if (isBroken(stack)) {
             return 0F;//TODO fix normal speed?
         }
-        for (String type : getToolClasses(stack)) {
-            if (state.getBlock().isToolEffective(type, state))
+        for (ToolType type : getToolTypes(stack)) {
+            if (state.getBlock().isToolEffective(state, type))
                 return getEfficiency(stack);
         }
         return getEffectiveMaterials(stack).contains(state.getMaterial()) ? getEfficiency(stack) : 1.0F;
     }
 
     @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
-        if (getToolClasses(stack).contains(toolClass)) {
+    public int getHarvestLevel(ItemStack stack, ToolType toolType, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+        if (getToolTypes(stack).contains(toolType)) {
             return getHarvestLevel(stack);
         } else {
             return -1;
@@ -283,16 +272,16 @@ public abstract class AbstractTool extends ItemTool {
     @Nullable
     @Override
     public Entity createEntity(World world, Entity location, ItemStack itemstack) {
-        if (location instanceof EntityItem) {
-            EntityItem item = (EntityItem) location;
+        if (location instanceof ItemEntity) {
+            ItemEntity item = (ItemEntity) location;
             item.lifespan = Integer.MAX_VALUE;
-            item.setEntityInvulnerable(true);
+            item.setInvulnerable(true);
         }
         return null;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         boolean flag = super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
         if (flag && countBreakStats(stack)) {
             StackUtils.incrementToolStat(stack, StackUtils.STAT_BLOCKS_MINED, 1);
@@ -301,12 +290,12 @@ public abstract class AbstractTool extends ItemTool {
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
-        for (String type : getToolClasses(stack)) {
-            if (state.getBlock().isToolEffective(type, state))
+    public boolean canHarvestBlock(ItemStack stack, BlockState state) {
+        for (ToolType type : getToolTypes(stack)) {
+            if (state.getBlock().isToolEffective(state, type))
                 return true;
         }
-        return super.canHarvestBlock(state, stack);
+        return super.canHarvestBlock(stack, state);
     }
 
     @Override

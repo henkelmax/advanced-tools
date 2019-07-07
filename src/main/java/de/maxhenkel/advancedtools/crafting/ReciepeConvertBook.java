@@ -1,55 +1,55 @@
 package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
-import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemEnchantedBook;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import javax.annotation.Nullable;
+
 import java.util.*;
 
-public class ReciepeConvertBook implements IRecipe {
-
-    private ResourceLocation resourceLocation;
+public class ReciepeConvertBook extends SpecialRecipe {
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeConvertBook(){
-        ingredients=new RecipeHelper.RecipeIngredient[]{
-                new RecipeHelper.RecipeIngredient(ItemEnchantedBook.class, 1)
+    public ReciepeConvertBook(ResourceLocation id) {
+        super(id);
+        ingredients = new RecipeHelper.RecipeIngredient[]{
+                new RecipeHelper.RecipeIngredient(EnchantedBookItem.class, 1)
         };
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         return new ItemStack(Items.BOOK);
     }
 
-    public NonNullList<ItemStack> doCrafting(InventoryCrafting inv){
+    public NonNullList<ItemStack> doCrafting(CraftingInventory inv) {
         ItemStack book = null;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (stack.getItem() instanceof ItemEnchantedBook) {
+            if (stack.getItem() instanceof EnchantedBookItem) {
                 if (book != null) {
                     return null;
                 }
                 book = stack;
-            }else{
-                if(!StackUtils.isEmpty(stack)){
+            } else {
+                if (!StackUtils.isEmpty(stack)) {
                     return null;
                 }
             }
@@ -59,23 +59,23 @@ public class ReciepeConvertBook implements IRecipe {
             return null;
         }
 
-        Map<Enchantment, Integer> enchantments=EnchantmentHelper.getEnchantments(book);
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(book);
 
-        if(enchantments.size()>inv.getSizeInventory()&&inv.getSizeInventory()<9){
+        if (enchantments.size() > inv.getSizeInventory() && inv.getSizeInventory() < 9) {
             return null;
         }
 
-        NonNullList<ItemStack> list=NonNullList.create();
-        List<Map.Entry<Enchantment, Integer>> entries= new ArrayList<>(enchantments.entrySet());
-        for(int i=0; i<inv.getSizeInventory(); i++){
-            if(i>=entries.size()){
+        NonNullList<ItemStack> list = NonNullList.create();
+        List<Map.Entry<Enchantment, Integer>> entries = new ArrayList<>(enchantments.entrySet());
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (i >= entries.size()) {
                 list.add(ItemStack.EMPTY);
                 continue;
             }
-            Map.Entry<Enchantment, Integer> entry=entries.get(i);
+            Map.Entry<Enchantment, Integer> entry = entries.get(i);
 
-            ItemStack stack=new ItemStack(ModItems.ENCHANTMENT);
-            if(entry.getKey()!=null&&entry.getValue()!=null){
+            ItemStack stack = new ItemStack(ModItems.ENCHANTMENT);
+            if (entry.getKey() != null && entry.getValue() != null) {
                 ModItems.ENCHANTMENT.setEnchantment(stack, entry.getKey(), entry.getValue());
             }
             list.add(stack);
@@ -88,8 +88,13 @@ public class ReciepeConvertBook implements IRecipe {
     // /give @p enchanted_book 1 0 {StoredEnchantments:[{id:34,lvl:1},{id:33,lvl:1},{id:32,lvl:1},{id:22,lvl:1},{id:21,lvl:1}]}
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         return doCrafting(inv);
+    }
+
+    @Override
+    public IRecipeSerializer<?> getSerializer() {
+        return Main.CRAFTING_CONVERT_BOOK;
     }
 
     @Override
@@ -102,20 +107,4 @@ public class ReciepeConvertBook implements IRecipe {
         return new ItemStack(Items.BOOK);
     }
 
-    @Override
-    public IRecipe setRegistryName(ResourceLocation name) {
-        this.resourceLocation = name;
-        return this;
-    }
-
-    @Nullable
-    @Override
-    public ResourceLocation getRegistryName() {
-        return resourceLocation;
-    }
-
-    @Override
-    public Class<IRecipe> getRegistryType() {
-        return IRecipe.class;
-    }
 }

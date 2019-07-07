@@ -1,24 +1,24 @@
 package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemEnchantedBook;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
-public class ReciepeEnchantTool implements IRecipe {
+public class ReciepeEnchantTool extends SpecialRecipe {
 
     private ResourceLocation resourceLocation;
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeEnchantTool(){
+    public ReciepeEnchantTool(ResourceLocation id){
+        super(id);
         ingredients=new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 1),
                 new RecipeHelper.RecipeIngredient(AbstractTool.class, 1)
@@ -26,12 +26,12 @@ public class ReciepeEnchantTool implements IRecipe {
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         return RecipeHelper.matchesRecipe(inv, ingredients);
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         ItemStack tool = null;
         ItemStack enchantment = null;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
@@ -71,19 +71,8 @@ public class ReciepeEnchantTool implements IRecipe {
     }
 
     @Override
-    public IRecipe setRegistryName(ResourceLocation name) {
-        this.resourceLocation = name;
-        return this;
+    public IRecipeSerializer<?> getSerializer() {
+        return Main.CRAFTING_ENCHANT_TOOL;
     }
 
-    @Nullable
-    @Override
-    public ResourceLocation getRegistryName() {
-        return resourceLocation;
-    }
-
-    @Override
-    public Class<IRecipe> getRegistryType() {
-        return IRecipe.class;
-    }
 }

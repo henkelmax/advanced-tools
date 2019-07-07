@@ -1,28 +1,32 @@
 package de.maxhenkel.advancedtools.crafting;
 
+import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReciepeRepairTool implements IRecipe {
+public class ReciepeRepairTool extends SpecialRecipe {
 
-    private ResourceLocation resourceLocation;
+    public ReciepeRepairTool(ResourceLocation idIn) {
+        super(idIn);
+    }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         return !getCraftingResult(inv).equals(ItemStack.EMPTY);
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         ItemStack tool = null;
         List<ItemStack> otherItems = new ArrayList<>();
         for (int i = 0; i < inv.getSizeInventory(); i++) {
@@ -64,9 +68,9 @@ public class ReciepeRepairTool implements IRecipe {
                     break;
                 }
             }
-            if(material!=null){
-                fMaterial=material;
-                fCount=count;
+            if (material != null) {
+                fMaterial = material;
+                fCount = count;
                 break;
             }
         }
@@ -89,19 +93,8 @@ public class ReciepeRepairTool implements IRecipe {
     }
 
     @Override
-    public IRecipe setRegistryName(ResourceLocation name) {
-        this.resourceLocation = name;
-        return this;
+    public IRecipeSerializer<?> getSerializer() {
+        return Main.CRAFTING_REPAIR_TOOL;
     }
 
-    @Nullable
-    @Override
-    public ResourceLocation getRegistryName() {
-        return resourceLocation;
-    }
-
-    @Override
-    public Class<IRecipe> getRegistryType() {
-        return IRecipe.class;
-    }
 }
