@@ -40,6 +40,7 @@ public class Main {
     @OnlyIn(Dist.CLIENT)
     public void clientStart() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup);
+        MinecraftForge.EVENT_BUS.register(new ModelEvents());
     }
 
     @SubscribeEvent
@@ -51,28 +52,28 @@ public class Main {
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
         ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "items/pickaxe/empty_pickaxe"),
-                new ResourceLocation(Main.MODID, "items/pickaxe/pickaxe_handle"),
+                new ResourceLocation(Main.MODID, "item/pickaxe/empty_pickaxe"),
+                new ResourceLocation(Main.MODID, "item/pickaxe/pickaxe_handle"),
                 ModItems.PICKAXE)));
 
         ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "items/axe/empty_axe"),
-                new ResourceLocation(Main.MODID, "items/axe/axe_handle"),
+                new ResourceLocation(Main.MODID, "item/axe/empty_axe"),
+                new ResourceLocation(Main.MODID, "item/axe/axe_handle"),
                 ModItems.AXE)));
 
         ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "items/shovel/empty_shovel"),
-                new ResourceLocation(Main.MODID, "items/shovel/shovel_handle"),
+                new ResourceLocation(Main.MODID, "item/shovel/empty_shovel"),
+                new ResourceLocation(Main.MODID, "item/shovel/shovel_handle"),
                 ModItems.SHOVEL)));
 
         ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "items/sword/empty_sword"),
-                new ResourceLocation(Main.MODID, "items/sword/sword_handle"),
+                new ResourceLocation(Main.MODID, "item/sword/empty_sword"),
+                new ResourceLocation(Main.MODID, "item/sword/sword_handle"),
                 ModItems.SWORD)));
 
         ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "items/hoe/empty_hoe"),
-                new ResourceLocation(Main.MODID, "items/hoe/hoe_handle"),
+                new ResourceLocation(Main.MODID, "item/hoe/empty_hoe"),
+                new ResourceLocation(Main.MODID, "item/hoe/hoe_handle"),
                 ModItems.HOE)));
     }
 

@@ -31,9 +31,7 @@ public abstract class BakedToolModel implements IBakedModel {
     protected final ImmutableList<BakedQuad> quads;
     protected final VertexFormat format;
 
-    public BakedToolModel(IModel parent, ImmutableList<BakedQuad> quads, VertexFormat format,
-                          ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms,
-                          Map<String, IBakedModel> cache) {
+    public BakedToolModel(IModel parent, ImmutableList<BakedQuad> quads, VertexFormat format, Map<String, IBakedModel> cache) {
         this.quads = quads;
         this.format = format;
         this.parent = parent;
@@ -55,7 +53,7 @@ public abstract class BakedToolModel implements IBakedModel {
         builder.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0, 4, 0.5f, 0, 90, -55, 0.85f));
         builder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, get(1.13f, 3.2f, 1.13f, 0, -90, 25, 0.68f));
         builder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, get(1.13f, 3.2f, 1.13f, 0, 90, -25, 0.68f));
-        return (ImmutableMap) builder.build();
+        return builder.build();
     }
 
     protected TRSRTransformation get(float tx, float ty, float tz, float ax, float ay, float az, float s) {

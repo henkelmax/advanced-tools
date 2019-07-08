@@ -40,51 +40,51 @@ public class AdvancedToolMaterial {
 
     static {
         Map<String, ResourceLocation> diaTextures = new HashMap<>();
-        diaTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/diamond_pickaxe_head"));
-        diaTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/diamond_axe_head"));
-        diaTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/diamond_shovel_head"));
-        diaTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/diamond_sword_head"));
-        diaTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/diamond_hoe_head"));
+        diaTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "item/pickaxe/diamond_pickaxe_head"));
+        diaTextures.put(AXE, new ResourceLocation(Main.MODID, "item/axe/diamond_axe_head"));
+        diaTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/diamond_shovel_head"));
+        diaTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/diamond_sword_head"));
+        diaTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/diamond_hoe_head"));
         DIAMOND = new AdvancedToolMaterial("diamond",
                 8F, 3F, 3, 2048, MATCHER_DIAMOND, diaTextures);
         materials.put("diamond", DIAMOND);
 
         Map<String, ResourceLocation> ironTextures = new HashMap<>();
-        ironTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/iron_pickaxe_head"));
-        ironTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/iron_axe_head"));
-        ironTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/iron_shovel_head"));
-        ironTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/iron_sword_head"));
-        ironTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/iron_hoe_head"));
+        ironTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "item/pickaxe/iron_pickaxe_head"));
+        ironTextures.put(AXE, new ResourceLocation(Main.MODID, "item/axe/iron_axe_head"));
+        ironTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/iron_shovel_head"));
+        ironTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/iron_sword_head"));
+        ironTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/iron_hoe_head"));
         IRON = new AdvancedToolMaterial("iron",
                 6F, 2F, 2, 256, MATCHER_IRON, ironTextures);
         materials.put("iron", IRON);
 
         Map<String, ResourceLocation> goldTextures = new HashMap<>();
-        goldTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/gold_pickaxe_head"));
-        goldTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/gold_axe_head"));
-        goldTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/gold_shovel_head"));
-        goldTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/gold_sword_head"));
-        goldTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/gold_hoe_head"));
+        goldTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "item/pickaxe/gold_pickaxe_head"));
+        goldTextures.put(AXE, new ResourceLocation(Main.MODID, "item/axe/gold_axe_head"));
+        goldTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/gold_shovel_head"));
+        goldTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/gold_sword_head"));
+        goldTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/gold_hoe_head"));
         GOLD = new AdvancedToolMaterial("gold",
                 12F, 0F, 0, 32, MATCHER_GOLD, goldTextures);
         materials.put("gold", GOLD);
 
         Map<String, ResourceLocation> stoneTextures = new HashMap<>();
-        stoneTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/stone_pickaxe_head"));
-        stoneTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/stone_axe_head"));
-        stoneTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/stone_shovel_head"));
-        stoneTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/stone_sword_head"));
-        stoneTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/stone_hoe_head"));
+        stoneTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "item/pickaxe/stone_pickaxe_head"));
+        stoneTextures.put(AXE, new ResourceLocation(Main.MODID, "item/axe/stone_axe_head"));
+        stoneTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/stone_shovel_head"));
+        stoneTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/stone_sword_head"));
+        stoneTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/stone_hoe_head"));
         STONE = new AdvancedToolMaterial("stone",
                 4F, 1F, 1, 128, MATCHER_STONE, stoneTextures);
         materials.put("stone", STONE);
 
         Map<String, ResourceLocation> woodTextures = new HashMap<>();
-        woodTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "items/pickaxe/wood_pickaxe_head"));
-        woodTextures.put(AXE, new ResourceLocation(Main.MODID, "items/axe/wood_axe_head"));
-        woodTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "items/shovel/wood_shovel_head"));
-        woodTextures.put(SWORD, new ResourceLocation(Main.MODID, "items/sword/wood_sword_head"));
-        woodTextures.put(HOE, new ResourceLocation(Main.MODID, "items/hoe/wood_hoe_head"));
+        woodTextures.put(PICKAXE, new ResourceLocation(Main.MODID, "item/pickaxe/wood_pickaxe_head"));
+        woodTextures.put(AXE, new ResourceLocation(Main.MODID, "item/axe/wood_axe_head"));
+        woodTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/wood_shovel_head"));
+        woodTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/wood_sword_head"));
+        woodTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/wood_hoe_head"));
         WOOD = new AdvancedToolMaterial("wood",
                 2F, 0F, 0, 64, MATCHER_WOOD, woodTextures);
         materials.put("wood", WOOD);
@@ -130,10 +130,6 @@ public class AdvancedToolMaterial {
 
     public String getName() {
         return name;
-    }
-
-    public String getOredictName(String tool) {
-        return tool + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public ITextComponent getDisplayName() {
