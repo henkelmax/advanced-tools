@@ -100,7 +100,7 @@ public class AdvancedSword extends AbstractTool {
     }
 
     @Override
-    public boolean canHarvestBlock(BlockState blockIn) {
-        return blockIn.getBlock() == Blocks.COBWEB;
+    public boolean canHarvestBlock(ItemStack stack, BlockState state) {
+        return state.getBlock() == Blocks.COBWEB;
     }
 }

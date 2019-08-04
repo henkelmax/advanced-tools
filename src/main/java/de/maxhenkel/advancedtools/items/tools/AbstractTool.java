@@ -254,7 +254,7 @@ public abstract class AbstractTool extends ToolItem {
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         if (isBroken(stack)) {
-            return 0F;//TODO fix normal speed?
+            return 0F;
         }
         for (ToolType type : getToolTypes(stack)) {
             if (state.getBlock().isToolEffective(state, type))

@@ -112,8 +112,8 @@ public class AdvancedShovel extends AbstractTool {
     }
 
     @Override
-    public boolean canHarvestBlock(BlockState blockIn) {
-        Block block = blockIn.getBlock();
+    public boolean canHarvestBlock(ItemStack stack, BlockState state) {
+        Block block = state.getBlock();
         return block == Blocks.SNOW_BLOCK || block == Blocks.SNOW;
     }
 
