@@ -1,0 +1,38 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "advancedtools:item/sword/sword_handle"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "advancedtools:wood": 1
+      },
+      "model": "advancedtools:item/sword/wood"
+    },
+    {
+      "predicate": {
+        "advancedtools:gold": 1
+      },
+      "model": "advancedtools:item/sword/gold"
+    },
+    {
+      "predicate": {
+        "advancedtools:stone": 1
+      },
+      "model": "advancedtools:item/sword/stone"
+    },
+    {
+      "predicate": {
+        "advancedtools:iron": 1
+      },
+      "model": "advancedtools:item/sword/iron"
+    },
+    {
+      "predicate": {
+        "advancedtools:diamond": 1
+      },
+      "model": "advancedtools:item/sword/diamond"
+    }
+  ]
+}

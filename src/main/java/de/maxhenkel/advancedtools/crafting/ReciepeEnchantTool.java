@@ -17,9 +17,9 @@ public class ReciepeEnchantTool extends SpecialRecipe {
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeEnchantTool(ResourceLocation id){
+    public ReciepeEnchantTool(ResourceLocation id) {
         super(id);
-        ingredients=new RecipeHelper.RecipeIngredient[]{
+        ingredients = new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 1),
                 new RecipeHelper.RecipeIngredient(AbstractTool.class, 1)
         };
@@ -42,19 +42,19 @@ public class ReciepeEnchantTool extends SpecialRecipe {
                     return ItemStack.EMPTY;
                 }
                 tool = stack;
-            } else if(stack.getItem() instanceof ItemEnchantment){
+            } else if (stack.getItem() instanceof ItemEnchantment) {
                 if (enchantment != null) {
                     return ItemStack.EMPTY;
                 }
                 enchantment = stack;
-            }else{
-                if(!StackUtils.isEmpty(stack)){
+            } else {
+                if (!StackUtils.isEmpty(stack)) {
                     return ItemStack.EMPTY;
                 }
             }
         }
 
-        if (tool == null||enchantment==null) {
+        if (tool == null || enchantment == null) {
             return ItemStack.EMPTY;
         }
         return ((AbstractTool) tool.getItem()).applyEnchantment(tool, enchantment);

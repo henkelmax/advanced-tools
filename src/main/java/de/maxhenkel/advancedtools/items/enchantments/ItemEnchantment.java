@@ -27,8 +27,8 @@ public class ItemEnchantment extends Item {
 
     @Override
     public ITextComponent getDisplayName(ItemStack stack) {
-        EnchantmentData data=getEnchantment(stack);
-        if(data==null){
+        EnchantmentData data = getEnchantment(stack);
+        if (data == null) {
             return new TranslationTextComponent("enchantment.empty");
         }
         return super.getDisplayName(stack);
@@ -36,8 +36,8 @@ public class ItemEnchantment extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        EnchantmentData data=getEnchantment(stack);
-        if(data!=null){
+        EnchantmentData data = getEnchantment(stack);
+        if (data != null) {
             tooltip.add(data.enchantment.getDisplayName(data.enchantmentLevel));
         }
 

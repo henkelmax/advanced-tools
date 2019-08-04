@@ -37,7 +37,7 @@ public class SwordEvents {
                 if (targetEntity instanceof LivingEntity) {
                     f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), ((LivingEntity) targetEntity).getCreatureAttribute());
                 } else {
-                    f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), CreatureAttribute.field_223222_a_); //UNDEFINED
+                    f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), CreatureAttribute.UNDEFINED);
                 }
 
                 float cooldown = player.getCooledAttackStrength(0.5F);

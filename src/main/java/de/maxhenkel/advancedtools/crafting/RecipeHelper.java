@@ -27,15 +27,15 @@ public class RecipeHelper {
 
         for (int j = 0; j < counts.length; j++) {
             RecipeIngredient ingredient = ingredients[j];
-            int amount=counts[j];
+            int amount = counts[j];
 
-            if(amount<=0){
+            if (amount <= 0) {
                 return false;
-            }else if(ingredient.amount<0){
+            } else if (ingredient.amount < 0) {
                 continue;
-            }else if(amount==ingredient.amount){
+            } else if (amount == ingredient.amount) {
                 continue;
-            }else{
+            } else {
                 return false;
             }
         }

@@ -1,0 +1,38 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "advancedtools:item/shovel/shovel_handle"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "advancedtools:wood": 1
+      },
+      "model": "advancedtools:item/shovel/wood"
+    },
+    {
+      "predicate": {
+        "advancedtools:gold": 1
+      },
+      "model": "advancedtools:item/shovel/gold"
+    },
+    {
+      "predicate": {
+        "advancedtools:stone": 1
+      },
+      "model": "advancedtools:item/shovel/stone"
+    },
+    {
+      "predicate": {
+        "advancedtools:iron": 1
+      },
+      "model": "advancedtools:item/shovel/iron"
+    },
+    {
+      "predicate": {
+        "advancedtools:diamond": 1
+      },
+      "model": "advancedtools:item/shovel/diamond"
+    }
+  ]
+}

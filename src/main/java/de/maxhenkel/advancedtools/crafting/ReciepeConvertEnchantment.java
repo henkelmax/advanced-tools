@@ -64,9 +64,9 @@ public class ReciepeConvertEnchantment extends SpecialRecipe {
             return null;
         }
 
-        ItemStack retStack=new ItemStack(Items.ENCHANTED_BOOK);
-        EnchantmentData data=ModItems.ENCHANTMENT.getEnchantment(enchantment);
-        if(data==null){
+        ItemStack retStack = new ItemStack(Items.ENCHANTED_BOOK);
+        EnchantmentData data = ModItems.ENCHANTMENT.getEnchantment(enchantment);
+        if (data == null) {
             return ItemStack.EMPTY;
         }
         EnchantedBookItem.addEnchantment(retStack, data);

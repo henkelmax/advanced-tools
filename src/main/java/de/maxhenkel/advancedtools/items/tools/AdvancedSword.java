@@ -9,7 +9,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
@@ -103,13 +102,5 @@ public class AdvancedSword extends AbstractTool {
     @Override
     public boolean canHarvestBlock(BlockState blockIn) {
         return blockIn.getBlock() == Blocks.COBWEB;
-    }
-
-    @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damageItem(1, attacker, livingEntity -> {
-        });
-        StackUtils.incrementToolStat(stack, StackUtils.STAT_MOBS_HIT, 1);
-        return true;
     }
 }

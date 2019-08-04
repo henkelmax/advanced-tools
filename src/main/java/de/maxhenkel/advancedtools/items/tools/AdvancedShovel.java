@@ -100,14 +100,13 @@ public class AdvancedShovel extends AbstractTool {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
-        if (isBroken(stack)) {
+        if (isBroken(context.getItem())) {
             return ActionResultType.PASS;
         }
 
         ActionResultType result = Items.DIAMOND_SHOVEL.onItemUse(context);
         if (result.equals(ActionResultType.SUCCESS)) {
-            StackUtils.incrementToolStat(stack, StackUtils.STAT_PATHS_CREATED, 1);
+            StackUtils.incrementToolStat(context.getItem(), StackUtils.STAT_PATHS_CREATED, 1);
         }
         return result;
     }
@@ -115,12 +114,7 @@ public class AdvancedShovel extends AbstractTool {
     @Override
     public boolean canHarvestBlock(BlockState blockIn) {
         Block block = blockIn.getBlock();
-
-        if (block == Blocks.SNOW_BLOCK) {
-            return true;
-        } else {
-            return block == Blocks.SNOW;
-        }
+        return block == Blocks.SNOW_BLOCK || block == Blocks.SNOW;
     }
 
 }

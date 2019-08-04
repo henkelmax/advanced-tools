@@ -1,15 +1,12 @@
 package de.maxhenkel.advancedtools;
 
 import de.maxhenkel.advancedtools.crafting.*;
-import de.maxhenkel.advancedtools.render.AdvancedToolModel;
-import de.maxhenkel.advancedtools.render.base.UniversalModel;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,8 +22,6 @@ public class Main {
     public static final String MODID = "advancedtools";
 
     public Main() {
-        new Registry();
-
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipes);
 
@@ -40,7 +35,7 @@ public class Main {
     @OnlyIn(Dist.CLIENT)
     public void clientStart() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup);
-        MinecraftForge.EVENT_BUS.register(new ModelEvents());
+        // ModelLoaderRegistry.registerLoader(new AdvancedModelLoader());
     }
 
     @SubscribeEvent
@@ -51,30 +46,7 @@ public class Main {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-        ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "item/pickaxe/empty_pickaxe"),
-                new ResourceLocation(Main.MODID, "item/pickaxe/pickaxe_handle"),
-                ModItems.PICKAXE)));
 
-        ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "item/axe/empty_axe"),
-                new ResourceLocation(Main.MODID, "item/axe/axe_handle"),
-                ModItems.AXE)));
-
-        ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "item/shovel/empty_shovel"),
-                new ResourceLocation(Main.MODID, "item/shovel/shovel_handle"),
-                ModItems.SHOVEL)));
-
-        ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "item/sword/empty_sword"),
-                new ResourceLocation(Main.MODID, "item/sword/sword_handle"),
-                ModItems.SWORD)));
-
-        ModelLoaderRegistry.registerLoader(new UniversalModel(new AdvancedToolModel(
-                new ResourceLocation(Main.MODID, "item/hoe/empty_hoe"),
-                new ResourceLocation(Main.MODID, "item/hoe/hoe_handle"),
-                ModItems.HOE)));
     }
 
     @SubscribeEvent
@@ -96,7 +68,7 @@ public class Main {
     public static IRecipeSerializer CRAFTING_ENCHANT_TOOL;
     public static IRecipeSerializer CRAFTING_EREMOVE_ENCHANTMENT;
     public static IRecipeSerializer CRAFTING_REPAIR_TOOL;
-    public static IRecipeSerializer CRAFTING_VOID;
+    public static RecipeToolMaterial.RecipeToolMaterialSerializer CRAFTING_TOOL_MATERIAL;
 
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
@@ -124,9 +96,9 @@ public class Main {
         CRAFTING_REPAIR_TOOL.setRegistryName(new ResourceLocation(MODID, "crafting_special_repair_tool"));
         event.getRegistry().register(CRAFTING_REPAIR_TOOL);
 
-        CRAFTING_VOID = new SpecialRecipeSerializer<>(ReciepeVoid::new);
-        CRAFTING_VOID.setRegistryName(new ResourceLocation(MODID, "crafting_special_void"));
-        event.getRegistry().register(CRAFTING_VOID);
+        CRAFTING_TOOL_MATERIAL = new RecipeToolMaterial.RecipeToolMaterialSerializer();
+        CRAFTING_TOOL_MATERIAL.setRegistryName(new ResourceLocation(MODID, "tool_recipe"));
+        event.getRegistry().register(CRAFTING_TOOL_MATERIAL);
     }
 
 }

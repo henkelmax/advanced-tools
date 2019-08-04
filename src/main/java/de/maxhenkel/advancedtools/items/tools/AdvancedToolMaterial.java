@@ -1,8 +1,6 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import com.google.common.collect.ImmutableList;
 import de.maxhenkel.advancedtools.Main;
-import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.tools.matcher.MaterialMatcher;
 import de.maxhenkel.advancedtools.items.tools.matcher.SimpleMatcher;
 import de.maxhenkel.advancedtools.items.tools.matcher.TagMatcher;
@@ -12,7 +10,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdvancedToolMaterial {
 
@@ -21,8 +22,6 @@ public class AdvancedToolMaterial {
     public static final String SWORD = "sword";
     public static final String SHOVEL = "shovel";
     public static final String HOE = "hoe";
-
-    public static final ImmutableList<AbstractTool> TOOLS = ImmutableList.of(ModItems.PICKAXE, ModItems.AXE, ModItems.SWORD, ModItems.SHOVEL, ModItems.HOE);
 
     private static Map<String, AdvancedToolMaterial> materials = new HashMap<>();
 

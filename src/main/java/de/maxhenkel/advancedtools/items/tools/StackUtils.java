@@ -10,13 +10,14 @@ import java.util.Set;
 
 public class StackUtils {
 
-    //  /give @p advancedtools:pickaxe 1 255 {"tool_data": {"material": "iron"}}
-    //  /give @p advancedtools:enchantment 1 0 {"enchantment": {"name": "minecraft:unbreaking", "level": 5}}
+    // /give @p advancedtools:pickaxe 1 255 {"tool_data": {"material": "iron"}}
+    // /give @p advancedtools:enchantment 1 0 {"enchantment": {"name": "minecraft:unbreaking", "level": 5}}
 
     public static final String STAT_BLOCKS_MINED = "blocks_mined";
     public static final String STAT_MOBS_HIT = "mobs_hit";
     public static final String STAT_HOED = "farmland_hoed";
     public static final String STAT_PATHS_CREATED = "paths_created";
+    public static final String STAT_LOGS_STRIPPED = "logs_stripped";
 
     public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level) {
         stack.addEnchantment(enchantment, level);

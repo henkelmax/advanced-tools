@@ -36,12 +36,12 @@ public class ApplyEnchantmentRecipeCategory implements IRecipeCategory<Enchantme
 
     @Override
     public void setIngredients(EnchantmentRecipe recipe, IIngredients ingredients) {
-        ItemStack enchantment=new ItemStack(ModItems.ENCHANTMENT);
+        ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT);
         ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.getEnchantment(), recipe.getEnchantment().getMaxLevel());
-        ItemStack tool=new ItemStack(recipe.getAbstractTool());
+        ItemStack tool = new ItemStack(recipe.getAbstractTool());
         StackUtils.setMaterial(tool, recipe.getMaterial());
         ingredients.setInputs(VanillaTypes.ITEM, ImmutableList.of(enchantment, tool));
-        ItemStack tool2=recipe.getAbstractTool().applyEnchantment(tool, enchantment);
+        ItemStack tool2 = recipe.getAbstractTool().applyEnchantment(tool, enchantment);
         ingredients.setOutput(VanillaTypes.ITEM, tool2);
     }
 

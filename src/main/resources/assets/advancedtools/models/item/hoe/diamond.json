@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "advancedtools:item/hoe/hoe_handle",
+    "layer1": "advancedtools:item/hoe/diamond_hoe_head"
+  }
+}

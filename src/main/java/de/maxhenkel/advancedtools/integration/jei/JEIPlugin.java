@@ -47,7 +47,7 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipeCatalyst(new ItemStack(ModItems.ENCHANTMENT), JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
         registry.addRecipeCatalyst(new ItemStack(Items.ENCHANTED_BOOK), JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
 
-        for (AbstractTool tool : AdvancedToolMaterial.TOOLS) {
+        for (AbstractTool tool : ModItems.getAllTools()) {
             ItemStack stack = new ItemStack(tool);
             StackUtils.setMaterial(stack, AdvancedToolMaterial.DIAMOND);
             registry.addRecipeCatalyst(stack, JEIPlugin.CATEGORY_UPGRADE);
@@ -57,17 +57,8 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registry) {
-        /*
-        registry.addRecipes(JEIPlugin.CATEGORY_ENCHANT);
-        registry.handleRecipes(EnchantmentRemoveRecipe.class, new RemoveEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_REMOVE_ENCHANTING);
-        registry.handleRecipes(UpgradeRecipe.class, new UpgradeRecipeWrapperFactory(), JEIPlugin.CATEGORY_UPGRADE);
-        registry.handleRecipes(ConvertBookRecipe.class, new ConvertBookRecipeWrapperFactory(), JEIPlugin.CATEGORY_BOOK_CONVERTING);
-        registry.handleRecipes(Enchantment.class, new CombineEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
-        registry.handleRecipes(EnchantmentData.class, new ConvertEnchantmentRecipeWrapperFactory(), JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
-        */
-
         List<EnchantmentRecipe> enchants = new ArrayList<>();
-        for (AbstractTool tool : AdvancedToolMaterial.TOOLS) {
+        for (AbstractTool tool : ModItems.getAllTools()) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
                 Iterator<Enchantment> i = ForgeRegistries.ENCHANTMENTS.iterator();
                 while (i.hasNext()) {
@@ -87,7 +78,7 @@ public class JEIPlugin implements IModPlugin {
 
         //Remove ench
         List<EnchantmentRemoveRecipe> remove = new ArrayList<>();
-        for (AbstractTool tool : AdvancedToolMaterial.TOOLS) {
+        for (AbstractTool tool : ModItems.getAllTools()) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
                 Iterator<Enchantment> i = ForgeRegistries.ENCHANTMENTS.iterator();
                 while (i.hasNext()) {
@@ -97,7 +88,7 @@ public class JEIPlugin implements IModPlugin {
                     ItemStack ench = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
                     ModItems.ENCHANTMENT_REMOVER.setEnchantment(ench, enchantment);
                     if (!StackUtils.isEmpty(tool.removeEnchantment(stack, ench))) {
-                        remove.add(new EnchantmentRemoveRecipe(enchantment, tool, material));
+                        remove.add(new EnchantmentRemoveRecipe(new EnchantmentData(enchantment, enchantment.getMaxLevel()), tool, material));
                     }
                 }
             }
@@ -130,7 +121,7 @@ public class JEIPlugin implements IModPlugin {
 
         //Upgrade
         List<UpgradeRecipe> upgrades = new ArrayList<>();
-        for (AbstractTool tool : AdvancedToolMaterial.TOOLS) {
+        for (AbstractTool tool : ModItems.getAllTools()) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
                 for (AdvancedToolMaterial material1 : AdvancedToolMaterial.getAll()) {
                     if (!material.equals(material1)) {

@@ -1,0 +1,20 @@
+{
+  "type": "advancedtools:tool_recipe",
+  "pattern": [
+    "XX",
+    " #",
+    " #"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "advancedtools:hoe",
+    "material": "diamond"
+  }
+}

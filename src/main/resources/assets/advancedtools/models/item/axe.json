@@ -1,0 +1,38 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "advancedtools:item/axe/axe_handle"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "advancedtools:wood": 1
+      },
+      "model": "advancedtools:item/axe/wood"
+    },
+    {
+      "predicate": {
+        "advancedtools:gold": 1
+      },
+      "model": "advancedtools:item/axe/gold"
+    },
+    {
+      "predicate": {
+        "advancedtools:stone": 1
+      },
+      "model": "advancedtools:item/axe/stone"
+    },
+    {
+      "predicate": {
+        "advancedtools:iron": 1
+      },
+      "model": "advancedtools:item/axe/iron"
+    },
+    {
+      "predicate": {
+        "advancedtools:diamond": 1
+      },
+      "model": "advancedtools:item/axe/diamond"
+    }
+  ]
+}

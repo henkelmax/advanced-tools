@@ -4,9 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
@@ -97,43 +95,12 @@ public class AdvancedPickaxe extends AbstractTool {
 
     @Override
     public boolean canHarvestBlock(ItemStack stack, BlockState state) {
-        Block block = state.getBlock();
-
-        if (block == Blocks.OBSIDIAN) {
-            return getTier().getHarvestLevel() >= 3;
-        } else if (block != Blocks.DIAMOND_BLOCK && block != Blocks.DIAMOND_ORE) {
-            if (block != Blocks.EMERALD_ORE && block != Blocks.EMERALD_BLOCK) {
-                if (block != Blocks.GOLD_BLOCK && block != Blocks.GOLD_ORE) {
-                    if (block != Blocks.IRON_BLOCK && block != Blocks.IRON_ORE) {
-                        if (block != Blocks.LAPIS_BLOCK && block != Blocks.LAPIS_ORE) {
-                            if (block != Blocks.REDSTONE_ORE) {
-                                Material material = state.getMaterial();
-
-                                if (material == Material.ROCK) {
-                                    return true;
-                                } else if (material == Material.IRON) {
-                                    return true;
-                                } else {
-                                    return material == Material.ANVIL;
-                                }
-                            } else {
-                                return getTier().getHarvestLevel() >= 2;
-                            }
-                        } else {
-                            return getTier().getHarvestLevel() >= 1;
-                        }
-                    } else {
-                        return getTier().getHarvestLevel() >= 1;
-                    }
-                } else {
-                    return getTier().getHarvestLevel() >= 2;
-                }
-            } else {
-                return getTier().getHarvestLevel() >= 2;
-            }
-        } else {
-            return getTier().getHarvestLevel() >= 2;
+        int i = getTier().getHarvestLevel();
+        if (state.getHarvestTool() == net.minecraftforge.common.ToolType.PICKAXE) {
+            return i >= state.getHarvestLevel();
         }
+        Material material = state.getMaterial();
+        return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
     }
 
 }

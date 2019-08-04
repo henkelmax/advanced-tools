@@ -27,7 +27,7 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
     @Override
     public IDrawable getBackground() {
         return helper.createDrawable(new ResourceLocation(Main.MODID,
-                "textures/gui/jei_crafting.png"), 0, 0, 116, 54);
+                "textures/gui/jei_converting.png"), 0, 0, 186, 54);
     }
 
     @Override
@@ -38,10 +38,10 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
     @Override
     public void setIngredients(EnchantmentRemoveRecipe recipe, IIngredients ingredients) {
         ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
-        ModItems.ENCHANTMENT_REMOVER.setEnchantment(enchantment, recipe.getEnchantment());
+        ModItems.ENCHANTMENT_REMOVER.setEnchantment(enchantment, recipe.getEnchantment().enchantment);
         ItemStack tool = new ItemStack(recipe.getAbstractTool());
         StackUtils.setMaterial(tool, recipe.getMaterial());
-        StackUtils.addEnchantment(tool, recipe.getEnchantment(), recipe.getEnchantment().getMaxLevel());
+        StackUtils.addEnchantment(tool, recipe.getEnchantment().enchantment, recipe.getEnchantment().enchantmentLevel);
         ingredients.setInputs(VanillaTypes.ITEM, ImmutableList.of(enchantment, tool));
         ItemStack tool2 = recipe.getAbstractTool().removeEnchantment(tool, enchantment);
         ingredients.setOutput(VanillaTypes.ITEM, tool2);
@@ -69,12 +69,12 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
         group.init(0, true, 0, 0);
         ItemStack stack = new ItemStack(wrapper.getAbstractTool());
         StackUtils.setMaterial(stack, wrapper.getMaterial());
-        StackUtils.addEnchantment(stack, wrapper.getEnchantment(), wrapper.getEnchantment().getMaxLevel());
+        StackUtils.addEnchantment(stack, wrapper.getEnchantment().enchantment, wrapper.getEnchantment().enchantmentLevel);
         group.set(0, stack);
 
         group.init(1, true, 18, 0);
         ItemStack stack1 = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
-        ModItems.ENCHANTMENT_REMOVER.setEnchantment(stack1, wrapper.getEnchantment());
+        ModItems.ENCHANTMENT_REMOVER.setEnchantment(stack1, wrapper.getEnchantment().enchantment);
         group.set(1, stack1);
 
         group.init(2, true, 36, 0);
@@ -87,6 +87,20 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
 
         group.init(9, false, 94, 18);
         group.set(9, wrapper.getAbstractTool().removeEnchantment(stack, stack1));
+
+        group.init(10, true, 132, 0);
+        group.init(11, true, 150, 0);
+        group.init(12, true, 168, 0);
+        group.init(13, true, 132, 18);
+        group.init(14, true, 150, 18);
+        group.init(15, true, 168, 18);
+        group.init(16, true, 132, 36);
+        group.init(17, true, 150, 36);
+        group.init(18, true, 168, 36);
+
+        ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
+        ModItems.ENCHANTMENT.setEnchantment(ench, wrapper.getEnchantment().enchantment, wrapper.getEnchantment().enchantmentLevel);
+        group.set(10, ench);
     }
 
 
