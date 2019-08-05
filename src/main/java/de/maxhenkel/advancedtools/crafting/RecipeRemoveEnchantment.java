@@ -16,13 +16,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class ReciepeRemoveEnchantment extends SpecialRecipe {
+public class RecipeRemoveEnchantment extends SpecialRecipe {
 
     private ResourceLocation resourceLocation;
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeRemoveEnchantment(ResourceLocation id) {
+    public RecipeRemoveEnchantment(ResourceLocation id) {
         super(id);
         ingredients = new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(ItemEnchantmentRemover.class, 1),

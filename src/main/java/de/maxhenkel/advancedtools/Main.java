@@ -72,27 +72,27 @@ public class Main {
 
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
-        CRAFTING_COMBINE_ENCHANTMENTS = new SpecialRecipeSerializer<>(ReciepeCombineEnchantments::new);
+        CRAFTING_COMBINE_ENCHANTMENTS = new SpecialRecipeSerializer<>(RecipeCombineEnchantments::new);
         CRAFTING_COMBINE_ENCHANTMENTS.setRegistryName(new ResourceLocation(MODID, "crafting_special_combine_enchantments"));
         event.getRegistry().register(CRAFTING_COMBINE_ENCHANTMENTS);
 
-        CRAFTING_CONVERT_BOOK = new SpecialRecipeSerializer<>(ReciepeConvertBook::new);
+        CRAFTING_CONVERT_BOOK = new SpecialRecipeSerializer<>(RecipeConvertBook::new);
         CRAFTING_CONVERT_BOOK.setRegistryName(new ResourceLocation(MODID, "crafting_special_convert_book"));
         event.getRegistry().register(CRAFTING_CONVERT_BOOK);
 
-        CRAFTING_CONVERT_ENCHANTMENT = new SpecialRecipeSerializer<>(ReciepeConvertEnchantment::new);
+        CRAFTING_CONVERT_ENCHANTMENT = new SpecialRecipeSerializer<>(RecipeConvertEnchantment::new);
         CRAFTING_CONVERT_ENCHANTMENT.setRegistryName(new ResourceLocation(MODID, "crafting_special_convert_enchantment"));
         event.getRegistry().register(CRAFTING_CONVERT_ENCHANTMENT);
 
-        CRAFTING_ENCHANT_TOOL = new SpecialRecipeSerializer<>(ReciepeEnchantTool::new);
+        CRAFTING_ENCHANT_TOOL = new SpecialRecipeSerializer<>(RecipeEnchantTool::new);
         CRAFTING_ENCHANT_TOOL.setRegistryName(new ResourceLocation(MODID, "crafting_special_enchant_tool"));
         event.getRegistry().register(CRAFTING_ENCHANT_TOOL);
 
-        CRAFTING_EREMOVE_ENCHANTMENT = new SpecialRecipeSerializer<>(ReciepeRemoveEnchantment::new);
+        CRAFTING_EREMOVE_ENCHANTMENT = new SpecialRecipeSerializer<>(RecipeRemoveEnchantment::new);
         CRAFTING_EREMOVE_ENCHANTMENT.setRegistryName(new ResourceLocation(MODID, "crafting_special_remove_enchantment"));
         event.getRegistry().register(CRAFTING_EREMOVE_ENCHANTMENT);
 
-        CRAFTING_REPAIR_TOOL = new SpecialRecipeSerializer<>(ReciepeRepairTool::new);
+        CRAFTING_REPAIR_TOOL = new SpecialRecipeSerializer<>(RecipeRepairTool::new);
         CRAFTING_REPAIR_TOOL.setRegistryName(new ResourceLocation(MODID, "crafting_special_repair_tool"));
         event.getRegistry().register(CRAFTING_REPAIR_TOOL);
 

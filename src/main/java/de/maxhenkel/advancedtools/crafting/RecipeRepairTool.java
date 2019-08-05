@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReciepeRepairTool extends SpecialRecipe {
+public class RecipeRepairTool extends SpecialRecipe {
 
-    public ReciepeRepairTool(ResourceLocation idIn) {
+    public RecipeRepairTool(ResourceLocation idIn) {
         super(idIn);
     }
 

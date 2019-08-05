@@ -13,14 +13,21 @@ import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.Re
 import de.maxhenkel.advancedtools.integration.jei.category.upgrade.UpgradeRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.upgrade.UpgradeRecipeCategory;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
+import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.constants.VanillaRecipeCategoryUid;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.registration.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.ICraftingRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -38,6 +45,22 @@ public class JEIPlugin implements IModPlugin {
     public static final ResourceLocation CATEGORY_BOOK_CONVERTING = new ResourceLocation(Main.MODID, "advancedtools.book_converting");
     public static final ResourceLocation CATEGORY_ENCHANTMENT_CONVERTING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_converting");
     public static final ResourceLocation CATEGORY_ENCHANTMENT_COMBINING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_combining");
+
+    private static final ISubtypeInterpreter MATERIAL_SUBTYPE_INTERPRETER = itemStack -> StackUtils.getMaterial(itemStack).getName();
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
+        registration.registerSubtypeInterpreter(ModItems.PICKAXE, MATERIAL_SUBTYPE_INTERPRETER);
+        registration.registerSubtypeInterpreter(ModItems.AXE, MATERIAL_SUBTYPE_INTERPRETER);
+        registration.registerSubtypeInterpreter(ModItems.SHOVEL, MATERIAL_SUBTYPE_INTERPRETER);
+        registration.registerSubtypeInterpreter(ModItems.SWORD, MATERIAL_SUBTYPE_INTERPRETER);
+        registration.registerSubtypeInterpreter(ModItems.HOE, MATERIAL_SUBTYPE_INTERPRETER);
+        registration.useNbtForSubtypes(ModItems.PICKAXE);
+        registration.useNbtForSubtypes(ModItems.AXE);
+        registration.useNbtForSubtypes(ModItems.SHOVEL);
+        registration.useNbtForSubtypes(ModItems.SWORD);
+        registration.useNbtForSubtypes(ModItems.HOE);
+    }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registry) {
@@ -157,6 +180,76 @@ public class JEIPlugin implements IModPlugin {
 
         registry.addRecipes(ed, JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
 
+        //Tool crafting
+        List<ICraftingRecipe> recipes = new ArrayList<>();
+
+        for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
+            recipes.add(new ShapedToolRecipe(
+                    createList(
+                            material.getIngredient(), material.getIngredient(), material.getIngredient(),
+                            null, Ingredient.fromItems(Items.STICK), null,
+                            null, Ingredient.fromItems(Items.STICK), null
+                    ),
+                    ModItems.PICKAXE,
+                    material
+            ));
+            recipes.add(new ShapedToolRecipe(
+                    createList(
+                            material.getIngredient(), material.getIngredient(), null,
+                            material.getIngredient(), Ingredient.fromItems(Items.STICK), null,
+                            null, Ingredient.fromItems(Items.STICK), null
+                    ),
+                    ModItems.AXE,
+                    material
+            ));
+            recipes.add(new ShapedToolRecipe(
+                    createList(
+                            null, material.getIngredient(), null,
+                            null, Ingredient.fromItems(Items.STICK), null,
+                            null, Ingredient.fromItems(Items.STICK), null
+                    ),
+                    ModItems.SHOVEL,
+                    material
+            ));
+            recipes.add(new ShapedToolRecipe(
+                    createList(
+                            null, material.getIngredient(), null,
+                            null, material.getIngredient(), null,
+                            null, Ingredient.fromItems(Items.STICK), null
+                    ),
+                    ModItems.SWORD,
+                    material
+            ));
+            recipes.add(new ShapedToolRecipe(
+                    createList(
+                            material.getIngredient(), material.getIngredient(), null,
+                            null, Ingredient.fromItems(Items.STICK), null,
+                            null, Ingredient.fromItems(Items.STICK), null
+                    ),
+                    ModItems.HOE,
+                    material
+            ));
+        }
+
+        registry.addRecipes(recipes, VanillaRecipeCategoryUid.CRAFTING);
+    }
+
+    private class ShapedToolRecipe extends ShapedRecipe {
+        public ShapedToolRecipe(NonNullList<Ingredient> recipeItemsIn, Item item, AdvancedToolMaterial material) {
+            super(null, "", 3, 3, recipeItemsIn, StackUtils.setMaterial(new ItemStack(item), material));
+        }
+    }
+
+    private static NonNullList createList(Ingredient... ingredients) {
+        NonNullList list = NonNullList.create();
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient == null) {
+                list.add(Ingredient.EMPTY);
+            } else {
+                list.add(ingredient);
+            }
+        }
+        return list;
     }
 
     @Override

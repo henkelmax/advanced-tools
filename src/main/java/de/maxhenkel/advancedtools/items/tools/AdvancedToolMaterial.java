@@ -6,6 +6,8 @@ import de.maxhenkel.advancedtools.items.tools.matcher.SimpleMatcher;
 import de.maxhenkel.advancedtools.items.tools.matcher.TagMatcher;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -14,6 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class AdvancedToolMaterial {
 
@@ -44,8 +47,16 @@ public class AdvancedToolMaterial {
         diaTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/diamond_shovel_head"));
         diaTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/diamond_sword_head"));
         diaTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/diamond_hoe_head"));
-        DIAMOND = new AdvancedToolMaterial("diamond",
-                8F, 3F, 3, 2048, MATCHER_DIAMOND, diaTextures);
+        DIAMOND = new AdvancedToolMaterial(
+                "diamond",
+                8F,
+                3F,
+                3,
+                2048,
+                MATCHER_DIAMOND,
+                diaTextures,
+                () -> Ingredient.fromItems(Items.DIAMOND)
+        );
         materials.put("diamond", DIAMOND);
 
         Map<String, ResourceLocation> ironTextures = new HashMap<>();
@@ -54,8 +65,16 @@ public class AdvancedToolMaterial {
         ironTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/iron_shovel_head"));
         ironTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/iron_sword_head"));
         ironTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/iron_hoe_head"));
-        IRON = new AdvancedToolMaterial("iron",
-                6F, 2F, 2, 256, MATCHER_IRON, ironTextures);
+        IRON = new AdvancedToolMaterial(
+                "iron",
+                6F,
+                2F,
+                2,
+                256,
+                MATCHER_IRON,
+                ironTextures,
+                () -> Ingredient.fromItems(Items.IRON_INGOT)
+        );
         materials.put("iron", IRON);
 
         Map<String, ResourceLocation> goldTextures = new HashMap<>();
@@ -64,8 +83,16 @@ public class AdvancedToolMaterial {
         goldTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/gold_shovel_head"));
         goldTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/gold_sword_head"));
         goldTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/gold_hoe_head"));
-        GOLD = new AdvancedToolMaterial("gold",
-                12F, 0F, 0, 32, MATCHER_GOLD, goldTextures);
+        GOLD = new AdvancedToolMaterial(
+                "gold",
+                12F,
+                0F,
+                0,
+                32,
+                MATCHER_GOLD,
+                goldTextures,
+                () -> Ingredient.fromItems(Items.GOLD_INGOT)
+        );
         materials.put("gold", GOLD);
 
         Map<String, ResourceLocation> stoneTextures = new HashMap<>();
@@ -74,8 +101,16 @@ public class AdvancedToolMaterial {
         stoneTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/stone_shovel_head"));
         stoneTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/stone_sword_head"));
         stoneTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/stone_hoe_head"));
-        STONE = new AdvancedToolMaterial("stone",
-                4F, 1F, 1, 128, MATCHER_STONE, stoneTextures);
+        STONE = new AdvancedToolMaterial(
+                "stone",
+                4F,
+                1F,
+                1,
+                128,
+                MATCHER_STONE,
+                stoneTextures,
+                () -> Ingredient.fromItems(Blocks.COBBLESTONE)
+        );
         materials.put("stone", STONE);
 
         Map<String, ResourceLocation> woodTextures = new HashMap<>();
@@ -84,8 +119,16 @@ public class AdvancedToolMaterial {
         woodTextures.put(SHOVEL, new ResourceLocation(Main.MODID, "item/shovel/wood_shovel_head"));
         woodTextures.put(SWORD, new ResourceLocation(Main.MODID, "item/sword/wood_sword_head"));
         woodTextures.put(HOE, new ResourceLocation(Main.MODID, "item/hoe/wood_hoe_head"));
-        WOOD = new AdvancedToolMaterial("wood",
-                2F, 0F, 0, 64, MATCHER_WOOD, woodTextures);
+        WOOD = new AdvancedToolMaterial(
+                "wood",
+                2F,
+                0F,
+                0,
+                64,
+                MATCHER_WOOD,
+                woodTextures,
+                () -> Ingredient.fromTag(ItemTags.PLANKS)
+        );
         materials.put("wood", WOOD);
     }
 
@@ -96,8 +139,9 @@ public class AdvancedToolMaterial {
     private int maxDamage;
     private MaterialMatcher matcher;
     private Map<String, ResourceLocation> partTextures;
+    private Supplier<Ingredient> ingredient;
 
-    public AdvancedToolMaterial(String name, float efficiency, float attackModifier, int harvestLevel, int maxDamage, MaterialMatcher matcher, Map<String, ResourceLocation> partTextures) {
+    public AdvancedToolMaterial(String name, float efficiency, float attackModifier, int harvestLevel, int maxDamage, MaterialMatcher matcher, Map<String, ResourceLocation> partTextures, Supplier<Ingredient> ingredient) {
         this.name = name;
         this.efficiency = efficiency;
         this.attackModifier = attackModifier;
@@ -105,6 +149,7 @@ public class AdvancedToolMaterial {
         this.maxDamage = maxDamage;
         this.matcher = matcher;
         this.partTextures = partTextures;
+        this.ingredient = ingredient;
     }
 
     public MaterialMatcher getMatcher() {
@@ -129,6 +174,10 @@ public class AdvancedToolMaterial {
 
     public String getName() {
         return name;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient.get();
     }
 
     public ITextComponent getDisplayName() {

@@ -17,11 +17,11 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public class ReciepeConvertBook extends SpecialRecipe {
+public class RecipeConvertBook extends SpecialRecipe {
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeConvertBook(ResourceLocation id) {
+    public RecipeConvertBook(ResourceLocation id) {
         super(id);
         ingredients = new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(EnchantedBookItem.class, 1)

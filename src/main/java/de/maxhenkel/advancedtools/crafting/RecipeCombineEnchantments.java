@@ -11,11 +11,11 @@ import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class ReciepeCombineEnchantments extends SpecialRecipe {
+public class RecipeCombineEnchantments extends SpecialRecipe {
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public ReciepeCombineEnchantments(ResourceLocation id) {
+    public RecipeCombineEnchantments(ResourceLocation id) {
         super(id);
         ingredients = new RecipeHelper.RecipeIngredient[]{
                 new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 2)
