@@ -3,6 +3,7 @@ package de.maxhenkel.advancedtools.items.tools;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import de.maxhenkel.advancedtools.Config;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModCreativeTabs;
 import de.maxhenkel.advancedtools.ModItems;
@@ -298,8 +299,12 @@ public abstract class AbstractTool extends ToolItem {
 
     @Override
     public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        entity.lifespan = Integer.MAX_VALUE;
-        entity.setInvulnerable(true);
+        if (Config.TOOL_ITEMS_NEVER_DESPAWN.get()) {
+            entity.lifespan = Integer.MAX_VALUE;
+        }
+        if (Config.TOOL_ITEMS_INDESTRUCTIBLE.get()) {
+            entity.setInvulnerable(true);
+        }
         return false;
     }
 
