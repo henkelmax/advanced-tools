@@ -3,6 +3,7 @@ package de.maxhenkel.advancedtools.integration.jei.category.convert_book;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.integration.jei.JEIPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
@@ -16,7 +17,9 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRecipe> {
 
@@ -38,8 +41,22 @@ public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRec
     }
 
     @Override
-    public void setIngredients(ConvertBookRecipe convertBookRecipeWrapper, IIngredients iIngredients) {
+    public void setIngredients(ConvertBookRecipe wrapper, IIngredients iIngredients) {
+        ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
+        for (EnchantmentData data : wrapper.getEnchantments()) {
+            EnchantedBookItem.addEnchantment(stack, data);
+        }
+        iIngredients.setInput(VanillaTypes.ITEM, stack);
 
+        List<ItemStack> outputs = new ArrayList<>();
+        Iterator<EnchantmentData> iterator = wrapper.getEnchantments().iterator();
+        for (int i = 10; i <= 18 && iterator.hasNext(); i++) {
+            EnchantmentData data = iterator.next();
+            ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
+            ModItems.ENCHANTMENT.setEnchantment(ench, data.enchantment, data.enchantmentLevel);
+            outputs.add(ench);
+        }
+        iIngredients.setOutputs(VanillaTypes.ITEM, outputs);
     }
 
     @Override

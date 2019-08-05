@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import de.maxhenkel.advancedtools.Config;
 import de.maxhenkel.advancedtools.Main;
-import de.maxhenkel.advancedtools.ModCreativeTabs;
 import de.maxhenkel.advancedtools.ModItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -42,7 +41,7 @@ import java.util.function.Consumer;
 public abstract class AbstractTool extends ToolItem {
 
     public AbstractTool() {
-        super(0F, 0F, ItemTier.DIAMOND, null, new Item.Properties().group(ModCreativeTabs.TAB_ADVANCED_TOOLS).maxDamage(100));
+        super(0F, 0F, ItemTier.DIAMOND, null, new Item.Properties().maxDamage(100));
         for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
             addPropertyOverride(new ResourceLocation(Main.MODID, material.getName()), (itemStack, world, livingEntity) -> material.equals(StackUtils.getMaterial(itemStack)) ? 1F : 0F);
         }

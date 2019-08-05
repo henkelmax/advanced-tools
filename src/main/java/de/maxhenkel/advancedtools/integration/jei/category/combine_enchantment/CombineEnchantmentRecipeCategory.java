@@ -10,12 +10,12 @@ import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchantment> {
+public class CombineEnchantmentRecipeCategory implements IRecipeCategory<EnchantmentData> {
 
     private IGuiHelper helper;
 
@@ -35,12 +35,13 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
     }
 
     @Override
-    public void setIngredients(Enchantment recipe, IIngredients ingredients) {
+    public void setIngredients(EnchantmentData recipe, IIngredients ingredients) {
         ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe, recipe.getMaxLevel() - 1);
+        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.enchantment, recipe.enchantmentLevel - 1);
+        ingredients.setInput(VanillaTypes.ITEM, enchantment);
 
         ItemStack enchantmentOut = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantmentOut, recipe, recipe.getMaxLevel());
+        ModItems.ENCHANTMENT.setEnchantment(enchantmentOut, recipe.enchantment, recipe.enchantmentLevel);
         ingredients.setOutput(VanillaTypes.ITEM, enchantmentOut);
     }
 
@@ -55,17 +56,17 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
     }
 
     @Override
-    public Class<? extends Enchantment> getRecipeClass() {
-        return Enchantment.class;
+    public Class<? extends EnchantmentData> getRecipeClass() {
+        return EnchantmentData.class;
     }
 
     @Override
-    public void setRecipe(IRecipeLayout layout, Enchantment wrapper, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayout layout, EnchantmentData wrapper, IIngredients ingredients) {
         IGuiItemStackGroup group = layout.getItemStacks();
 
         group.init(0, true, 0, 0);
         ItemStack stack = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(stack, wrapper, wrapper.getMaxLevel() - 1);
+        ModItems.ENCHANTMENT.setEnchantment(stack, wrapper.enchantment, wrapper.enchantmentLevel - 1);
         group.set(0, stack);
 
         group.init(1, true, 18, 0);
@@ -81,7 +82,7 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
 
         group.init(9, false, 94, 18);
         ItemStack stack1 = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(stack1, wrapper, wrapper.getMaxLevel());
+        ModItems.ENCHANTMENT.setEnchantment(stack1, wrapper.enchantment, wrapper.enchantmentLevel);
         group.set(9, stack1);
     }
 

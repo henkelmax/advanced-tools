@@ -60,6 +60,15 @@ public class JEIPlugin implements IModPlugin {
         registration.useNbtForSubtypes(ModItems.SHOVEL);
         registration.useNbtForSubtypes(ModItems.SWORD);
         registration.useNbtForSubtypes(ModItems.HOE);
+
+        registration.registerSubtypeInterpreter(ModItems.ENCHANTMENT, itemStack -> {
+            EnchantmentData data = ModItems.ENCHANTMENT.getEnchantment(itemStack);
+            if (data == null) {
+                return "";
+            }
+            return data.enchantment.getRegistryName().toString() + ":" + data.enchantmentLevel;
+        });
+        registration.useNbtForSubtypes(ModItems.ENCHANTMENT);
     }
 
     @Override
@@ -80,18 +89,29 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registry) {
+        Iterator<Enchantment> iterator = ForgeRegistries.ENCHANTMENTS.iterator();
+        List<Enchantment> allEnchantments = new ArrayList<>();
+        Random r = new Random();
+        while (iterator.hasNext()) {
+            allEnchantments.add(iterator.next());
+        }
+
+        // Enchant
         List<EnchantmentRecipe> enchants = new ArrayList<>();
         for (AbstractTool tool : ModItems.getAllTools()) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
                 Iterator<Enchantment> i = ForgeRegistries.ENCHANTMENTS.iterator();
                 while (i.hasNext()) {
                     Enchantment enchantment = i.next();
-                    ItemStack stack = new ItemStack(tool);
-                    ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
-                    ModItems.ENCHANTMENT.setEnchantment(ench, enchantment, enchantment.getMaxLevel());
-                    if (!StackUtils.isEmpty(tool.applyEnchantment(stack, ench))) {
-                        enchants.add(new EnchantmentRecipe(enchantment, tool, material));
+                    for (int j = 1; j <= enchantment.getMaxLevel(); j++) {
+                        ItemStack stack = new ItemStack(tool);
+                        ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
+                        ModItems.ENCHANTMENT.setEnchantment(ench, enchantment, j);
+                        if (!StackUtils.isEmpty(tool.applyEnchantment(stack, ench))) {
+                            enchants.add(new EnchantmentRecipe(new EnchantmentData(enchantment, j), tool, material));
+                        }
                     }
+
                 }
             }
         }
@@ -106,12 +126,14 @@ public class JEIPlugin implements IModPlugin {
                 Iterator<Enchantment> i = ForgeRegistries.ENCHANTMENTS.iterator();
                 while (i.hasNext()) {
                     Enchantment enchantment = i.next();
-                    ItemStack stack = new ItemStack(tool);
-                    StackUtils.addEnchantment(stack, enchantment, enchantment.getMaxLevel());
-                    ItemStack ench = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
-                    ModItems.ENCHANTMENT_REMOVER.setEnchantment(ench, enchantment);
-                    if (!StackUtils.isEmpty(tool.removeEnchantment(stack, ench))) {
-                        remove.add(new EnchantmentRemoveRecipe(new EnchantmentData(enchantment, enchantment.getMaxLevel()), tool, material));
+                    for (int j = 1; j <= enchantment.getMaxLevel(); j++) {
+                        ItemStack stack = new ItemStack(tool);
+                        StackUtils.addEnchantment(stack, enchantment, j);
+                        ItemStack ench = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
+                        ModItems.ENCHANTMENT_REMOVER.setEnchantment(ench, enchantment);
+                        if (!StackUtils.isEmpty(tool.removeEnchantment(stack, ench))) {
+                            remove.add(new EnchantmentRemoveRecipe(new EnchantmentData(enchantment, enchantment.getMaxLevel()), tool, material));
+                        }
                     }
                 }
             }
@@ -122,21 +144,17 @@ public class JEIPlugin implements IModPlugin {
 
         //Convert book
         List<ConvertBookRecipe> conv = new ArrayList<>();
-        Iterator<Enchantment> iterator = ForgeRegistries.ENCHANTMENTS.iterator();
-        List<Enchantment> allEnchantments = new ArrayList<>();
-        Random r = new Random();
-        while (iterator.hasNext()) {
-            allEnchantments.add(iterator.next());
-        }
 
         for (Enchantment enchantment : allEnchantments) {
-            EnchantmentData[] enchs = new EnchantmentData[r.nextInt(8) + 1];
-            enchs[0] = new EnchantmentData(enchantment, enchantment.getMaxLevel());
-            for (int i = 1; i < enchs.length; i++) {
-                Enchantment re = allEnchantments.get(r.nextInt(allEnchantments.size()));
-                enchs[i] = new EnchantmentData(re, re.getMaxLevel());
+            for (int j = 1; j <= enchantment.getMaxLevel(); j++) {
+                EnchantmentData[] enchs = new EnchantmentData[r.nextInt(8) + 1];
+                enchs[0] = new EnchantmentData(enchantment, j);
+                for (int i = 1; i < enchs.length; i++) {
+                    Enchantment re = allEnchantments.get(r.nextInt(allEnchantments.size()));
+                    enchs[i] = new EnchantmentData(re, r.nextInt(re.getMaxLevel()) + 1);
+                }
+                conv.add(new ConvertBookRecipe(enchs));
             }
-            conv.add(new ConvertBookRecipe(enchs));
         }
 
         registry.addRecipes(conv, JEIPlugin.CATEGORY_BOOK_CONVERTING);
@@ -158,14 +176,17 @@ public class JEIPlugin implements IModPlugin {
 
 
         //Combine
-        List<Enchantment> enchantments = new ArrayList<>();
+        List<EnchantmentData> enchantments = new ArrayList<>();
         Iterator<Enchantment> it = ForgeRegistries.ENCHANTMENTS.iterator();
         while (it.hasNext()) {
             Enchantment enchantment = it.next();
-            if (enchantment.getMaxLevel() > 1) {
-                enchantments.add(enchantment);
+            if (enchantment.getMaxLevel() >= 2) {
+                for (int j = 2; j <= enchantment.getMaxLevel(); j++) {
+                    enchantments.add(new EnchantmentData(enchantment, j));
+                }
             }
         }
+
 
         registry.addRecipes(enchantments, JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
 
@@ -174,8 +195,10 @@ public class JEIPlugin implements IModPlugin {
         List<EnchantmentData> ed = new ArrayList<>();
         Iterator<Enchantment> enchIt = ForgeRegistries.ENCHANTMENTS.iterator();
         while (enchIt.hasNext()) {
-            Enchantment e = enchIt.next();
-            ed.add(new EnchantmentData(e, e.getMaxLevel()));
+            Enchantment enchantment = enchIt.next();
+            for (int j = 1; j <= enchantment.getMaxLevel(); j++) {
+                ed.add(new EnchantmentData(enchantment, j));
+            }
         }
 
         registry.addRecipes(ed, JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
@@ -183,7 +206,8 @@ public class JEIPlugin implements IModPlugin {
         //Tool crafting
         List<ICraftingRecipe> recipes = new ArrayList<>();
 
-        for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
+        for (
+                AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
             recipes.add(new ShapedToolRecipe(
                     createList(
                             material.getIngredient(), material.getIngredient(), material.getIngredient(),
@@ -238,6 +262,7 @@ public class JEIPlugin implements IModPlugin {
         public ShapedToolRecipe(NonNullList<Ingredient> recipeItemsIn, Item item, AdvancedToolMaterial material) {
             super(null, "", 3, 3, recipeItemsIn, StackUtils.setMaterial(new ItemStack(item), material));
         }
+
     }
 
     private static NonNullList createList(Ingredient... ingredients) {
@@ -250,42 +275,6 @@ public class JEIPlugin implements IModPlugin {
             }
         }
         return list;
-    }
-
-    @Override
-    public void registerAdvanced(IAdvancedRegistration registration) {
-        /*
-        IIngredientBlacklist blacklist = registration.getJeiHelpers().getIngredientBlacklist();
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_PICKAXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_PICKAXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_PICKAXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_PICKAXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_PICKAXE));
-
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_AXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_AXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_AXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_AXE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_AXE));
-
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_SHOVEL));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_SHOVEL));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_SHOVEL));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_SHOVEL));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_SHOVEL));
-
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_SWORD));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_SWORD));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_SWORD));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_SWORD));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_SWORD));
-
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.DIAMOND_HOE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.IRON_HOE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.GOLDEN_HOE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.STONE_HOE));
-        blacklist.addIngredientToBlacklist(new ItemStack(Items.WOODEN_HOE));
-        */
     }
 
     @Override
