@@ -1,9 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "advancedtools:tool_recipe",
   "pattern": [
+    "XX",
     " #",
-    "X#",
-    "XX"
+    " #"
   ],
   "key": {
     "#": {
@@ -14,6 +14,7 @@
     }
   },
   "result": {
-    "item": "minecraft:diamond_axe"
+    "item": "advancedtools:hoe",
+    "material": "diamond"
   }
 }

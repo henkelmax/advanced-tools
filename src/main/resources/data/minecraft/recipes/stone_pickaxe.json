@@ -1,9 +1,9 @@
 {
-  "type": "advancedtools:tool_recipe",
+  "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
     " # ",
-    " # "
+    " # ",
+    "XXX"
   ],
   "key": {
     "#": {
@@ -14,7 +14,6 @@
     }
   },
   "result": {
-    "item": "advancedtools:pickaxe",
-    "material": "stone"
+    "item": "minecraft:stone_pickaxe"
   }
 }

@@ -1,9 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "advancedtools:tool_recipe",
   "pattern": [
-    " #",
-    "X#",
-    "XX"
+    "X",
+    "X",
+    "#"
   ],
   "key": {
     "#": {
@@ -14,6 +14,7 @@
     }
   },
   "result": {
-    "item": "minecraft:iron_axe"
+    "item": "advancedtools:sword",
+    "material": "iron"
   }
 }
