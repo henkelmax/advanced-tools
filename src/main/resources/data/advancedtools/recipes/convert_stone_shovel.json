@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:stone_shovel"
+  },
+  "result": {
+    "item": "advancedtools:shovel",
+    "material": "stone"
+  }
+}

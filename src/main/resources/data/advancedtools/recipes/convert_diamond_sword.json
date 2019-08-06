@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:diamond_sword"
+  },
+  "result": {
+    "item": "advancedtools:sword",
+    "material": "diamond"
+  }
+}

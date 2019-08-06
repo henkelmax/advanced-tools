@@ -1,7 +1,6 @@
 package de.maxhenkel.advancedtools.integration.jei.category.upgrade;
 
 import de.maxhenkel.advancedtools.Main;
-import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.integration.jei.JEIPlugin;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import mezz.jei.api.constants.VanillaTypes;
@@ -12,6 +11,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -34,7 +34,7 @@ public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipe> {
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(ModItems.ENCHANTMENT));
+        return helper.createDrawableIngredient(new ItemStack(Items.DIAMOND));
     }
 
     @Override

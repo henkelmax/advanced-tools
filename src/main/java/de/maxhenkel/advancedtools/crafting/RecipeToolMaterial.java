@@ -8,8 +8,10 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ICraftingRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -69,6 +71,11 @@ public class RecipeToolMaterial implements ICraftingRecipe, net.minecraftforge.c
 
     public ShapedRecipe getRecipe() {
         return recipe;
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return recipe.getIngredients();
     }
 
     public static class RecipeToolMaterialSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<RecipeToolMaterial> {

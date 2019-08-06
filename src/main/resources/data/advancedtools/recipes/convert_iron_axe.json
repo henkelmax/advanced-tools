@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:iron_axe"
+  },
+  "result": {
+    "item": "advancedtools:axe",
+    "material": "iron"
+  }
+}

@@ -73,6 +73,7 @@ public class Main {
     public static IRecipeSerializer CRAFTING_EREMOVE_ENCHANTMENT;
     public static IRecipeSerializer CRAFTING_REPAIR_TOOL;
     public static RecipeToolMaterial.RecipeToolMaterialSerializer CRAFTING_TOOL_MATERIAL;
+    public static RecipeConvertTool.RecipeConvertToolSerializer CRAFTING_CONVERT_TOOL;
 
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
@@ -103,6 +104,10 @@ public class Main {
         CRAFTING_TOOL_MATERIAL = new RecipeToolMaterial.RecipeToolMaterialSerializer();
         CRAFTING_TOOL_MATERIAL.setRegistryName(new ResourceLocation(MODID, "tool_recipe"));
         event.getRegistry().register(CRAFTING_TOOL_MATERIAL);
+
+        CRAFTING_CONVERT_TOOL = new RecipeConvertTool.RecipeConvertToolSerializer();
+        CRAFTING_CONVERT_TOOL.setRegistryName(new ResourceLocation(MODID, "convert_tool"));
+        event.getRegistry().register(CRAFTING_CONVERT_TOOL);
     }
 
 }

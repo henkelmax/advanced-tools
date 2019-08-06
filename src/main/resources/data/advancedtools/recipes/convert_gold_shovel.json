@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:golden_shovel"
+  },
+  "result": {
+    "item": "advancedtools:shovel",
+    "material": "gold"
+  }
+}

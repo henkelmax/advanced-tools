@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:stone_pickaxe"
+  },
+  "result": {
+    "item": "advancedtools:pickaxe",
+    "material": "stone"
+  }
+}

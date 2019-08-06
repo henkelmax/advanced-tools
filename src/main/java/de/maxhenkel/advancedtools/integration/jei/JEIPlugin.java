@@ -2,6 +2,8 @@ package de.maxhenkel.advancedtools.integration.jei;
 
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
+import de.maxhenkel.advancedtools.crafting.RecipeConvertTool;
+import de.maxhenkel.advancedtools.crafting.RecipeToolMaterial;
 import de.maxhenkel.advancedtools.integration.jei.category.apply_enchantment.ApplyEnchantmentRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.apply_enchantment.EnchantmentRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.combine_enchantment.CombineEnchantmentRecipeCategory;
@@ -16,25 +18,23 @@ import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import mezz.jei.api.IModPlugin;
-import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
+import mezz.jei.api.recipe.category.extensions.IExtendableRecipeCategory;
+import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import mezz.jei.api.registration.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.ICraftingRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @mezz.jei.api.JeiPlugin
 public class JEIPlugin implements IModPlugin {
@@ -202,79 +202,26 @@ public class JEIPlugin implements IModPlugin {
         }
 
         registry.addRecipes(ed, JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
-
-        //Tool crafting
-        List<ICraftingRecipe> recipes = new ArrayList<>();
-
-        for (
-                AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
-            recipes.add(new ShapedToolRecipe(
-                    createList(
-                            material.getIngredient(), material.getIngredient(), material.getIngredient(),
-                            null, Ingredient.fromItems(Items.STICK), null,
-                            null, Ingredient.fromItems(Items.STICK), null
-                    ),
-                    ModItems.PICKAXE,
-                    material
-            ));
-            recipes.add(new ShapedToolRecipe(
-                    createList(
-                            material.getIngredient(), material.getIngredient(), null,
-                            material.getIngredient(), Ingredient.fromItems(Items.STICK), null,
-                            null, Ingredient.fromItems(Items.STICK), null
-                    ),
-                    ModItems.AXE,
-                    material
-            ));
-            recipes.add(new ShapedToolRecipe(
-                    createList(
-                            null, material.getIngredient(), null,
-                            null, Ingredient.fromItems(Items.STICK), null,
-                            null, Ingredient.fromItems(Items.STICK), null
-                    ),
-                    ModItems.SHOVEL,
-                    material
-            ));
-            recipes.add(new ShapedToolRecipe(
-                    createList(
-                            null, material.getIngredient(), null,
-                            null, material.getIngredient(), null,
-                            null, Ingredient.fromItems(Items.STICK), null
-                    ),
-                    ModItems.SWORD,
-                    material
-            ));
-            recipes.add(new ShapedToolRecipe(
-                    createList(
-                            material.getIngredient(), material.getIngredient(), null,
-                            null, Ingredient.fromItems(Items.STICK), null,
-                            null, Ingredient.fromItems(Items.STICK), null
-                    ),
-                    ModItems.HOE,
-                    material
-            ));
-        }
-
-        registry.addRecipes(recipes, VanillaRecipeCategoryUid.CRAFTING);
     }
 
-    private class ShapedToolRecipe extends ShapedRecipe {
-        public ShapedToolRecipe(NonNullList<Ingredient> recipeItemsIn, Item item, AdvancedToolMaterial material) {
-            super(null, "", 3, 3, recipeItemsIn, StackUtils.setMaterial(new ItemStack(item), material));
-        }
-
+    @Override
+    public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+        IExtendableRecipeCategory<ICraftingRecipe, ICraftingCategoryExtension> craftingCategory = registration.getCraftingCategory();
+        craftingCategory.addCategoryExtension(RecipeConvertTool.class, ConvertToolExtension::new);
+        craftingCategory.addCategoryExtension(RecipeToolMaterial.class, CraftToolExtension::new);
     }
 
-    private static NonNullList createList(Ingredient... ingredients) {
-        NonNullList list = NonNullList.create();
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient == null) {
-                list.add(Ingredient.EMPTY);
-            } else {
-                list.add(ingredient);
+    private <T extends IRecipe> List<T> getAllRecipes(Class<T> clazz) {
+        List<T> convertRecipes = new ArrayList<>();
+        ClientWorld world = Minecraft.getInstance().world;
+        RecipeManager recipeManager = world.getRecipeManager();
+        Collection<IRecipe<?>> recipes = recipeManager.getRecipes();
+        for (IRecipe recipe : recipes) {
+            if (recipe.getClass().isAssignableFrom(clazz)) {
+                convertRecipes.add((T) recipe);
             }
         }
-        return list;
+        return convertRecipes;
     }
 
     @Override

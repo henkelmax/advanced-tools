@@ -32,7 +32,7 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
 
     @Override
     public IDrawable getIcon() {
-        return helper.createDrawableIngredient(new ItemStack(ModItems.ENCHANTMENT));
+        return helper.createDrawableIngredient(new ItemStack(ModItems.ENCHANTMENT_REMOVER));
     }
 
     @Override

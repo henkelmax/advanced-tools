@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:golden_pickaxe"
+  },
+  "result": {
+    "item": "advancedtools:pickaxe",
+    "material": "gold"
+  }
+}

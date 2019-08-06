@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:iron_hoe"
+  },
+  "result": {
+    "item": "advancedtools:hoe",
+    "material": "iron"
+  }
+}
