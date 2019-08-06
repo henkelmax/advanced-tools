@@ -1,14 +1,12 @@
 # Advanced Tools
 
-This mod adds tools that will never break and track your statistics.
-
 ## Features
 
-- Indestructibe
-- Material upgrading
-- Repairing
-- Statistics
-- Modifiable Enchantments
+- Tools are indestructibe
+- Tool materials can be upgraded
+- Tools can be repaired
+- Tools track statistics
+- Tools have modifiable enchantments
 - Full [JEI](https://www.curseforge.com/minecraft/mc-mods/jei) compatibility
 
 ![](https://i.imgur.com/22R8gxN.png)
