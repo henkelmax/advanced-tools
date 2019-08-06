@@ -29,57 +29,59 @@ public class SwordEvents {
             return;
         }
 
-        if (targetEntity.canBeAttackedWithItem()) {
-            if (!targetEntity.hitByEntity(player)) {
-                float damage = (float) player.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
-                float f1;
+        if (!targetEntity.canBeAttackedWithItem()) {
+            return;
+        }
+        if (targetEntity.hitByEntity(player)) {
+            return;
+        }
+        float damage = (float) player.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
+        float f1;
 
-                if (targetEntity instanceof LivingEntity) {
-                    f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), ((LivingEntity) targetEntity).getCreatureAttribute());
-                } else {
-                    f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), CreatureAttribute.UNDEFINED);
+        if (targetEntity instanceof LivingEntity) {
+            f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), ((LivingEntity) targetEntity).getCreatureAttribute());
+        } else {
+            f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), CreatureAttribute.UNDEFINED);
+        }
+
+        float cooldown = player.getCooledAttackStrength(0.5F);
+        damage = damage * (0.2F + cooldown * cooldown * 0.8F);
+        f1 = f1 * cooldown;
+
+        if (damage > 0.0F || f1 > 0.0F) {
+            boolean flag = cooldown > 0.9F;
+            boolean flag1 = false;
+            int i = 0;
+            i = i + EnchantmentHelper.getKnockbackModifier(player);
+
+            if (player.isSprinting() && flag) {
+                ++i;
+                flag1 = true;
+            }
+
+            boolean flag2 = flag && player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(Effects.BLINDNESS) /*&& !player.isRiding()*/ && targetEntity instanceof LivingEntity;
+            flag2 = flag2 && !player.isSprinting();
+
+            damage = damage + f1;
+            boolean flag3 = false;
+            double d0 = (double) (player.distanceWalkedModified - player.prevDistanceWalkedModified);
+
+            if (flag && !flag2 && !flag1 && player.onGround && d0 < (double) player.getAIMoveSpeed()) {
+                flag3 = true;
+            }
+
+            if (flag3) {
+                float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(player) * damage;
+
+                for (LivingEntity entitylivingbase : player.world.getEntitiesWithinAABB(LivingEntity.class, targetEntity.getBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
+                    if (entitylivingbase != player && entitylivingbase != targetEntity && !player.isOnSameTeam(entitylivingbase) && player.getDistanceSq(entitylivingbase) < 9.0D) {
+                        entitylivingbase.knockBack(player, 0.4F, (double) MathHelper.sin(player.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(player.rotationYaw * 0.017453292F)));
+                        entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage(player), f3);
+                    }
                 }
 
-                float cooldown = player.getCooledAttackStrength(0.5F);
-                damage = damage * (0.2F + cooldown * cooldown * 0.8F);
-                f1 = f1 * cooldown;
-
-                if (damage > 0.0F || f1 > 0.0F) {
-                    boolean flag = cooldown > 0.9F;
-                    boolean flag1 = false;
-                    int i = 0;
-                    i = i + EnchantmentHelper.getKnockbackModifier(player);
-
-                    if (player.isSprinting() && flag) {
-                        ++i;
-                        flag1 = true;
-                    }
-
-                    boolean flag2 = flag && player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(Effects.BLINDNESS) /*&& !player.isRiding()*/ && targetEntity instanceof LivingEntity;
-                    flag2 = flag2 && !player.isSprinting();
-
-                    damage = damage + f1;
-                    boolean flag3 = false;
-                    double d0 = (double) (player.distanceWalkedModified - player.prevDistanceWalkedModified);
-
-                    if (flag && !flag2 && !flag1 && player.onGround && d0 < (double) player.getAIMoveSpeed()) {
-                        flag3 = true;
-                    }
-
-                    if (flag3) {
-                        float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(player) * damage;
-
-                        for (LivingEntity entitylivingbase : player.world.getEntitiesWithinAABB(LivingEntity.class, targetEntity.getBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
-                            if (entitylivingbase != player && entitylivingbase != targetEntity && !player.isOnSameTeam(entitylivingbase) && player.getDistanceSq(entitylivingbase) < 9.0D) {
-                                entitylivingbase.knockBack(player, 0.4F, (double) MathHelper.sin(player.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(player.rotationYaw * 0.017453292F)));
-                                entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage(player), f3);
-                            }
-                        }
-
-                        player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, player.getSoundCategory(), 1.0F, 1.0F);
-                        player.spawnSweepParticles();
-                    }
-                }
+                player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, player.getSoundCategory(), 1.0F, 1.0F);
+                player.spawnSweepParticles();
             }
         }
     }
