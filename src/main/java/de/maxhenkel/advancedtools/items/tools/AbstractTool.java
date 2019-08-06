@@ -70,7 +70,7 @@ public abstract class AbstractTool extends ToolItem {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
             tooltip.add(new TranslationTextComponent("tooltip.material", mat.getDisplayName().applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
-            if (!flagIn.isAdvanced()) {
+            if (!flagIn.isAdvanced() && !isBroken(stack)) {
                 tooltip.add(new TranslationTextComponent("tooltip.durability_left", new StringTextComponent(String.valueOf(getMaxDamage(stack) - stack.getDamage())).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
             }
         }

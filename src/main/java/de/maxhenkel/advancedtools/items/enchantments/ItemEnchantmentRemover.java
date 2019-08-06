@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,10 +29,10 @@ public class ItemEnchantmentRemover extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.enchantment_remover"));
+        tooltip.add(new TranslationTextComponent("tooltip.enchantment_remover").applyTextStyle(TextFormatting.GRAY));
         Enchantment data = getEnchantment(stack);
         if (data != null) {
-            tooltip.add(new TranslationTextComponent(data.getName()));
+            tooltip.add(new TranslationTextComponent(data.getName()).applyTextStyle(TextFormatting.GRAY));
         }
     }
 
