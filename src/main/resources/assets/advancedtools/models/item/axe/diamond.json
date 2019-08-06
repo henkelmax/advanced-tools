@@ -1,7 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedtools:item/axe/axe_handle",
-    "layer1": "advancedtools:item/axe/diamond_axe_head"
+    "layer0": "minecraft:item/diamond_axe"
   }
 }

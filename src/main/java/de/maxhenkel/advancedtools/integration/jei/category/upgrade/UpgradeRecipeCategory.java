@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipe> {
@@ -41,7 +42,7 @@ public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipe> {
     public void setIngredients(UpgradeRecipe recipe, IIngredients ingredients) {
         ItemStack tool = new ItemStack(recipe.getAbstractTool());
         StackUtils.setMaterial(tool, recipe.getMaterialOld());
-        List<ItemStack> items = new ArrayList<>(recipe.getMaterialNew().getMatcher().getAll());
+        List<ItemStack> items = new ArrayList<>(Arrays.asList(recipe.getMaterialNew().getIngredient().getMatchingStacks()));
         items.add(tool);
         ingredients.setInputs(VanillaTypes.ITEM, items);
 
@@ -86,7 +87,7 @@ public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipe> {
         group.init(8, true, 36, 36);
 
         for (int i = 1; i <= 8 && i <= wrapper.getAbstractTool().getRepairCost(stack); i++) {
-            group.set(i, wrapper.getMaterialNew().getMatcher().getAll());
+            group.set(i, Arrays.asList(wrapper.getMaterialNew().getIngredient().getMatchingStacks()));
         }
 
         group.init(9, false, 94, 18);

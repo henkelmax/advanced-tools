@@ -56,7 +56,7 @@ public class RecipeRepairTool extends SpecialRecipe {
             AdvancedToolMaterial material = null;
             int count = 0;
             for (ItemStack stack : otherItems) {
-                if (mat.getMatcher().isMaterial(stack)) {
+                if (mat.getIngredient().test(stack)) {
                     if (material != null) {
                         if (!material.equals(mat)) {
                             return ItemStack.EMPTY;

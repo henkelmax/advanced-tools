@@ -1,7 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedtools:item/sword/sword_handle",
-    "layer1": "advancedtools:item/sword/gold_sword_head"
+    "layer0": "minecraft:item/golden_sword"
   }
 }

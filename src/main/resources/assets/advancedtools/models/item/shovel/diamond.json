@@ -1,7 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedtools:item/shovel/shovel_handle",
-    "layer1": "advancedtools:item/shovel/diamond_shovel_head"
+    "layer0": "minecraft:item/diamond_shovel"
   }
 }

@@ -1,7 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedtools:item/pickaxe/pickaxe_handle",
-    "layer1": "advancedtools:item/pickaxe/wood_pickaxe_head"
+    "layer0": "minecraft:item/wooden_pickaxe"
   }
 }

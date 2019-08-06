@@ -1,7 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advancedtools:item/hoe/hoe_handle",
-    "layer1": "advancedtools:item/hoe/stone_hoe_head"
+    "layer0": "minecraft:item/stone_hoe"
   }
 }
