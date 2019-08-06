@@ -39,7 +39,6 @@ public class Main {
     @OnlyIn(Dist.CLIENT)
     public void clientStart() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(Main.this::clientSetup);
-        // ModelLoaderRegistry.registerLoader(new AdvancedModelLoader());
     }
 
     @SubscribeEvent
@@ -67,6 +66,7 @@ public class Main {
     }
 
     public static IRecipeSerializer CRAFTING_COMBINE_ENCHANTMENTS;
+    public static IRecipeSerializer CRAFTING_SPLIT_ENCHANTMENTS;
     public static IRecipeSerializer CRAFTING_CONVERT_BOOK;
     public static IRecipeSerializer CRAFTING_CONVERT_ENCHANTMENT;
     public static IRecipeSerializer CRAFTING_ENCHANT_TOOL;
@@ -80,6 +80,10 @@ public class Main {
         CRAFTING_COMBINE_ENCHANTMENTS = new SpecialRecipeSerializer<>(RecipeCombineEnchantments::new);
         CRAFTING_COMBINE_ENCHANTMENTS.setRegistryName(new ResourceLocation(MODID, "crafting_special_combine_enchantments"));
         event.getRegistry().register(CRAFTING_COMBINE_ENCHANTMENTS);
+
+        CRAFTING_SPLIT_ENCHANTMENTS = new SpecialRecipeSerializer<>(RecipeSplitEnchantments::new);
+        CRAFTING_SPLIT_ENCHANTMENTS.setRegistryName(new ResourceLocation(MODID, "crafting_special_split_enchantments"));
+        event.getRegistry().register(CRAFTING_SPLIT_ENCHANTMENTS);
 
         CRAFTING_CONVERT_BOOK = new SpecialRecipeSerializer<>(RecipeConvertBook::new);
         CRAFTING_CONVERT_BOOK.setRegistryName(new ResourceLocation(MODID, "crafting_special_convert_book"));

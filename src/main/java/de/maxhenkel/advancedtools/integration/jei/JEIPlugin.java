@@ -12,6 +12,7 @@ import de.maxhenkel.advancedtools.integration.jei.category.convert_book.ConvertB
 import de.maxhenkel.advancedtools.integration.jei.category.convert_enchantment.ConvertEnchantmentRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.EnchantmentRemoveRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.RemoveEnchantmentRecipeCategory;
+import de.maxhenkel.advancedtools.integration.jei.category.split_enchantment.SplitEnchantmentRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.upgrade.UpgradeRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.upgrade.UpgradeRecipeCategory;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
@@ -45,6 +46,7 @@ public class JEIPlugin implements IModPlugin {
     public static final ResourceLocation CATEGORY_BOOK_CONVERTING = new ResourceLocation(Main.MODID, "advancedtools.book_converting");
     public static final ResourceLocation CATEGORY_ENCHANTMENT_CONVERTING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_converting");
     public static final ResourceLocation CATEGORY_ENCHANTMENT_COMBINING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_combining");
+    public static final ResourceLocation CATEGORY_ENCHANTMENT_SPLITTING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_splitting");
 
     private static final ISubtypeInterpreter MATERIAL_SUBTYPE_INTERPRETER = itemStack -> StackUtils.getMaterial(itemStack).getName();
 
@@ -55,11 +57,6 @@ public class JEIPlugin implements IModPlugin {
         registration.registerSubtypeInterpreter(ModItems.SHOVEL, MATERIAL_SUBTYPE_INTERPRETER);
         registration.registerSubtypeInterpreter(ModItems.SWORD, MATERIAL_SUBTYPE_INTERPRETER);
         registration.registerSubtypeInterpreter(ModItems.HOE, MATERIAL_SUBTYPE_INTERPRETER);
-        registration.useNbtForSubtypes(ModItems.PICKAXE);
-        registration.useNbtForSubtypes(ModItems.AXE);
-        registration.useNbtForSubtypes(ModItems.SHOVEL);
-        registration.useNbtForSubtypes(ModItems.SWORD);
-        registration.useNbtForSubtypes(ModItems.HOE);
 
         registration.registerSubtypeInterpreter(ModItems.ENCHANTMENT, itemStack -> {
             EnchantmentData data = ModItems.ENCHANTMENT.getEnchantment(itemStack);
@@ -68,7 +65,6 @@ public class JEIPlugin implements IModPlugin {
             }
             return data.enchantment.getRegistryName().toString() + ":" + data.enchantmentLevel;
         });
-        registration.useNbtForSubtypes(ModItems.ENCHANTMENT);
     }
 
     @Override
@@ -187,8 +183,20 @@ public class JEIPlugin implements IModPlugin {
             }
         }
 
-
         registry.addRecipes(enchantments, JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
+
+
+        //Split
+        List<EnchantmentData> splitEnchantments = new ArrayList<>();
+        Iterator<Enchantment> it1 = ForgeRegistries.ENCHANTMENTS.iterator();
+        while (it1.hasNext()) {
+            Enchantment enchantment = it1.next();
+            for (int i = 2; i <= enchantment.getMaxLevel(); i++) {
+                splitEnchantments.add(new EnchantmentData(enchantment, i));
+            }
+        }
+
+        registry.addRecipes(splitEnchantments, JEIPlugin.CATEGORY_ENCHANTMENT_SPLITTING);
 
 
         //Convert enchantment
@@ -231,6 +239,7 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipeCategories(new UpgradeRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new ConvertBookRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new CombineEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new SplitEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new ConvertEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 

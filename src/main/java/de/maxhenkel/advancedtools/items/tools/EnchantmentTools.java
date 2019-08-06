@@ -62,4 +62,14 @@ public class EnchantmentTools {
         ModItems.ENCHANTMENT.setEnchantment(combined, enchantmentData1.enchantment, enchantmentData1.enchantmentLevel + 1);
         return combined;
     }
+
+    public static ItemStack[] splitEnchantments(ItemStack enchantment) {
+        EnchantmentData enchantmentData = ModItems.ENCHANTMENT.getEnchantment(enchantment);
+        if (enchantmentData.enchantmentLevel <= 1) {
+            return null;
+        }
+        ItemStack split = new ItemStack(ModItems.ENCHANTMENT);
+        ModItems.ENCHANTMENT.setEnchantment(split, enchantmentData.enchantment, enchantmentData.enchantmentLevel - 1);
+        return new ItemStack[]{split.copy(), split};
+    }
 }
