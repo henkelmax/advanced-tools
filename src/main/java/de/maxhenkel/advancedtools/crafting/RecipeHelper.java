@@ -1,6 +1,5 @@
 package de.maxhenkel.advancedtools.crafting;
 
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +19,7 @@ public class RecipeHelper {
                     break;
                 }
             }
-            if (!flag && !StackUtils.isEmpty(stack)) {
+            if (!flag && !stack.isEmpty()) {
                 return false;
             }
         }

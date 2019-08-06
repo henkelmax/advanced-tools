@@ -5,7 +5,6 @@ import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantmentRemover;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.EnchantmentTools;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.inventory.CraftingInventory;
@@ -68,7 +67,7 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
                 enchantment = stack;
                 removerSlot = i;
             } else {
-                if (!StackUtils.isEmpty(stack)) {
+                if (!stack.isEmpty()) {
                     return null;
                 }
             }

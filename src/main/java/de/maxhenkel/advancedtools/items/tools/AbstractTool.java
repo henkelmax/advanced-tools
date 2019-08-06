@@ -83,11 +83,11 @@ public abstract class AbstractTool extends ToolItem {
             }
         }
 
-        Map<String, Integer> stats = StackUtils.getToolStats(stack);
+        Map<StackUtils.Stat, Integer> stats = StackUtils.getToolStats(stack);
         if (!stats.isEmpty()) {
             tooltip.add(new TranslationTextComponent("tooltips.stats").applyTextStyle(TextFormatting.GRAY));
-            for (Map.Entry<String, Integer> entry : stats.entrySet()) {
-                tooltip.add(new StringTextComponent("  - ").appendSibling(new TranslationTextComponent("stat." + entry.getKey(), new StringTextComponent(String.valueOf(entry.getValue())).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY)).applyTextStyle(TextFormatting.GRAY));
+            for (Map.Entry<StackUtils.Stat, Integer> entry : stats.entrySet()) {
+                tooltip.add(new StringTextComponent("  - ").appendSibling(entry.getKey().getTranslation(new StringTextComponent(String.valueOf(entry.getValue())).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY)).applyTextStyle(TextFormatting.GRAY));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -311,7 +311,7 @@ public abstract class AbstractTool extends ToolItem {
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         boolean flag = super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
         if (flag && countBreakStats(stack)) {
-            StackUtils.incrementToolStat(stack, StackUtils.STAT_BLOCKS_MINED, 1);
+            StackUtils.incrementToolStat(stack, StackUtils.Stat.STAT_BLOCKS_MINED, 1);
         }
         return flag;
     }
@@ -320,7 +320,7 @@ public abstract class AbstractTool extends ToolItem {
     public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean flag = super.hitEntity(stack, target, attacker);
         if (flag && countHitStats(stack)) {
-            StackUtils.incrementToolStat(stack, StackUtils.STAT_MOBS_HIT, 1);
+            StackUtils.incrementToolStat(stack, StackUtils.Stat.STAT_MOBS_HIT, 1);
         }
         return flag;
     }

@@ -106,7 +106,7 @@ public class AdvancedShovel extends AbstractTool {
 
         ActionResultType result = Items.DIAMOND_SHOVEL.onItemUse(context);
         if (result.equals(ActionResultType.SUCCESS)) {
-            StackUtils.incrementToolStat(context.getItem(), StackUtils.STAT_PATHS_CREATED, 1);
+            StackUtils.incrementToolStat(context.getItem(), StackUtils.Stat.STAT_PATHS_CREATED, 1);
         }
         return result;
     }

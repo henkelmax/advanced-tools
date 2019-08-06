@@ -40,7 +40,7 @@ public class AdvancedHoe extends AbstractTool {
 
         ActionResultType result = Items.DIAMOND_HOE.onItemUse(context);
         if (result.equals(ActionResultType.SUCCESS)) {
-            StackUtils.incrementToolStat(stack, StackUtils.STAT_HOED, 1);
+            StackUtils.incrementToolStat(stack, StackUtils.Stat.STAT_HOED, 1);
         }
         return result;
     }

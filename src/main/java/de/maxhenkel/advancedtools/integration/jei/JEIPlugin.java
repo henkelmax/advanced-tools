@@ -107,7 +107,7 @@ public class JEIPlugin implements IModPlugin {
                         ItemStack stack = new ItemStack(tool);
                         ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
                         ModItems.ENCHANTMENT.setEnchantment(ench, enchantment, j);
-                        if (!StackUtils.isEmpty(tool.applyEnchantment(stack, ench))) {
+                        if (!tool.applyEnchantment(stack, ench).isEmpty()) {
                             enchants.add(new EnchantmentRecipe(new EnchantmentData(enchantment, j), tool, material));
                         }
                     }
@@ -131,7 +131,7 @@ public class JEIPlugin implements IModPlugin {
                         StackUtils.addEnchantment(stack, enchantment, j);
                         ItemStack ench = new ItemStack(ModItems.ENCHANTMENT_REMOVER);
                         ModItems.ENCHANTMENT_REMOVER.setEnchantment(ench, enchantment);
-                        if (!StackUtils.isEmpty(tool.removeEnchantment(stack, ench))) {
+                        if (!tool.removeEnchantment(stack, ench).isEmpty()) {
                             remove.add(new EnchantmentRemoveRecipe(new EnchantmentData(enchantment, enchantment.getMaxLevel()), tool, material));
                         }
                     }

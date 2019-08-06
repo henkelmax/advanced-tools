@@ -2,7 +2,6 @@ package de.maxhenkel.advancedtools.crafting;
 
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.CraftingInventory;
@@ -15,7 +14,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class RecipeConvertBook extends SpecialRecipe {
 
@@ -49,7 +50,7 @@ public class RecipeConvertBook extends SpecialRecipe {
                 }
                 book = stack;
             } else {
-                if (!StackUtils.isEmpty(stack)) {
+                if (!stack.isEmpty()) {
                     return null;
                 }
             }

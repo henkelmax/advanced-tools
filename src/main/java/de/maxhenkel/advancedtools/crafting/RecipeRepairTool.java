@@ -2,7 +2,6 @@ package de.maxhenkel.advancedtools.crafting;
 
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -38,7 +37,7 @@ public class RecipeRepairTool extends SpecialRecipe {
                 }
                 tool = stack;
             } else {
-                if (!StackUtils.isEmpty(stack)) {
+                if (!stack.isEmpty()) {
                     otherItems.add(stack);
                 }
             }

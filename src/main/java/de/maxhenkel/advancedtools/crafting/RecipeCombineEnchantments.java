@@ -3,7 +3,6 @@ package de.maxhenkel.advancedtools.crafting;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
 import de.maxhenkel.advancedtools.items.tools.EnchantmentTools;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -44,7 +43,7 @@ public class RecipeCombineEnchantments extends SpecialRecipe {
                     enchantment2 = stack;
                 }
             } else {
-                if (!StackUtils.isEmpty(stack)) {
+                if (!stack.isEmpty()) {
                     return ItemStack.EMPTY;
                 }
             }

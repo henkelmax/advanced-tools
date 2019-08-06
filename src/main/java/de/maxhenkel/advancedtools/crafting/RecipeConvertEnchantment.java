@@ -3,7 +3,6 @@ package de.maxhenkel.advancedtools.crafting;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
-import de.maxhenkel.advancedtools.items.tools.StackUtils;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BookItem;
@@ -54,7 +53,7 @@ public class RecipeConvertEnchantment extends SpecialRecipe {
                 }
                 enchantment = stack;
             } else {
-                if (!StackUtils.isEmpty(stack)) {
+                if (!stack.isEmpty()) {
                     return null;
                 }
             }

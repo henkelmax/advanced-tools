@@ -38,7 +38,7 @@ public class AdvancedAxe extends AbstractTool {
 
         ActionResultType result = Items.DIAMOND_AXE.onItemUse(context);
         if (result.equals(ActionResultType.SUCCESS)) {
-            StackUtils.incrementToolStat(context.getItem(), StackUtils.STAT_LOGS_STRIPPED, 1);
+            StackUtils.incrementToolStat(context.getItem(), StackUtils.Stat.STAT_LOGS_STRIPPED, 1);
         }
         return result;
     }
