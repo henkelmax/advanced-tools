@@ -1,0 +1,1 @@
+- Fix tool kodel when held in hand
