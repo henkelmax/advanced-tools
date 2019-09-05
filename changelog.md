@@ -1,1 +1,1 @@
-- Fix tool kodel when held in hand
+- Fixed default texture for tools

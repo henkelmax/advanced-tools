@@ -1,7 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "advancedtools:item/pickaxe/pickaxe_handle"
+    "layer0": "minecraft:item/wooden_pickaxe"
   },
   "overrides": [
     {
