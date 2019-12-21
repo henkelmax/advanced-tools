@@ -19,7 +19,7 @@ public class SwordEvents {
 
     @SubscribeEvent
     public void sweep(AttackEntityEvent event) {
-        PlayerEntity player = event.getEntityPlayer();
+        PlayerEntity player = event.getPlayer();
         Entity targetEntity = event.getTarget();
         if (player == null) {
             return;
@@ -80,7 +80,7 @@ public class SwordEvents {
                     }
                 }
 
-                player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, player.getSoundCategory(), 1.0F, 1.0F);
+                player.world.playSound(null, player.func_226277_ct_(), player.func_226278_cu_(), player.func_226281_cx_(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, player.getSoundCategory(), 1.0F, 1.0F);
                 player.spawnSweepParticles();
             }
         }

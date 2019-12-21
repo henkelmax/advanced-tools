@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei;
-
+/*
 import mezz.jei.api.gui.ingredient.IGuiIngredientGroup;
 
 import java.util.List;
@@ -70,3 +70,4 @@ public class CraftingGridHelper {
     }
 
 }
+*/

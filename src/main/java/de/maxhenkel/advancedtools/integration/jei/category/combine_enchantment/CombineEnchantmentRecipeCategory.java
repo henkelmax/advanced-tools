@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei.category.combine_enchantment;
-
+/*
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.integration.jei.JEIPlugin;
@@ -87,3 +87,4 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
     }
 
 }
+*/

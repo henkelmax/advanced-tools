@@ -65,7 +65,7 @@ public class ItemEnchantmentRemover extends Item {
             }
         }
 
-        return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+        return ActionResult.func_226248_a_(stack);
     }
 
     private void applyEnchantment(PlayerEntity player, ItemStack stack, Enchantment e) {

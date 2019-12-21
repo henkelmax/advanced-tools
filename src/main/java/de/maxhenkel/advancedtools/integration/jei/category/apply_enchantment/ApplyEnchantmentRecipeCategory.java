@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei.category.apply_enchantment;
-
+/*
 import com.google.common.collect.ImmutableList;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
@@ -87,3 +87,4 @@ public class ApplyEnchantmentRecipeCategory implements IRecipeCategory<Enchantme
     }
 
 }
+*/
