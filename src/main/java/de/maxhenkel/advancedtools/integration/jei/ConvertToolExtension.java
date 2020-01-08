@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei;
-/*
+
 import de.maxhenkel.advancedtools.crafting.RecipeConvertTool;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -41,4 +41,4 @@ public class ConvertToolExtension<T extends RecipeConvertTool> implements ICusto
         guiItemStacks.set(0, recipe.getRecipeOutput());
         guiItemStacks.set(1, Arrays.asList(recipe.getInputTool().getMatchingStacks()));
     }
-}*/
+}

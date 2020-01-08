@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei;
-/*
+
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
 import de.maxhenkel.advancedtools.crafting.RecipeConvertTool;
@@ -248,4 +248,3 @@ public class JEIPlugin implements IModPlugin {
         return new ResourceLocation(Main.MODID, "advancedtools");
     }
 }
-*/

@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment;
-/*
+
 import com.google.common.collect.ImmutableList;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
@@ -103,6 +103,4 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
         group.set(10, ench);
     }
 
-
 }
-*/

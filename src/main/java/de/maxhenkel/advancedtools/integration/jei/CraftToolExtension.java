@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei;
-/*
+
 import de.maxhenkel.advancedtools.crafting.RecipeToolMaterial;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -42,4 +42,4 @@ public class CraftToolExtension<T extends RecipeToolMaterial> implements ICustom
 
         helper.setInputs(recipeLayout.getItemStacks(), iIngredients.getInputs(VanillaTypes.ITEM), recipe.getRecipeWidth(), recipe.getRecipeHeight());
     }
-}*/
+}

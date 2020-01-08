@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei.category.upgrade;
-/*
+
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.integration.jei.JEIPlugin;
 import de.maxhenkel.advancedtools.items.tools.StackUtils;
@@ -98,4 +98,3 @@ public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipe> {
     }
 
 }
-*/

@@ -1,5 +1,5 @@
 package de.maxhenkel.advancedtools.integration.jei.category.upgrade;
-/*
+
 import de.maxhenkel.advancedtools.items.tools.AbstractTool;
 import de.maxhenkel.advancedtools.items.tools.AdvancedToolMaterial;
 
@@ -27,4 +27,3 @@ public class UpgradeRecipe {
         return materialNew;
     }
 }
-*/
