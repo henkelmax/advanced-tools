@@ -1,9 +1,9 @@
 {
   "type": "advancedtools:tool_recipe",
   "pattern": [
+    "#",
     "X",
-    "X",
-    "#"
+    "X"
   ],
   "key": {
     "#": {
