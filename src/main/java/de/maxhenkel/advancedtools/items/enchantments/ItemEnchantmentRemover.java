@@ -29,10 +29,10 @@ public class ItemEnchantmentRemover extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.enchantment_remover").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.enchantment_remover").func_240699_a_(TextFormatting.GRAY));
         Enchantment data = getEnchantment(stack);
         if (data != null) {
-            tooltip.add(new TranslationTextComponent(data.getName()).applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent(data.getName()).func_240699_a_(TextFormatting.GRAY));
         }
     }
 

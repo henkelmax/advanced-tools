@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.HashMap;
@@ -131,7 +131,7 @@ public class StackUtils {
             return STATS.stream().filter(stat -> stat.getNbtName().equals(name)).findAny().orElse(null);
         }
 
-        public ITextComponent getTranslation(Object... args) {
+        public IFormattableTextComponent getTranslation(Object... args) {
             return new TranslationTextComponent(getTranslationName(), args);
         }
     }

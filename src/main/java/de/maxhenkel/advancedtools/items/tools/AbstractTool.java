@@ -13,21 +13,16 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.ToolItem;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
@@ -41,9 +36,9 @@ import java.util.function.Consumer;
 public abstract class AbstractTool extends ToolItem {
 
     public AbstractTool() {
-        super(0F, 0F, ItemTier.DIAMOND, null, new Item.Properties().maxDamage(100));
+        super(0F, 0F, ItemTier.NETHERITE, null, new Item.Properties().maxDamage(100));
         for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
-            addPropertyOverride(new ResourceLocation(Main.MODID, material.getName()), (itemStack, world, livingEntity) -> material.equals(StackUtils.getMaterial(itemStack)) ? 1F : 0F);
+            ItemModelsProperties.func_239418_a_(this, new ResourceLocation(Main.MODID, material.getName()), (itemStack, world, livingEntity) -> material.equals(StackUtils.getMaterial(itemStack)) ? 1F : 0F);
         }
     }
 
@@ -64,30 +59,30 @@ public abstract class AbstractTool extends ToolItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         StackUtils.updateFlags(stack);
         if (isBroken(stack)) {
-            tooltip.add(new TranslationTextComponent("tooltip.broken").applyTextStyle(TextFormatting.DARK_RED));
+            tooltip.add(new TranslationTextComponent("tooltip.broken").func_240699_a_(TextFormatting.DARK_RED));
         }
 
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            tooltip.add(new TranslationTextComponent("tooltip.material", mat.getDisplayName().applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltip.material", mat.getDisplayName().func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
             if (!flagIn.isAdvanced() && !isBroken(stack)) {
-                tooltip.add(new TranslationTextComponent("tooltip.durability_left", new StringTextComponent(String.valueOf(getMaxDamage(stack) - stack.getDamage())).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.durability_left", new StringTextComponent(String.valueOf(getMaxDamage(stack) - stack.getDamage())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
             }
         }
 
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
         if (!enchantments.isEmpty()) {
-            tooltip.add(new TranslationTextComponent("tooltips.enchantments").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltips.enchantments").func_240699_a_(TextFormatting.GRAY));
             for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                tooltip.add(new StringTextComponent("  - ").appendSibling(entry.getKey().getDisplayName(entry.getValue()).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY));
+                tooltip.add(new StringTextComponent("  - ").func_230529_a_(((IFormattableTextComponent) entry.getKey().getDisplayName(entry.getValue())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
             }
         }
 
         Map<StackUtils.Stat, Integer> stats = StackUtils.getToolStats(stack);
         if (!stats.isEmpty()) {
-            tooltip.add(new TranslationTextComponent("tooltips.stats").applyTextStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltips.stats").func_240699_a_(TextFormatting.GRAY));
             for (Map.Entry<StackUtils.Stat, Integer> entry : stats.entrySet()) {
-                tooltip.add(new StringTextComponent("  - ").appendSibling(entry.getKey().getTranslation(new StringTextComponent(String.valueOf(entry.getValue())).applyTextStyle(TextFormatting.DARK_GRAY)).applyTextStyle(TextFormatting.GRAY)).applyTextStyle(TextFormatting.GRAY));
+                tooltip.add(new StringTextComponent("  - ").func_230529_a_(entry.getKey().getTranslation(new StringTextComponent(String.valueOf(entry.getValue())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY)).func_240699_a_(TextFormatting.GRAY));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -117,12 +112,12 @@ public abstract class AbstractTool extends ToolItem {
     public ITextComponent getDisplayName(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return new StringTextComponent(mat.getDisplayName().getFormattedText() + " " + new TranslationTextComponent("tool." + getPrimaryToolType()).getFormattedText()).applyTextStyle(TextFormatting.WHITE);
+            return new StringTextComponent(mat.getDisplayName().getString() + " " + new TranslationTextComponent("tool." + getPrimaryToolType()).getString()).func_240699_a_(TextFormatting.WHITE);
         }
-        return new TranslationTextComponent("tool." + getPrimaryToolType()).applyTextStyle(TextFormatting.WHITE);
+        return new TranslationTextComponent("tool." + getPrimaryToolType()).func_240699_a_(TextFormatting.WHITE);
     }
 
-    public abstract int getRepairCost(ItemStack stack);
+    public abstract int getRepairCost(ItemStack stack, AdvancedToolMaterial advancedToolMaterial);
 
     public ItemStack repair(ItemStack in, AdvancedToolMaterial material, int count) {
         AdvancedToolMaterial currMat = StackUtils.getMaterial(in);
@@ -130,7 +125,7 @@ public abstract class AbstractTool extends ToolItem {
             return ItemStack.EMPTY;
         }
 
-        int repairCost = getRepairCost(in);
+        int repairCost = getRepairCost(in, material);
         if (repairCost < 1) {
             repairCost = 1;
         }
@@ -238,13 +233,13 @@ public abstract class AbstractTool extends ToolItem {
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
 
         if (slot == EquipmentSlotType.MAINHAND) {
             if (!isBroken(stack)) {
-                multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double) getAttackDamage(stack), AttributeModifier.Operation.ADDITION));
-                multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double) getAttackSpeed(stack), AttributeModifier.Operation.ADDITION));
+                multimap.put(Attributes.field_233823_f_, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double) getAttackDamage(stack), AttributeModifier.Operation.ADDITION));
+                multimap.put(Attributes.field_233825_h_, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double) getAttackSpeed(stack), AttributeModifier.Operation.ADDITION));
             }
         }
 
@@ -338,4 +333,5 @@ public abstract class AbstractTool extends ToolItem {
     public boolean isRepairable(ItemStack stack) {
         return false;
     }
+
 }

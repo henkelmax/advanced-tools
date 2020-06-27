@@ -95,8 +95,8 @@ public class AdvancedSword extends AbstractTool {
     }
 
     @Override
-    public int getRepairCost(ItemStack stack) {
-        return 2;
+    public int getRepairCost(ItemStack stack, AdvancedToolMaterial material) {
+        return material == AdvancedToolMaterial.NETHERITE ? 1 : 2;
     }
 
     @Override

@@ -19,16 +19,11 @@ import java.util.Set;
 
 public class AdvancedHoe extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet();
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.MENDING);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.LEAVES, Material.SPONGE, Material.ORGANIC);
+    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.MENDING, Enchantments.EFFICIENCY, Enchantments.SILK_TOUCH, Enchantments.FORTUNE);
 
     public AdvancedHoe() {
         setRegistryName(new ResourceLocation(Main.MODID, "hoe"));
-    }
-
-    @Override
-    public boolean countBreakStats(ItemStack stack) {
-        return false;
     }
 
     @Override
@@ -39,7 +34,7 @@ public class AdvancedHoe extends AbstractTool {
         }
 
         ActionResultType result = Items.DIAMOND_HOE.onItemUse(context);
-        if (result.equals(ActionResultType.SUCCESS)) {
+        if (result.isSuccessOrConsume()) {
             StackUtils.incrementToolStat(stack, StackUtils.Stat.STAT_HOED, 1);
         }
         return result;
@@ -111,8 +106,8 @@ public class AdvancedHoe extends AbstractTool {
     }
 
     @Override
-    public int getRepairCost(ItemStack stack) {
-        return 2;
+    public int getRepairCost(ItemStack stack, AdvancedToolMaterial material) {
+        return material == AdvancedToolMaterial.NETHERITE ? 1 : 2;
     }
 
     @Override

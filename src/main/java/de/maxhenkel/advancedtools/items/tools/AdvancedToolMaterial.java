@@ -1,11 +1,11 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.Tags;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +23,7 @@ public class AdvancedToolMaterial {
 
     private static Map<String, AdvancedToolMaterial> materials = new HashMap<>();
 
+    public static final AdvancedToolMaterial NETHERITE;
     public static final AdvancedToolMaterial DIAMOND;
     public static final AdvancedToolMaterial IRON;
     public static final AdvancedToolMaterial GOLD;
@@ -30,13 +31,23 @@ public class AdvancedToolMaterial {
     public static final AdvancedToolMaterial STONE;
 
     static {
+        NETHERITE = new AdvancedToolMaterial(
+                "netherite",
+                9F,
+                4F,
+                4,
+                2048,
+                () -> Ingredient.fromItems(Items.field_234759_km_) //TODO netherite ingot tag
+        );
+        materials.put("netherite", NETHERITE);
+
         DIAMOND = new AdvancedToolMaterial(
                 "diamond",
                 8F,
                 3F,
                 3,
-                2048,
-                () -> Ingredient.fromItems(Items.DIAMOND)
+                1024,
+                () -> Ingredient.fromTag(Tags.Items.GEMS_DIAMOND)
         );
         materials.put("diamond", DIAMOND);
 
@@ -46,7 +57,7 @@ public class AdvancedToolMaterial {
                 2F,
                 2,
                 256,
-                () -> Ingredient.fromItems(Items.IRON_INGOT)
+                () -> Ingredient.fromTag(Tags.Items.INGOTS_IRON)
         );
         materials.put("iron", IRON);
 
@@ -56,7 +67,7 @@ public class AdvancedToolMaterial {
                 0F,
                 0,
                 32,
-                () -> Ingredient.fromItems(Items.GOLD_INGOT)
+                () -> Ingredient.fromTag(Tags.Items.INGOTS_GOLD)
         );
         materials.put("gold", GOLD);
 
@@ -66,7 +77,7 @@ public class AdvancedToolMaterial {
                 1F,
                 1,
                 128,
-                () -> Ingredient.fromItems(Blocks.COBBLESTONE)
+                () -> Ingredient.fromTag(ItemTags.field_232909_aa_)
         );
         materials.put("stone", STONE);
 
@@ -121,7 +132,7 @@ public class AdvancedToolMaterial {
         return ingredient.get();
     }
 
-    public ITextComponent getDisplayName() {
+    public IFormattableTextComponent getDisplayName() {
         return new TranslationTextComponent("material." + name);
     }
 

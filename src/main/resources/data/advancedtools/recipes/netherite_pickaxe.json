@@ -10,11 +10,11 @@
       "tag": "forge:rods/wooden"
     },
     "X": {
-      "tag": "forge:ingots/iron"
+      "item": "minecraft:netherite_ingot"
     }
   },
   "result": {
     "item": "advancedtools:pickaxe",
-    "material": "iron"
+    "material": "netherite"
   }
 }

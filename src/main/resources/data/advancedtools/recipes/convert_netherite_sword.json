@@ -1,0 +1,10 @@
+{
+  "type": "advancedtools:convert_tool",
+  "input": {
+    "item": "minecraft:netherite_sword"
+  },
+  "result": {
+    "item": "advancedtools:sword",
+    "material": "netherite"
+  }
+}

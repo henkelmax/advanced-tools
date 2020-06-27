@@ -94,7 +94,7 @@ public class AdvancedShovel extends AbstractTool {
     }
 
     @Override
-    public int getRepairCost(ItemStack stack) {
+    public int getRepairCost(ItemStack stack, AdvancedToolMaterial material) {
         return 1;
     }
 
@@ -105,7 +105,7 @@ public class AdvancedShovel extends AbstractTool {
         }
 
         ActionResultType result = Items.DIAMOND_SHOVEL.onItemUse(context);
-        if (result.equals(ActionResultType.SUCCESS)) {
+        if (result.isSuccessOrConsume()) {
             StackUtils.incrementToolStat(context.getItem(), StackUtils.Stat.STAT_PATHS_CREATED, 1);
         }
         return result;

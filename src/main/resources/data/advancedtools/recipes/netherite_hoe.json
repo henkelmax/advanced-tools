@@ -1,20 +1,20 @@
 {
   "type": "advancedtools:tool_recipe",
   "pattern": [
-    " # ",
-    " # ",
-    "XXX"
+    " #",
+    " #",
+    "XX"
   ],
   "key": {
     "#": {
       "tag": "forge:rods/wooden"
     },
     "X": {
-      "tag": "forge:ingots/iron"
+      "item": "minecraft:netherite_ingot"
     }
   },
   "result": {
-    "item": "advancedtools:pickaxe",
-    "material": "iron"
+    "item": "advancedtools:hoe",
+    "material": "netherite"
   }
 }

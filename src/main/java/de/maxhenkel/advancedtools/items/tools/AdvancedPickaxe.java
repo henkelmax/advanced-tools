@@ -89,8 +89,8 @@ public class AdvancedPickaxe extends AbstractTool {
     }
 
     @Override
-    public int getRepairCost(ItemStack stack) {
-        return 3;
+    public int getRepairCost(ItemStack stack, AdvancedToolMaterial material) {
+        return material == AdvancedToolMaterial.NETHERITE ? 1 : 3;
     }
 
     @Override

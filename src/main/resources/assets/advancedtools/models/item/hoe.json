@@ -33,6 +33,12 @@
         "advancedtools:diamond": 1
       },
       "model": "advancedtools:item/hoe/diamond"
+    },
+    {
+      "predicate": {
+        "advancedtools:netherite": 1
+      },
+      "model": "advancedtools:item/hoe/netherite"
     }
   ]
 }
