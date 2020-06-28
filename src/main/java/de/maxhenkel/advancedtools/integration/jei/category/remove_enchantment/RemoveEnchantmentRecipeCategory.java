@@ -49,7 +49,7 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("jei.remove_enchanting").getFormattedText();
+        return new TranslationTextComponent("jei.remove_enchanting").getString();
     }
 
     @Override

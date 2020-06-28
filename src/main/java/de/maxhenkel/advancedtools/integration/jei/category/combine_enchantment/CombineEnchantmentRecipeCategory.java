@@ -47,7 +47,7 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("jei.enchantment_combining").getFormattedText();
+        return new TranslationTextComponent("jei.enchantment_combining").getString();
     }
 
     @Override

@@ -47,7 +47,7 @@ public class SplitEnchantmentRecipeCategory implements IRecipeCategory<Enchantme
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("jei.enchantment_splitting").getFormattedText();
+        return new TranslationTextComponent("jei.enchantment_splitting").getString();
     }
 
     @Override

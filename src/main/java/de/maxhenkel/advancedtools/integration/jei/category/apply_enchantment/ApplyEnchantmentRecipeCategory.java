@@ -47,7 +47,7 @@ public class ApplyEnchantmentRecipeCategory implements IRecipeCategory<Enchantme
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("jei.enchanting").getFormattedText();
+        return new TranslationTextComponent("jei.enchanting").getString();
     }
 
     @Override

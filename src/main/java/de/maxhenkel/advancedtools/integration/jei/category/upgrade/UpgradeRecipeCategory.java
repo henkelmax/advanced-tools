@@ -54,7 +54,7 @@ public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipe> {
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("jei.upgrading").getFormattedText();
+        return new TranslationTextComponent("jei.upgrading").getString();
     }
 
     @Override
@@ -86,7 +86,7 @@ public class UpgradeRecipeCategory implements IRecipeCategory<UpgradeRecipe> {
         group.init(7, true, 18, 36);
         group.init(8, true, 36, 36);
 
-        for (int i = 1; i <= 8 && i <= wrapper.getAbstractTool().getRepairCost(stack); i++) {
+        for (int i = 1; i <= 8 && i <= wrapper.getAbstractTool().getRepairCost(stack, wrapper.getMaterialNew()); i++) {
             group.set(i, Arrays.asList(wrapper.getMaterialNew().getIngredient().getMatchingStacks()));
         }
 

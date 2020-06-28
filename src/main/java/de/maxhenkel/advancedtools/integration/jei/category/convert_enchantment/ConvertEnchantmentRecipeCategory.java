@@ -50,7 +50,7 @@ public class ConvertEnchantmentRecipeCategory implements IRecipeCategory<Enchant
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("jei.enchantment_converting").getFormattedText();
+        return new TranslationTextComponent("jei.enchantment_converting").getString();
     }
 
     @Override

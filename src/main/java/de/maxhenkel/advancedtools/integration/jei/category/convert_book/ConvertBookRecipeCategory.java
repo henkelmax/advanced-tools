@@ -61,7 +61,7 @@ public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRec
 
     @Override
     public String getTitle() {
-        return new TranslationTextComponent("jei.converting").getFormattedText();
+        return new TranslationTextComponent("jei.converting").getString();
     }
 
     @Override
