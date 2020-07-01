@@ -42,7 +42,7 @@ public class AdvancedHoe extends AbstractTool {
 
     @Override
     public Set<ToolType> getToolTypes(ItemStack stack) {
-        return ImmutableSet.of(ToolType.get("hoe"));
+        return ImmutableSet.of(ToolType.HOE);
     }
 
     @Override

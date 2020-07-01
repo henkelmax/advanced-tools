@@ -1,1 +1,1 @@
-- Fixed JEI integration
+- Added hoe tool type
