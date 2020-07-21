@@ -1,1 +1,1 @@
-- Added hoe tool type
+- Fixed item textures

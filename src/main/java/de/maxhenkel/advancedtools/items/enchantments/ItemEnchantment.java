@@ -73,10 +73,6 @@ public class ItemEnchantment extends Item {
 
         String name = ench.getString("name");
 
-        if (name == null) {
-            return null;
-        }
-
         String[] split = name.split(":");
 
         if (split.length < 2) {

@@ -1,6 +1,7 @@
 package de.maxhenkel.advancedtools;
 
 import de.maxhenkel.advancedtools.crafting.*;
+import de.maxhenkel.corelib.CommonRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
@@ -8,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -19,13 +19,15 @@ public class Main {
 
     public static final String MODID = "advancedtools";
 
+    public static ServerConfig SERVER_CONFIG;
+
     public Main() {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Item.class, this::registerItems);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipes);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
+        SERVER_CONFIG = CommonRegistry.registerConfig(ModConfig.Type.SERVER, ServerConfig.class);
     }
 
     @SubscribeEvent
@@ -46,13 +48,13 @@ public class Main {
         );
     }
 
-    public static IRecipeSerializer CRAFTING_COMBINE_ENCHANTMENTS;
-    public static IRecipeSerializer CRAFTING_SPLIT_ENCHANTMENTS;
-    public static IRecipeSerializer CRAFTING_CONVERT_BOOK;
-    public static IRecipeSerializer CRAFTING_CONVERT_ENCHANTMENT;
-    public static IRecipeSerializer CRAFTING_ENCHANT_TOOL;
-    public static IRecipeSerializer CRAFTING_EREMOVE_ENCHANTMENT;
-    public static IRecipeSerializer CRAFTING_REPAIR_TOOL;
+    public static IRecipeSerializer<RecipeCombineEnchantments> CRAFTING_COMBINE_ENCHANTMENTS;
+    public static IRecipeSerializer<RecipeSplitEnchantments> CRAFTING_SPLIT_ENCHANTMENTS;
+    public static IRecipeSerializer<RecipeConvertBook> CRAFTING_CONVERT_BOOK;
+    public static IRecipeSerializer<RecipeConvertEnchantment> CRAFTING_CONVERT_ENCHANTMENT;
+    public static IRecipeSerializer<RecipeEnchantTool> CRAFTING_ENCHANT_TOOL;
+    public static IRecipeSerializer<RecipeRemoveEnchantment> CRAFTING_EREMOVE_ENCHANTMENT;
+    public static IRecipeSerializer<RecipeRepairTool> CRAFTING_REPAIR_TOOL;
     public static RecipeToolMaterial.RecipeToolMaterialSerializer CRAFTING_TOOL_MATERIAL;
     public static RecipeConvertTool.RecipeConvertToolSerializer CRAFTING_CONVERT_TOOL;
 
