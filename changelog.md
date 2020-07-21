@@ -1,1 +1,1 @@
-- Fixed item textures
+- Fixed a crash on servers

@@ -23,7 +23,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -36,6 +38,10 @@ public abstract class AbstractTool extends ToolItem {
 
     public AbstractTool() {
         super(0F, 0F, ItemTier.NETHERITE, null, new Item.Properties().maxDamage(100));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::addVariants);
+    }
+
+    private void addVariants() {
         for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
             ItemModelsProperties.func_239418_a_(this, new ResourceLocation(Main.MODID, material.getName()), (itemStack, world, livingEntity) -> material.equals(StackUtils.getMaterial(itemStack)) ? 1F : 0F);
         }
