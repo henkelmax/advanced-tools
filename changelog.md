@@ -1,1 +1,1 @@
-- Fixed a crash on servers
+- Fixed netherite items getting destroyed by fire damage

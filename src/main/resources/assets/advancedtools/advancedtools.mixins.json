@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "de.maxhenkel.advancedtools.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "advancedtools.refmap.json",
+  "minVersion": "0.8",
+  "mixins": [
+    "ItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

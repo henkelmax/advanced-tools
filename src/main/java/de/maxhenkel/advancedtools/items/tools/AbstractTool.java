@@ -93,6 +93,10 @@ public abstract class AbstractTool extends ToolItem {
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
+    public boolean isFireResistant(ItemStack stack) {
+        return StackUtils.getMaterial(stack).isFireResistant();
+    }
+
     @Override
     public abstract Set<ToolType> getToolTypes(ItemStack stack);
 

@@ -37,6 +37,7 @@ public class AdvancedToolMaterial {
                 4F,
                 4,
                 2048,
+                true,
                 () -> Ingredient.fromItems(Items.field_234759_km_) //TODO netherite ingot tag
         );
         materials.put("netherite", NETHERITE);
@@ -47,6 +48,7 @@ public class AdvancedToolMaterial {
                 3F,
                 3,
                 1024,
+                false,
                 () -> Ingredient.fromTag(Tags.Items.GEMS_DIAMOND)
         );
         materials.put("diamond", DIAMOND);
@@ -57,6 +59,7 @@ public class AdvancedToolMaterial {
                 2F,
                 2,
                 256,
+                false,
                 () -> Ingredient.fromTag(Tags.Items.INGOTS_IRON)
         );
         materials.put("iron", IRON);
@@ -67,6 +70,7 @@ public class AdvancedToolMaterial {
                 0F,
                 0,
                 32,
+                false,
                 () -> Ingredient.fromTag(Tags.Items.INGOTS_GOLD)
         );
         materials.put("gold", GOLD);
@@ -77,6 +81,7 @@ public class AdvancedToolMaterial {
                 1F,
                 1,
                 128,
+                false,
                 () -> Ingredient.fromTag(ItemTags.field_232909_aa_)
         );
         materials.put("stone", STONE);
@@ -87,6 +92,7 @@ public class AdvancedToolMaterial {
                 0F,
                 0,
                 64,
+                false,
                 () -> Ingredient.fromTag(ItemTags.PLANKS)
         );
         materials.put("wood", WOOD);
@@ -97,14 +103,16 @@ public class AdvancedToolMaterial {
     private float attackModifier;
     private int harvestLevel;
     private int maxDamage;
+    private boolean fireResistant;
     private Supplier<Ingredient> ingredient;
 
-    public AdvancedToolMaterial(String name, float efficiency, float attackModifier, int harvestLevel, int maxDamage, Supplier<Ingredient> ingredient) {
+    public AdvancedToolMaterial(String name, float efficiency, float attackModifier, int harvestLevel, int maxDamage, boolean fireResistant, Supplier<Ingredient> ingredient) {
         this.name = name;
         this.efficiency = efficiency;
         this.attackModifier = attackModifier;
         this.harvestLevel = harvestLevel;
         this.maxDamage = maxDamage;
+        this.fireResistant = fireResistant;
         this.ingredient = ingredient;
     }
 
@@ -126,6 +134,10 @@ public class AdvancedToolMaterial {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isFireResistant() {
+        return fireResistant;
     }
 
     public Ingredient getIngredient() {
