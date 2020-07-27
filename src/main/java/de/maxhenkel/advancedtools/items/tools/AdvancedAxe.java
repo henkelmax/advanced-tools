@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class AdvancedAxe extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WOOD);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WOOD, Material.field_237214_y_);
     private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING);
 
     public AdvancedAxe() {

@@ -5,7 +5,8 @@
   "refmap": "advancedtools.refmap.json",
   "minVersion": "0.8",
   "mixins": [
-    "ItemMixin"
+    "ItemEntityMixin",
+    "BambooBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

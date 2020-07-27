@@ -1,1 +1,2 @@
-- Fixed netherite items getting destroyed by fire damage
+- Fixed bamboo not insta breaking with swords
+- Fixed nether wood not working with axes
