@@ -1,4 +1,14 @@
-# Advanced Tools
+# Advanced Tools ![](http://cf.way2muchnoise.eu/full_334091_downloads.svg)
+![](http://cf.way2muchnoise.eu/versions/334091.svg)
+
+## Links
+- [CurseForge](https://www.curseforge.com/minecraft/mc-mods/advanced_tools)
+- [ModRepo](https://modrepo.de/minecraft/advancedtools/overview)
+- [GitHub](https://github.com/henkelmax/advanced-tools)
+- [FAQ](https://modrepo.de/minecraft/advancedtools/faq)
+- [Credits](https://modrepo.de/minecraft/advancedtools/credits)
+
+---
 
 ## Features
 
@@ -21,7 +31,7 @@
 
 The recipes of these tools replace Minecraft's default ones.
 
-![](https://i.imgur.com/Yy0Iy3b.png)
+![](https://i.imgur.com/riaPxqv.png)
 
 ### Repairing
 
