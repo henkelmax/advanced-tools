@@ -1,2 +1,1 @@
-- Fixed bamboo not insta breaking with swords
-- Fixed nether wood not working with axes
+- Updated to 1.16.2
