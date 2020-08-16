@@ -10,8 +10,11 @@ import de.maxhenkel.advancedtools.integration.jei.category.combine_enchantment.C
 import de.maxhenkel.advancedtools.integration.jei.category.convert_book.ConvertBookRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.convert_book.ConvertBookRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.convert_enchantment.ConvertEnchantmentRecipeCategory;
+import de.maxhenkel.advancedtools.integration.jei.category.cut_enchantment.CutEnchantmentRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.EnchantmentRemoveRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.remove_enchantment.RemoveEnchantmentRecipeCategory;
+import de.maxhenkel.advancedtools.integration.jei.category.smithing.SmithingRecipe;
+import de.maxhenkel.advancedtools.integration.jei.category.smithing.SmithungRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.split_enchantment.SplitEnchantmentRecipeCategory;
 import de.maxhenkel.advancedtools.integration.jei.category.upgrade.UpgradeRecipe;
 import de.maxhenkel.advancedtools.integration.jei.category.upgrade.UpgradeRecipeCategory;
@@ -23,6 +26,7 @@ import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.recipe.category.extensions.IExtendableRecipeCategory;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import mezz.jei.api.registration.*;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantment;
@@ -47,6 +51,8 @@ public class JEIPlugin implements IModPlugin {
     public static final ResourceLocation CATEGORY_ENCHANTMENT_CONVERTING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_converting");
     public static final ResourceLocation CATEGORY_ENCHANTMENT_COMBINING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_combining");
     public static final ResourceLocation CATEGORY_ENCHANTMENT_SPLITTING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_splitting");
+    public static final ResourceLocation CATEGORY_ENCHANTMENT_CUTTING = new ResourceLocation(Main.MODID, "advancedtools.enchantment_cutting");
+    public static final ResourceLocation CATEGORY_SMITHING = new ResourceLocation(Main.MODID, "advancedtools.smithing");
 
     private static final ISubtypeInterpreter MATERIAL_SUBTYPE_INTERPRETER = itemStack -> StackUtils.getMaterial(itemStack).getName();
 
@@ -74,6 +80,8 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipeCatalyst(new ItemStack(ModItems.ENCHANTMENT), JEIPlugin.CATEGORY_BOOK_CONVERTING);
         registry.addRecipeCatalyst(new ItemStack(ModItems.ENCHANTMENT), JEIPlugin.CATEGORY_ENCHANTMENT_COMBINING);
         registry.addRecipeCatalyst(new ItemStack(Items.ENCHANTED_BOOK), JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
+        registry.addRecipeCatalyst(new ItemStack(ModItems.PLIER), JEIPlugin.CATEGORY_ENCHANTMENT_CUTTING);
+        registry.addRecipeCatalyst(new ItemStack(Blocks.SMITHING_TABLE), JEIPlugin.CATEGORY_SMITHING);
 
         for (AbstractTool tool : ModItems.getAllTools()) {
             ItemStack stack = new ItemStack(tool);
@@ -96,9 +104,7 @@ public class JEIPlugin implements IModPlugin {
         List<EnchantmentRecipe> enchants = new ArrayList<>();
         for (AbstractTool tool : ModItems.getAllTools()) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
-                Iterator<Enchantment> i = ForgeRegistries.ENCHANTMENTS.iterator();
-                while (i.hasNext()) {
-                    Enchantment enchantment = i.next();
+                for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
                     for (int j = 1; j <= enchantment.getMaxLevel(); j++) {
                         ItemStack stack = new ItemStack(tool);
                         ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
@@ -119,9 +125,7 @@ public class JEIPlugin implements IModPlugin {
         List<EnchantmentRemoveRecipe> remove = new ArrayList<>();
         for (AbstractTool tool : ModItems.getAllTools()) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
-                Iterator<Enchantment> i = ForgeRegistries.ENCHANTMENTS.iterator();
-                while (i.hasNext()) {
-                    Enchantment enchantment = i.next();
+                for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
                     for (int j = 1; j <= enchantment.getMaxLevel(); j++) {
                         ItemStack stack = new ItemStack(tool);
                         StackUtils.addEnchantment(stack, enchantment, j);
@@ -173,9 +177,7 @@ public class JEIPlugin implements IModPlugin {
 
         //Combine
         List<EnchantmentData> enchantments = new ArrayList<>();
-        Iterator<Enchantment> it = ForgeRegistries.ENCHANTMENTS.iterator();
-        while (it.hasNext()) {
-            Enchantment enchantment = it.next();
+        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
             if (enchantment.getMaxLevel() >= 2) {
                 for (int j = 2; j <= enchantment.getMaxLevel(); j++) {
                     enchantments.add(new EnchantmentData(enchantment, j));
@@ -188,9 +190,7 @@ public class JEIPlugin implements IModPlugin {
 
         //Split
         List<EnchantmentData> splitEnchantments = new ArrayList<>();
-        Iterator<Enchantment> it1 = ForgeRegistries.ENCHANTMENTS.iterator();
-        while (it1.hasNext()) {
-            Enchantment enchantment = it1.next();
+        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
             for (int i = 2; i <= enchantment.getMaxLevel(); i++) {
                 splitEnchantments.add(new EnchantmentData(enchantment, i));
             }
@@ -198,18 +198,37 @@ public class JEIPlugin implements IModPlugin {
 
         registry.addRecipes(splitEnchantments, JEIPlugin.CATEGORY_ENCHANTMENT_SPLITTING);
 
-
         //Convert enchantment
         List<EnchantmentData> ed = new ArrayList<>();
-        Iterator<Enchantment> enchIt = ForgeRegistries.ENCHANTMENTS.iterator();
-        while (enchIt.hasNext()) {
-            Enchantment enchantment = enchIt.next();
+        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
             for (int j = 1; j <= enchantment.getMaxLevel(); j++) {
                 ed.add(new EnchantmentData(enchantment, j));
             }
         }
 
         registry.addRecipes(ed, JEIPlugin.CATEGORY_ENCHANTMENT_CONVERTING);
+
+        //Cut
+        List<EnchantmentData> cutEnchantments = new ArrayList<>();
+        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
+            for (int i = 1; i <= enchantment.getMaxLevel(); i++) {
+                cutEnchantments.add(new EnchantmentData(enchantment, i));
+            }
+        }
+        registry.addRecipes(cutEnchantments, JEIPlugin.CATEGORY_ENCHANTMENT_CUTTING);
+
+        //Repairing
+        List<SmithingRecipe> repairEnchantments = new ArrayList<>();
+        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
+            for (int i = 2; i <= enchantment.getMaxLevel(); i++) {
+                ItemStack broken = new ItemStack(ModItems.BROKEN_ENCHANTMENT);
+                ModItems.ENCHANTMENT.setEnchantment(broken, enchantment, i);
+                ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
+                ModItems.ENCHANTMENT.setEnchantment(ench, enchantment, i);
+                repairEnchantments.add(new SmithingRecipe(broken, new ItemStack(Items.field_234759_km_), ench));
+            }
+        }
+        registry.addRecipes(repairEnchantments, JEIPlugin.CATEGORY_SMITHING);
     }
 
     @Override
@@ -241,10 +260,13 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipeCategories(new CombineEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new SplitEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new ConvertEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new CutEnchantmentRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new SmithungRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public ResourceLocation getPluginUid() {
         return new ResourceLocation(Main.MODID, "advancedtools");
     }
+
 }

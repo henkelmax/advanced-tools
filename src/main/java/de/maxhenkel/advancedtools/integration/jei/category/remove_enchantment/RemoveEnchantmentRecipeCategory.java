@@ -26,8 +26,7 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
 
     @Override
     public IDrawable getBackground() {
-        return helper.createDrawable(new ResourceLocation(Main.MODID,
-                "textures/gui/jei_converting.png"), 0, 0, 186, 54);
+        return helper.createDrawable(new ResourceLocation(Main.MODID, "textures/gui/jei_converting.png"), 0, 0, 186, 54);
     }
 
     @Override
@@ -100,7 +99,8 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
 
         ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
         ModItems.ENCHANTMENT.setEnchantment(ench, wrapper.getEnchantment().enchantment, wrapper.getEnchantment().enchantmentLevel);
-        group.set(10, ench);
+        group.set(10, stack1);
+        group.set(11, ench);
     }
 
 }

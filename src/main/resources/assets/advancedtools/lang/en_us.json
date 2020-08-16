@@ -14,6 +14,7 @@
     "tooltip.durability_left": "Durability left: %s",
     "tooltip.broken": "Broken",
     "tooltip.enchantment_remover": "Right-Click to change Enchantment",
+    "tooltip.pliers": "Used to cut Enchantment templates in half",
     "tooltips.enchantments": "Enchantments",
     "tooltips.stats": "Statistics:",
     "statusbar.enchantment_remover": "Enchantment: %s",
@@ -23,8 +24,10 @@
     "stat.paths_created": "Paths Created: %s",
     "stat.logs_stripped": "Logs Stripped: %s",
     "item.advancedtools.enchantment": "Enchantment Template",
+    "item.advancedtools.broken_enchantment": "Broken Enchantment Template",
     "item.advancedtools.pickaxe": "Pickaxe",
     "item.advancedtools.enchantment_remover": "Enchantment Remover",
+    "item.advancedtools.pliers": "Pliers",
     "enchantment.empty": "Empty Enchantment Template",
     "itemGroup.advanced_tools": "Advanced Tools",
     "jei.enchanting": "Enchanting",
@@ -33,5 +36,7 @@
     "jei.converting": "Book Converting",
     "jei.enchantment_combining": "Enchantment Combining",
     "jei.enchantment_converting": "Enchantment Converting",
-    "jei.enchantment_splitting": "Enchantment Splitting"
+    "jei.enchantment_splitting": "Enchantment Splitting",
+    "jei.enchantment_cutting": "Enchantment Cutting",
+    "jei.smithing": "Smithing"
 }

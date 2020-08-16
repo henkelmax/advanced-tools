@@ -12,8 +12,6 @@ import net.minecraft.world.World;
 
 public class RecipeEnchantTool extends SpecialRecipe {
 
-    private ResourceLocation resourceLocation;
-
     private RecipeHelper.RecipeIngredient[] ingredients;
 
     public RecipeEnchantTool(ResourceLocation id) {

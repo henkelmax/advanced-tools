@@ -2,10 +2,8 @@ package de.maxhenkel.advancedtools.crafting;
 
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
-import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantmentRemover;
-import de.maxhenkel.advancedtools.items.tools.AbstractTool;
-import de.maxhenkel.advancedtools.items.tools.EnchantmentTools;
-import net.minecraft.enchantment.Enchantment;
+import de.maxhenkel.advancedtools.items.enchantments.ItemEnchantment;
+import de.maxhenkel.advancedtools.items.enchantments.ItemPliers;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -15,15 +13,15 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class RecipeRemoveEnchantment extends SpecialRecipe {
+public class RecipeCutEnchantment extends SpecialRecipe {
 
     private RecipeHelper.RecipeIngredient[] ingredients;
 
-    public RecipeRemoveEnchantment(ResourceLocation id) {
+    public RecipeCutEnchantment(ResourceLocation id) {
         super(id);
         ingredients = new RecipeHelper.RecipeIngredient[]{
-                new RecipeHelper.RecipeIngredient(ItemEnchantmentRemover.class, 1),
-                new RecipeHelper.RecipeIngredient(AbstractTool.class, 1)
+                new RecipeHelper.RecipeIngredient(ItemPliers.class, 1),
+                new RecipeHelper.RecipeIngredient(ItemEnchantment.class, 1)
         };
     }
 
@@ -44,26 +42,26 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
     }
 
     private RecipeResult doCrafting(CraftingInventory inv) {
-        ItemStack tool = null;
+        ItemStack plier = null;
         ItemStack enchantment = null;
-        int toolSlot = -1;
-        int removerSlot = -1;
+        int plierSlot = -1;
+        int enchantmentSlot = -1;
 
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (stack.getItem() instanceof AbstractTool) {
-                if (tool != null) {
+            if (stack.getItem() == ModItems.PLIER) {
+                if (plier != null) {
                     return null;
                 }
-                tool = stack;
-                toolSlot = i;
-            } else if (stack.getItem() instanceof ItemEnchantmentRemover) {
+                plier = stack;
+                plierSlot = i;
+            } else if (stack.getItem() instanceof ItemEnchantment) {
                 if (enchantment != null) {
                     return null;
                 }
                 enchantment = stack;
-                removerSlot = i;
+                enchantmentSlot = i;
             } else {
                 if (!stack.isEmpty()) {
                     return null;
@@ -71,30 +69,21 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
             }
         }
 
-        if (tool == null || enchantment == null) {
+        if (plier == null || enchantment == null) {
             return null;
         }
 
         NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-
-        list.set(removerSlot, enchantment.copy());
-        Enchantment en = ModItems.ENCHANTMENT_REMOVER.getEnchantment(enchantment);
-        if (en != null) {
-            ItemStack e = new ItemStack(ModItems.ENCHANTMENT);
-            for (EnchantmentData data : EnchantmentTools.getEnchantments(tool)) {
-                if (data.enchantment.equals(en)) {
-                    ModItems.ENCHANTMENT.setEnchantment(e, en, data.enchantmentLevel);
-                    list.set(toolSlot, e);
-                    break;
-                }
-            }
-
+        if (plier.getMaxDamage() - plier.getDamage() > 1) {
+            ItemStack p = plier.copy();
+            p.setDamage(p.getDamage() + 1);
+            list.set(plierSlot, p);
         }
 
-        ItemStack result = ((AbstractTool) tool.getItem()).removeEnchantment(tool, enchantment);
-
-        if (result.equals(ItemStack.EMPTY)) {
-            return null;
+        EnchantmentData en = ModItems.ENCHANTMENT.getEnchantment(enchantment);
+        ItemStack result = new ItemStack(ModItems.BROKEN_ENCHANTMENT, 2);
+        if (en != null) {
+            ModItems.ENCHANTMENT.setEnchantment(result, en.enchantment, en.enchantmentLevel);
         }
 
         RecipeResult recipeResult = new RecipeResult();
@@ -115,7 +104,7 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return Main.CRAFTING_EREMOVE_ENCHANTMENT;
+        return Main.CRAFTING_CUT_ENCHANTMENT;
     }
 
     @Override

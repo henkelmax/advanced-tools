@@ -40,6 +40,8 @@ public class Main {
         event.getRegistry().registerAll(
                 ModItems.ENCHANTMENT,
                 ModItems.ENCHANTMENT_REMOVER,
+                ModItems.BROKEN_ENCHANTMENT,
+                ModItems.PLIER,
                 ModItems.AXE,
                 ModItems.HOE,
                 ModItems.PICKAXE,
@@ -54,6 +56,7 @@ public class Main {
     public static IRecipeSerializer<RecipeConvertEnchantment> CRAFTING_CONVERT_ENCHANTMENT;
     public static IRecipeSerializer<RecipeEnchantTool> CRAFTING_ENCHANT_TOOL;
     public static IRecipeSerializer<RecipeRemoveEnchantment> CRAFTING_EREMOVE_ENCHANTMENT;
+    public static IRecipeSerializer<RecipeCutEnchantment> CRAFTING_CUT_ENCHANTMENT;
     public static IRecipeSerializer<RecipeRepairTool> CRAFTING_REPAIR_TOOL;
     public static RecipeToolMaterial.RecipeToolMaterialSerializer CRAFTING_TOOL_MATERIAL;
     public static RecipeConvertTool.RecipeConvertToolSerializer CRAFTING_CONVERT_TOOL;
@@ -83,6 +86,10 @@ public class Main {
         CRAFTING_EREMOVE_ENCHANTMENT = new SpecialRecipeSerializer<>(RecipeRemoveEnchantment::new);
         CRAFTING_EREMOVE_ENCHANTMENT.setRegistryName(new ResourceLocation(MODID, "crafting_special_remove_enchantment"));
         event.getRegistry().register(CRAFTING_EREMOVE_ENCHANTMENT);
+
+        CRAFTING_CUT_ENCHANTMENT = new SpecialRecipeSerializer<>(RecipeCutEnchantment::new);
+        CRAFTING_CUT_ENCHANTMENT.setRegistryName(new ResourceLocation(MODID, "crafting_special_cut_enchantment"));
+        event.getRegistry().register(CRAFTING_CUT_ENCHANTMENT);
 
         CRAFTING_REPAIR_TOOL = new SpecialRecipeSerializer<>(RecipeRepairTool::new);
         CRAFTING_REPAIR_TOOL.setRegistryName(new ResourceLocation(MODID, "crafting_special_repair_tool"));
