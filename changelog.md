@@ -1,1 +1,1 @@
-- Added a way to duplicate enchantment templates
+- Updated to 1.16.3
