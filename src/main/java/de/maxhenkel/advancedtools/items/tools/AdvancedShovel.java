@@ -1,6 +1,5 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
@@ -8,8 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
@@ -22,7 +19,6 @@ import java.util.Set;
 public class AdvancedShovel extends AbstractTool {
 
     private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.CLAY, Material.SNOW, Material.SNOW_BLOCK, Material.EARTH, Material.SAND, Material.SNOW);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.MENDING);
 
     public AdvancedShovel() {
         setRegistryName(new ResourceLocation(Main.MODID, "shovel"));
@@ -77,11 +73,6 @@ public class AdvancedShovel extends AbstractTool {
     @Override
     public String getPrimaryToolType() {
         return AdvancedToolMaterial.SHOVEL;
-    }
-
-    @Override
-    public ImmutableList<Enchantment> getValidEnchantments(ItemStack stack) {
-        return VALID_ENCHANTMENTS;
     }
 
     @Override

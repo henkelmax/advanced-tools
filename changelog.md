@@ -1,1 +1,1 @@
-- Updated to 1.16.3
+- Added support for modded enchantments

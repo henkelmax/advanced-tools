@@ -1,12 +1,9 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -20,7 +17,6 @@ import java.util.Set;
 public class AdvancedHoe extends AbstractTool {
 
     private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.LEAVES, Material.SPONGE, Material.ORGANIC);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.MENDING, Enchantments.EFFICIENCY, Enchantments.SILK_TOUCH, Enchantments.FORTUNE);
 
     public AdvancedHoe() {
         setRegistryName(new ResourceLocation(Main.MODID, "hoe"));
@@ -89,11 +85,6 @@ public class AdvancedHoe extends AbstractTool {
     @Override
     public String getPrimaryToolType() {
         return AdvancedToolMaterial.HOE;
-    }
-
-    @Override
-    public ImmutableList<Enchantment> getValidEnchantments(ItemStack stack) {
-        return VALID_ENCHANTMENTS;
     }
 
     @Override

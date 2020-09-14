@@ -1,12 +1,9 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
@@ -19,7 +16,6 @@ import java.util.Set;
 public class AdvancedAxe extends AbstractTool {
 
     private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WOOD, Material.field_237214_y_);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING);
 
     public AdvancedAxe() {
         setRegistryName(new ResourceLocation(Main.MODID, "axe"));
@@ -87,11 +83,6 @@ public class AdvancedAxe extends AbstractTool {
     @Override
     public String getPrimaryToolType() {
         return AdvancedToolMaterial.AXE;
-    }
-
-    @Override
-    public ImmutableList<Enchantment> getValidEnchantments(ItemStack stack) {
-        return VALID_ENCHANTMENTS;
     }
 
     @Override

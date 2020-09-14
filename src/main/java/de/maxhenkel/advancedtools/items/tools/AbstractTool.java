@@ -1,7 +1,6 @@
 package de.maxhenkel.advancedtools.items.tools;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import de.maxhenkel.advancedtools.Main;
 import de.maxhenkel.advancedtools.ModItems;
@@ -28,7 +27,6 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -112,8 +110,6 @@ public abstract class AbstractTool extends ToolItem {
 
     public abstract String getPrimaryToolType();
 
-    public abstract ImmutableList<Enchantment> getValidEnchantments(ItemStack stack);
-
     @Override
     public abstract int getMaxDamage(ItemStack stack);
 
@@ -172,7 +168,7 @@ public abstract class AbstractTool extends ToolItem {
         ItemStack newTool = tool.copy();
         EnchantmentData data = ModItems.ENCHANTMENT.getEnchantment(enchantment);
         if (data != null) {
-            if (getValidEnchantments(tool).contains(data.enchantment)) {
+            if (data.enchantment.canApply(tool)) {
                 List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(newTool);
                 EnchantmentHelper.removeIncompatible(enchantments, data);
                 enchantments.add(data);
@@ -188,18 +184,12 @@ public abstract class AbstractTool extends ToolItem {
         Enchantment ench = ModItems.ENCHANTMENT_REMOVER.getEnchantment(enchantmentRemover);
         if (ench != null) {
 
-            if (!getValidEnchantments(tool).contains(ench)) {
+            if (!ench.canApply(tool)) {
                 return ItemStack.EMPTY;
             }
 
             List<EnchantmentData> enchantments = EnchantmentTools.getEnchantments(tool);
-            Iterator<EnchantmentData> iterator = enchantments.iterator();
-            while (iterator.hasNext()) {
-                EnchantmentData data = iterator.next();
-                if (data.enchantment.equals(ench)) {
-                    iterator.remove();
-                }
-            }
+            enchantments.removeIf(data -> data.enchantment.equals(ench));
             EnchantmentTools.setEnchantments(enchantments, newTool);
             return newTool;
 

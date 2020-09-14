@@ -1,6 +1,5 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
@@ -8,7 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
@@ -18,7 +17,6 @@ import java.util.Set;
 public class AdvancedSword extends AbstractTool {
 
     private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WEB, Material.GOURD, Material.BAMBOO);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.UNBREAKING, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.MENDING, Enchantments.KNOCKBACK, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING, Enchantments.LOOTING);
 
     public AdvancedSword() {
         setRegistryName(new ResourceLocation(Main.MODID, "sword"));
@@ -81,11 +79,6 @@ public class AdvancedSword extends AbstractTool {
     }
 
     @Override
-    public ImmutableList<Enchantment> getValidEnchantments(ItemStack stack) {
-        return VALID_ENCHANTMENTS;
-    }
-
-    @Override
     public int getMaxDamage(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
@@ -103,4 +96,13 @@ public class AdvancedSword extends AbstractTool {
     public boolean canHarvestBlock(ItemStack stack, BlockState state) {
         return state.getBlock() == Blocks.COBWEB;
     }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        if (enchantment.type.equals(EnchantmentType.DIGGER)) {
+            return false;
+        }
+        return enchantment.type.equals(EnchantmentType.WEAPON) || super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
 }

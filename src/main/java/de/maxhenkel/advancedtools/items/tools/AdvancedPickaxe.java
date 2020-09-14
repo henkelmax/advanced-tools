@@ -1,13 +1,10 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
@@ -17,7 +14,6 @@ import java.util.Set;
 public class AdvancedPickaxe extends AbstractTool {
 
     private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.ANVIL, Material.ICE, Material.IRON, Material.PACKED_ICE, Material.ROCK);
-    private static final ImmutableList<Enchantment> VALID_ENCHANTMENTS = ImmutableList.of(Enchantments.EFFICIENCY, Enchantments.FORTUNE, Enchantments.SILK_TOUCH, Enchantments.UNBREAKING, Enchantments.MENDING);
 
     public AdvancedPickaxe() {
         setRegistryName(new ResourceLocation(Main.MODID, "pickaxe"));
@@ -72,11 +68,6 @@ public class AdvancedPickaxe extends AbstractTool {
     @Override
     public String getPrimaryToolType() {
         return AdvancedToolMaterial.PICKAXE;
-    }
-
-    @Override
-    public ImmutableList<Enchantment> getValidEnchantments(ItemStack stack) {
-        return VALID_ENCHANTMENTS;
     }
 
     @Override
