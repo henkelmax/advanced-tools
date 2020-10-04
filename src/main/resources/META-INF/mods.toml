@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="${mod_forge_version}"
 license="All rights reserved"
-issueTrackerURL="https://www.curseforge.com/minecraft/mc-mods/advanced_tools/issues"
+issueTrackerURL="https://github.com/henkelmax/advanced-tools/issues"
 [[mods]]
 modId="${mod_id}"
 version="${mod_version}"

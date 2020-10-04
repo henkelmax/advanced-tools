@@ -1,1 +1,2 @@
-- Added support for modded enchantments
+- Updated mods.toml
+- Updated dependencies
