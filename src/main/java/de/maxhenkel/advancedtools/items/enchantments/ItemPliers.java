@@ -23,7 +23,7 @@ public class ItemPliers extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.pliers").func_240699_a_(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent("tooltip.pliers").mergeStyle(TextFormatting.GRAY));
     }
 
     @Override

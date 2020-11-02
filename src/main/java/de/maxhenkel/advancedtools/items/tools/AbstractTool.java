@@ -41,7 +41,7 @@ public abstract class AbstractTool extends ToolItem {
 
     private void addVariants() {
         for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
-            ItemModelsProperties.func_239418_a_(this, new ResourceLocation(Main.MODID, material.getName()), (itemStack, world, livingEntity) -> material.equals(StackUtils.getMaterial(itemStack)) ? 1F : 0F);
+            ItemModelsProperties.registerProperty(this, new ResourceLocation(Main.MODID, material.getName()), (itemStack, world, livingEntity) -> material.equals(StackUtils.getMaterial(itemStack)) ? 1F : 0F);
         }
     }
 
@@ -62,30 +62,30 @@ public abstract class AbstractTool extends ToolItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         StackUtils.updateFlags(stack);
         if (isBroken(stack)) {
-            tooltip.add(new TranslationTextComponent("tooltip.broken").func_240699_a_(TextFormatting.DARK_RED));
+            tooltip.add(new TranslationTextComponent("tooltip.broken").mergeStyle(TextFormatting.DARK_RED));
         }
 
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            tooltip.add(new TranslationTextComponent("tooltip.material", mat.getDisplayName().func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltip.material", mat.getDisplayName().mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
             if (!flagIn.isAdvanced() && !isBroken(stack)) {
-                tooltip.add(new TranslationTextComponent("tooltip.durability_left", new StringTextComponent(String.valueOf(getMaxDamage(stack) - stack.getDamage())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new TranslationTextComponent("tooltip.durability_left", new StringTextComponent(String.valueOf(getMaxDamage(stack) - stack.getDamage())).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
             }
         }
 
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
         if (!enchantments.isEmpty()) {
-            tooltip.add(new TranslationTextComponent("tooltips.enchantments").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltips.enchantments").mergeStyle(TextFormatting.GRAY));
             for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                tooltip.add(new StringTextComponent("  - ").func_230529_a_(((IFormattableTextComponent) entry.getKey().getDisplayName(entry.getValue())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new StringTextComponent("  - ").append(((IFormattableTextComponent) entry.getKey().getDisplayName(entry.getValue())).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY));
             }
         }
 
         Map<StackUtils.Stat, Integer> stats = StackUtils.getToolStats(stack);
         if (!stats.isEmpty()) {
-            tooltip.add(new TranslationTextComponent("tooltips.stats").func_240699_a_(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltips.stats").mergeStyle(TextFormatting.GRAY));
             for (Map.Entry<StackUtils.Stat, Integer> entry : stats.entrySet()) {
-                tooltip.add(new StringTextComponent("  - ").func_230529_a_(entry.getKey().getTranslation(new StringTextComponent(String.valueOf(entry.getValue())).func_240699_a_(TextFormatting.DARK_GRAY)).func_240699_a_(TextFormatting.GRAY)).func_240699_a_(TextFormatting.GRAY));
+                tooltip.add(new StringTextComponent("  - ").append(entry.getKey().getTranslation(new StringTextComponent(String.valueOf(entry.getValue())).mergeStyle(TextFormatting.DARK_GRAY)).mergeStyle(TextFormatting.GRAY)).mergeStyle(TextFormatting.GRAY));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -117,9 +117,9 @@ public abstract class AbstractTool extends ToolItem {
     public ITextComponent getDisplayName(ItemStack stack) {
         AdvancedToolMaterial mat = StackUtils.getMaterial(stack);
         if (mat != null) {
-            return new StringTextComponent(mat.getDisplayName().getString() + " " + new TranslationTextComponent("tool." + getPrimaryToolType()).getString()).func_240699_a_(TextFormatting.WHITE);
+            return new StringTextComponent(mat.getDisplayName().getString() + " " + new TranslationTextComponent("tool." + getPrimaryToolType()).getString()).mergeStyle(TextFormatting.WHITE);
         }
-        return new TranslationTextComponent("tool." + getPrimaryToolType()).func_240699_a_(TextFormatting.WHITE);
+        return new TranslationTextComponent("tool." + getPrimaryToolType()).mergeStyle(TextFormatting.WHITE);
     }
 
     public abstract int getRepairCost(ItemStack stack, AdvancedToolMaterial advancedToolMaterial);
@@ -237,8 +237,8 @@ public abstract class AbstractTool extends ToolItem {
 
         if (slot == EquipmentSlotType.MAINHAND) {
             if (!isBroken(stack)) {
-                multimap.put(Attributes.field_233823_f_, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double) getAttackDamage(stack), AttributeModifier.Operation.ADDITION));
-                multimap.put(Attributes.field_233825_h_, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double) getAttackSpeed(stack), AttributeModifier.Operation.ADDITION));
+                multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", getAttackDamage(stack), AttributeModifier.Operation.ADDITION));
+                multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", getAttackSpeed(stack), AttributeModifier.Operation.ADDITION));
             }
         }
 

@@ -1,6 +1,5 @@
 package de.maxhenkel.advancedtools.items.tools;
 
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -38,7 +37,7 @@ public class AdvancedToolMaterial {
                 4,
                 2048,
                 true,
-                () -> Ingredient.fromItems(Items.field_234759_km_) //TODO netherite ingot tag
+                () -> Ingredient.fromTag(Tags.Items.INGOTS_NETHERITE)
         );
         materials.put("netherite", NETHERITE);
 
@@ -82,7 +81,7 @@ public class AdvancedToolMaterial {
                 1,
                 128,
                 false,
-                () -> Ingredient.fromTag(ItemTags.field_232909_aa_)
+                () -> Ingredient.fromTag(ItemTags.STONE_TOOL_MATERIALS)
         );
         materials.put("stone", STONE);
 

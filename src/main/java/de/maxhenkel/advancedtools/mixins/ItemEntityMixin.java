@@ -33,8 +33,8 @@ public abstract class ItemEntityMixin {
         }
     }
 
-    @Inject(method = "func_230279_az_", at = @At("HEAD"), cancellable = true)
-    public void func_230279_az_(CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "isImmuneToFire", at = @At("HEAD"), cancellable = true)
+    public void isImmuneToFire(CallbackInfoReturnable<Boolean> cir) {
         ItemStack stack = getItem();
         if (!(stack.getItem() instanceof AbstractTool)) {
             return;

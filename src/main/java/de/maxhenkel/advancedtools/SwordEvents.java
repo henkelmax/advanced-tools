@@ -35,7 +35,7 @@ public class SwordEvents {
         if (targetEntity.hitByEntity(player)) {
             return;
         }
-        float damage = (float) player.getAttribute(Attributes.field_233823_f_).getValue();
+        float damage = (float) player.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
         float f1;
 
         if (targetEntity instanceof LivingEntity) {
@@ -59,14 +59,14 @@ public class SwordEvents {
                 flag1 = true;
             }
 
-            boolean flag2 = flag && player.fallDistance > 0.0F && !player.func_233570_aj_() && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(Effects.BLINDNESS) /*&& !player.isRiding()*/ && targetEntity instanceof LivingEntity;
+            boolean flag2 = flag && player.fallDistance > 0.0F && !player.isOnGround() && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(Effects.BLINDNESS) /*&& !player.isRiding()*/ && targetEntity instanceof LivingEntity;
             flag2 = flag2 && !player.isSprinting();
 
             damage = damage + f1;
             boolean flag3 = false;
             double d0 = (double) (player.distanceWalkedModified - player.prevDistanceWalkedModified);
 
-            if (flag && !flag2 && !flag1 && player.func_233570_aj_() && d0 < (double) player.getAIMoveSpeed()) {
+            if (flag && !flag2 && !flag1 && player.isOnGround() && d0 < (double) player.getAIMoveSpeed()) {
                 flag3 = true;
             }
 
@@ -75,7 +75,7 @@ public class SwordEvents {
 
                 for (LivingEntity entitylivingbase : player.world.getEntitiesWithinAABB(LivingEntity.class, targetEntity.getBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
                     if (entitylivingbase != player && entitylivingbase != targetEntity && !player.isOnSameTeam(entitylivingbase) && player.getDistanceSq(entitylivingbase) < 9.0D) {
-                        entitylivingbase.func_233627_a_(0.4F, (double) MathHelper.sin(entitylivingbase.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(entitylivingbase.rotationYaw * ((float) Math.PI / 180F))));
+                        entitylivingbase.applyKnockback(0.4F, (double) MathHelper.sin(entitylivingbase.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(entitylivingbase.rotationYaw * ((float) Math.PI / 180F))));
                         entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage(player), f3);
                     }
                 }

@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class AdvancedAxe extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WOOD, Material.field_237214_y_);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD);
 
     public AdvancedAxe() {
         setRegistryName(new ResourceLocation(Main.MODID, "axe"));
