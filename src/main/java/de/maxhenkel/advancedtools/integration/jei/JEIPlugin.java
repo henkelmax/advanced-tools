@@ -225,7 +225,7 @@ public class JEIPlugin implements IModPlugin {
                 ModItems.ENCHANTMENT.setEnchantment(broken, enchantment, i);
                 ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
                 ModItems.ENCHANTMENT.setEnchantment(ench, enchantment, i);
-                repairEnchantments.add(new SmithingRecipe(broken, new ItemStack(Items.field_234759_km_), ench));
+                repairEnchantments.add(new SmithingRecipe(broken, new ItemStack(Items.NETHERITE_INGOT), ench));
             }
         }
         registry.addRecipes(repairEnchantments, JEIPlugin.CATEGORY_SMITHING);
