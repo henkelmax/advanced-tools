@@ -1,1 +1,1 @@
-- Re-added JEI compatibility
+- Updated config descriptions

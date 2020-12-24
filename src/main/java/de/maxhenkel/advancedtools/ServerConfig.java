@@ -11,10 +11,10 @@ public class ServerConfig extends ConfigBase {
     public ServerConfig(ForgeConfigSpec.Builder builder) {
         super(builder);
         toolItemsNeverDespawn = builder
-                .comment("If tool items should never despawn")
+                .comment("Makes dropped tool item entities never despawn")
                 .define("tool_items_never_despawn", false);
         toolItemsIndestructible = builder
-                .comment("If tool items should be indestructible")
+                .comment("Makes dropped tool item entities indestructible")
                 .define("tool_items_indestructible", false);
     }
 
