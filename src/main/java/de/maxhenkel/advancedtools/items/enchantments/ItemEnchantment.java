@@ -14,12 +14,12 @@ public class ItemEnchantment extends ItemEnchantmentBase {
     }
 
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
+    public ITextComponent getName(ItemStack stack) {
         EnchantmentData data = getEnchantment(stack);
         if (data == null) {
             return new TranslationTextComponent("enchantment.empty");
         }
-        return super.getDisplayName(stack);
+        return super.getName(stack);
     }
 
 }

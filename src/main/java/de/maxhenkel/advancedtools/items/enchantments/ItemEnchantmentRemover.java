@@ -23,22 +23,22 @@ import java.util.List;
 public class ItemEnchantmentRemover extends Item {
 
     public ItemEnchantmentRemover() {
-        super(new Item.Properties().group(ModCreativeTabs.TAB_ADVANCED_TOOLS));
+        super(new Item.Properties().tab(ModCreativeTabs.TAB_ADVANCED_TOOLS));
         setRegistryName(new ResourceLocation(Main.MODID, "enchantment_remover"));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.enchantment_remover").mergeStyle(TextFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip.enchantment_remover").withStyle(TextFormatting.GRAY));
         Enchantment data = getEnchantment(stack);
         if (data != null) {
-            tooltip.add(new TranslationTextComponent(data.getName()).mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent(data.getDescriptionId()).withStyle(TextFormatting.GRAY));
         }
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack stack = playerIn.getItemInHand(handIn);
 
         Enchantment enchantment = getEnchantment(stack);
 
@@ -65,12 +65,12 @@ public class ItemEnchantmentRemover extends Item {
             }
         }
 
-        return ActionResult.resultSuccess(stack);
+        return ActionResult.success(stack);
     }
 
     private void applyEnchantment(PlayerEntity player, ItemStack stack, Enchantment e) {
         setEnchantment(stack, e);
-        player.sendStatusMessage(new TranslationTextComponent("statusbar.enchantment_remover", new TranslationTextComponent(e.getName())), true);
+        player.displayClientMessage(new TranslationTextComponent("statusbar.enchantment_remover", new TranslationTextComponent(e.getDescriptionId())), true);
     }
 
     public void setEnchantment(ItemStack stack, Enchantment enchantment) {

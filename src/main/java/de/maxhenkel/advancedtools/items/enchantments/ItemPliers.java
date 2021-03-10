@@ -17,13 +17,13 @@ import java.util.List;
 public class ItemPliers extends Item {
 
     public ItemPliers() {
-        super(new Properties().maxDamage(10).group(ModCreativeTabs.TAB_ADVANCED_TOOLS));
+        super(new Properties().durability(10).tab(ModCreativeTabs.TAB_ADVANCED_TOOLS));
         setRegistryName(new ResourceLocation(Main.MODID, "pliers"));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.pliers").mergeStyle(TextFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip.pliers").withStyle(TextFormatting.GRAY));
     }
 
     @Override

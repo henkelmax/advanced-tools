@@ -27,14 +27,14 @@ public class AdvancedAxe extends AbstractTool {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        if (isBroken(context.getItem())) {
+    public ActionResultType useOn(ItemUseContext context) {
+        if (isBroken(context.getItemInHand())) {
             return ActionResultType.PASS;
         }
 
-        ActionResultType result = Items.DIAMOND_AXE.onItemUse(context);
+        ActionResultType result = Items.DIAMOND_AXE.useOn(context);
         if (result.equals(ActionResultType.SUCCESS)) {
-            StackUtils.incrementToolStat(context.getItem(), StackUtils.Stat.STAT_LOGS_STRIPPED, 1);
+            StackUtils.incrementToolStat(context.getItemInHand(), StackUtils.Stat.STAT_LOGS_STRIPPED, 1);
         }
         return result;
     }

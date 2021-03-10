@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BambooBlock.class)
 public abstract class BambooBlockMixin {
 
-    @Inject(method = "getPlayerRelativeBlockHardness", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getDestroyProgress", at = @At("HEAD"), cancellable = true)
     public void getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        if (player.getHeldItemMainhand().getItem() instanceof AdvancedSword) {
+        if (player.getMainHandItem().getItem() instanceof AdvancedSword) {
             cir.setReturnValue(1F);
         }
     }

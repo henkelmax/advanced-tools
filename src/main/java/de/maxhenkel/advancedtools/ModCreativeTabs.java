@@ -14,14 +14,14 @@ public class ModCreativeTabs {
 
     public static final ItemGroup TAB_ADVANCED_TOOLS = new ItemGroup("advanced_tools") {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             ItemStack stack = new ItemStack(ModItems.PICKAXE);
             StackUtils.setMaterial(stack, AdvancedToolMaterial.DIAMOND);
             return stack;
         }
 
         @Override
-        public void fill(NonNullList<ItemStack> list) {
+        public void fillItemList(NonNullList<ItemStack> list) {
             for (AdvancedToolMaterial material : AdvancedToolMaterial.getAll()) {
                 ItemStack stack = new ItemStack(ModItems.PICKAXE);
                 StackUtils.setMaterial(stack, material);
@@ -59,7 +59,7 @@ public class ModCreativeTabs {
                 ModItems.ENCHANTMENT.setEnchantment(stack, enchantment, enchantment.getMaxLevel());
                 list.add(stack);
             }
-            super.fill(list);
+            super.fillItemList(list);
         }
 
     };

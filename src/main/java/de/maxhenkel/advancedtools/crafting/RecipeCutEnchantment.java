@@ -31,7 +31,7 @@ public class RecipeCutEnchantment extends SpecialRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         RecipeResult res = doCrafting(inv);
 
         if (res == null) {
@@ -47,8 +47,8 @@ public class RecipeCutEnchantment extends SpecialRecipe {
         int plierSlot = -1;
         int enchantmentSlot = -1;
 
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
 
             if (stack.getItem() == ModItems.PLIER) {
                 if (plier != null) {
@@ -73,17 +73,17 @@ public class RecipeCutEnchantment extends SpecialRecipe {
             return null;
         }
 
-        NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-        if (plier.getMaxDamage() - plier.getDamage() > 1) {
+        NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
+        if (plier.getMaxDamage() - plier.getDamageValue() > 1) {
             ItemStack p = plier.copy();
-            p.setDamage(p.getDamage() + 1);
+            p.setDamageValue(p.getDamageValue() + 1);
             list.set(plierSlot, p);
         }
 
         EnchantmentData en = ModItems.ENCHANTMENT.getEnchantment(enchantment);
         ItemStack result = new ItemStack(ModItems.BROKEN_ENCHANTMENT, 2);
         if (en != null) {
-            ModItems.ENCHANTMENT.setEnchantment(result, en.enchantment, en.enchantmentLevel);
+            ModItems.ENCHANTMENT.setEnchantment(result, en.enchantment, en.level);
         }
 
         RecipeResult recipeResult = new RecipeResult();
@@ -108,12 +108,12 @@ public class RecipeCutEnchantment extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 2 && height >= 2;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return ItemStack.EMPTY;
     }
 

@@ -37,11 +37,11 @@ public class SplitEnchantmentRecipeCategory implements IRecipeCategory<Enchantme
     @Override
     public void setIngredients(EnchantmentData recipe, IIngredients ingredients) {
         ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.enchantment, recipe.enchantmentLevel - 1);
+        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.enchantment, recipe.level - 1);
         ingredients.setInput(VanillaTypes.ITEM, enchantment);
 
         ItemStack enchantmentOut = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantmentOut, recipe.enchantment, recipe.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(enchantmentOut, recipe.enchantment, recipe.level);
         ingredients.setOutput(VanillaTypes.ITEM, enchantmentOut);
     }
 
@@ -87,11 +87,11 @@ public class SplitEnchantmentRecipeCategory implements IRecipeCategory<Enchantme
         group.init(18, true, 168, 36);
 
         ItemStack stack = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(stack, wrapper.enchantment, wrapper.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(stack, wrapper.enchantment, wrapper.level);
         group.set(0, stack);
 
         ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(ench, wrapper.enchantment, wrapper.enchantmentLevel - 1);
+        ModItems.ENCHANTMENT.setEnchantment(ench, wrapper.enchantment, wrapper.level - 1);
         group.set(9, ench);
         group.set(10, ench.copy());
     }

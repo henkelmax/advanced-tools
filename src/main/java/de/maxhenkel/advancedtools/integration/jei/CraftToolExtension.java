@@ -21,7 +21,7 @@ public class CraftToolExtension<T extends RecipeToolMaterial> implements ICustom
     @Override
     public void setIngredients(IIngredients ingredients) {
         ingredients.setInputIngredients(recipe.getIngredients());
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CraftToolExtension<T extends RecipeToolMaterial> implements ICustom
     public void setRecipe(IRecipeLayout recipeLayout, IIngredients iIngredients) {
         IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-        guiItemStacks.set(0, recipe.getRecipeOutput());
+        guiItemStacks.set(0, recipe.getResultItem());
 
         helper.setInputs(recipeLayout.getItemStacks(), iIngredients.getInputs(VanillaTypes.ITEM), recipe.getRecipeWidth(), recipe.getRecipeHeight());
     }

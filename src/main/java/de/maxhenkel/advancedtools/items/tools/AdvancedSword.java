@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class AdvancedSword extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WEB, Material.GOURD, Material.BAMBOO);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.WEB, Material.VEGETABLE, Material.BAMBOO);
 
     public AdvancedSword() {
         setRegistryName(new ResourceLocation(Main.MODID, "sword"));
@@ -99,10 +99,10 @@ public class AdvancedSword extends AbstractTool {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment.type.equals(EnchantmentType.DIGGER)) {
+        if (enchantment.category.equals(EnchantmentType.DIGGER)) {
             return false;
         }
-        return enchantment.type.equals(EnchantmentType.WEAPON) || super.canApplyAtEnchantingTable(stack, enchantment);
+        return enchantment.category.equals(EnchantmentType.WEAPON) || super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
 }

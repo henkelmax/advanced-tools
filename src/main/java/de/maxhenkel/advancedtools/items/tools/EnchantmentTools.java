@@ -29,7 +29,7 @@ public class EnchantmentTools {
         for (EnchantmentData data : enchantments) {
             CompoundNBT nbttagcompound = new CompoundNBT();
             nbttagcompound.putString("id", data.enchantment.getRegistryName().toString());
-            nbttagcompound.putShort("lvl", (short) data.enchantmentLevel);
+            nbttagcompound.putShort("lvl", (short) data.level);
             nbttaglist.add(nbttagcompound);
         }
 
@@ -38,7 +38,7 @@ public class EnchantmentTools {
                 stack.getTag().remove("Enchantments");
             }
         } else {
-            stack.setTagInfo("Enchantments", nbttaglist);
+            stack.addTagElement("Enchantments", nbttaglist);
         }
     }
 
@@ -50,26 +50,26 @@ public class EnchantmentTools {
             return ItemStack.EMPTY;
         }
 
-        if (enchantmentData1.enchantmentLevel != enchantmentData2.enchantmentLevel) {
+        if (enchantmentData1.level != enchantmentData2.level) {
             return ItemStack.EMPTY;
         }
 
-        if (enchantmentData1.enchantmentLevel >= enchantmentData1.enchantment.getMaxLevel()) {
+        if (enchantmentData1.level >= enchantmentData1.enchantment.getMaxLevel()) {
             return ItemStack.EMPTY;
         }
 
         ItemStack combined = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(combined, enchantmentData1.enchantment, enchantmentData1.enchantmentLevel + 1);
+        ModItems.ENCHANTMENT.setEnchantment(combined, enchantmentData1.enchantment, enchantmentData1.level + 1);
         return combined;
     }
 
     public static ItemStack[] splitEnchantments(ItemStack enchantment) {
         EnchantmentData enchantmentData = ModItems.ENCHANTMENT.getEnchantment(enchantment);
-        if (enchantmentData.enchantmentLevel <= 1) {
+        if (enchantmentData.level <= 1) {
             return null;
         }
         ItemStack split = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(split, enchantmentData.enchantment, enchantmentData.enchantmentLevel - 1);
+        ModItems.ENCHANTMENT.setEnchantment(split, enchantmentData.enchantment, enchantmentData.level - 1);
         return new ItemStack[]{split.copy(), split};
     }
 }

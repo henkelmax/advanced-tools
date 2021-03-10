@@ -53,7 +53,7 @@ public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRec
         for (int i = 10; i <= 18 && iterator.hasNext(); i++) {
             EnchantmentData data = iterator.next();
             ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
-            ModItems.ENCHANTMENT.setEnchantment(ench, data.enchantment, data.enchantmentLevel);
+            ModItems.ENCHANTMENT.setEnchantment(ench, data.enchantment, data.level);
             outputs.add(ench);
         }
         iIngredients.setOutputs(VanillaTypes.ITEM, outputs);
@@ -112,7 +112,7 @@ public class ConvertBookRecipeCategory implements IRecipeCategory<ConvertBookRec
         for (int i = 10; i <= 18 && iterator.hasNext(); i++) {
             EnchantmentData data = iterator.next();
             ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
-            ModItems.ENCHANTMENT.setEnchantment(ench, data.enchantment, data.enchantmentLevel);
+            ModItems.ENCHANTMENT.setEnchantment(ench, data.enchantment, data.level);
             group.set(i, ench);
         }
     }

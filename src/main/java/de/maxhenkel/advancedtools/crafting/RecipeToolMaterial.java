@@ -41,18 +41,18 @@ public class RecipeToolMaterial implements ICraftingRecipe, net.minecraftforge.c
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
-        return StackUtils.setMaterial(recipe.getCraftingResult(inv), material);
+    public ItemStack assemble(CraftingInventory inv) {
+        return StackUtils.setMaterial(recipe.assemble(inv), material);
     }
 
     @Override
-    public boolean canFit(int width, int height) {
-        return recipe.canFit(width, height);
+    public boolean canCraftInDimensions(int width, int height) {
+        return recipe.canCraftInDimensions(width, height);
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
-        return StackUtils.setMaterial(recipe.getRecipeOutput(), material);
+    public ItemStack getResultItem() {
+        return StackUtils.setMaterial(recipe.getResultItem(), material);
     }
 
     @Override
@@ -87,20 +87,20 @@ public class RecipeToolMaterial implements ICraftingRecipe, net.minecraftforge.c
         }
 
         @Override
-        public RecipeToolMaterial read(ResourceLocation resourceLocation, JsonObject jsonObject) {
-            return new RecipeToolMaterial(serializer.read(resourceLocation, jsonObject), AdvancedToolMaterial.byName(jsonObject.get("result").getAsJsonObject().get("material").getAsString()));
+        public RecipeToolMaterial fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+            return new RecipeToolMaterial(serializer.fromJson(resourceLocation, jsonObject), AdvancedToolMaterial.byName(jsonObject.get("result").getAsJsonObject().get("material").getAsString()));
         }
 
         @Override
-        public RecipeToolMaterial read(ResourceLocation resourceLocation, PacketBuffer packetBuffer) {
-            String material = packetBuffer.readString();
-            return new RecipeToolMaterial(serializer.read(resourceLocation, packetBuffer), AdvancedToolMaterial.byName(material));
+        public RecipeToolMaterial fromNetwork(ResourceLocation resourceLocation, PacketBuffer packetBuffer) {
+            String material = packetBuffer.readUtf();
+            return new RecipeToolMaterial(serializer.fromNetwork(resourceLocation, packetBuffer), AdvancedToolMaterial.byName(material));
         }
 
         @Override
-        public void write(PacketBuffer packetBuffer, RecipeToolMaterial recipe) {
-            packetBuffer.writeString(recipe.getMaterial().getName());
-            serializer.write(packetBuffer, recipe.getRecipe());
+        public void toNetwork(PacketBuffer packetBuffer, RecipeToolMaterial recipe) {
+            packetBuffer.writeUtf(recipe.getMaterial().getName());
+            serializer.toNetwork(packetBuffer, recipe.getRecipe());
         }
     }
 }

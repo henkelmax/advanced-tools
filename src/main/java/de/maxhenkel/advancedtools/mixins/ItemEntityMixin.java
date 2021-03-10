@@ -16,14 +16,14 @@ public abstract class ItemEntityMixin {
     @Shadow
     abstract ItemStack getItem();
 
-    @Inject(method = "attackEntityFrom", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void onItemUse(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         ItemStack stack = getItem();
         if (!(stack.getItem() instanceof AbstractTool)) {
             return;
         }
 
-        if (!source.isFireDamage()) {
+        if (!source.isFire()) {
             return;
         }
 
@@ -33,7 +33,7 @@ public abstract class ItemEntityMixin {
         }
     }
 
-    @Inject(method = "isImmuneToFire", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "fireImmune", at = @At("HEAD"), cancellable = true)
     public void isImmuneToFire(CallbackInfoReturnable<Boolean> cir) {
         ItemStack stack = getItem();
         if (!(stack.getItem() instanceof AbstractTool)) {

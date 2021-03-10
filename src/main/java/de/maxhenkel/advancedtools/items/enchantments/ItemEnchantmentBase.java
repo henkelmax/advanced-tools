@@ -22,13 +22,13 @@ public abstract class ItemEnchantmentBase extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         EnchantmentData data = getEnchantment(stack);
         if (data != null) {
-            tooltip.add(data.enchantment.getDisplayName(data.enchantmentLevel));
+            tooltip.add(data.enchantment.getFullname(data.level));
         }
 
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     public void setEnchantment(ItemStack stack, Enchantment enchantment, int level) {

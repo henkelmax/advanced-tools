@@ -21,15 +21,15 @@ public class RecipeRepairTool extends SpecialRecipe {
 
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
-        return !getCraftingResult(inv).equals(ItemStack.EMPTY);
+        return !assemble(inv).equals(ItemStack.EMPTY);
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         ItemStack tool = null;
         List<ItemStack> otherItems = new ArrayList<>();
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
 
             if (stack.getItem() instanceof AbstractTool) {
                 if (tool != null) {
@@ -82,12 +82,12 @@ public class RecipeRepairTool extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 2 && height >= 2;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return ItemStack.EMPTY; //TODO maybe fix
     }
 

@@ -37,7 +37,7 @@ public class AdvancedToolMaterial {
                 4,
                 2048,
                 true,
-                () -> Ingredient.fromTag(Tags.Items.INGOTS_NETHERITE)
+                () -> Ingredient.of(Tags.Items.INGOTS_NETHERITE)
         );
         materials.put("netherite", NETHERITE);
 
@@ -48,7 +48,7 @@ public class AdvancedToolMaterial {
                 3,
                 1024,
                 false,
-                () -> Ingredient.fromTag(Tags.Items.GEMS_DIAMOND)
+                () -> Ingredient.of(Tags.Items.GEMS_DIAMOND)
         );
         materials.put("diamond", DIAMOND);
 
@@ -59,7 +59,7 @@ public class AdvancedToolMaterial {
                 2,
                 256,
                 false,
-                () -> Ingredient.fromTag(Tags.Items.INGOTS_IRON)
+                () -> Ingredient.of(Tags.Items.INGOTS_IRON)
         );
         materials.put("iron", IRON);
 
@@ -70,7 +70,7 @@ public class AdvancedToolMaterial {
                 0,
                 32,
                 false,
-                () -> Ingredient.fromTag(Tags.Items.INGOTS_GOLD)
+                () -> Ingredient.of(Tags.Items.INGOTS_GOLD)
         );
         materials.put("gold", GOLD);
 
@@ -81,7 +81,7 @@ public class AdvancedToolMaterial {
                 1,
                 128,
                 false,
-                () -> Ingredient.fromTag(ItemTags.STONE_TOOL_MATERIALS)
+                () -> Ingredient.of(ItemTags.STONE_TOOL_MATERIALS)
         );
         materials.put("stone", STONE);
 
@@ -92,7 +92,7 @@ public class AdvancedToolMaterial {
                 0,
                 64,
                 false,
-                () -> Ingredient.fromTag(ItemTags.PLANKS)
+                () -> Ingredient.of(ItemTags.PLANKS)
         );
         materials.put("wood", WOOD);
     }

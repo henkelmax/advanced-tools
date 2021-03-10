@@ -20,8 +20,8 @@ public class ConvertToolExtension<T extends RecipeConvertTool> implements ICusto
 
     @Override
     public void setIngredients(IIngredients ingredients) {
-        ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(recipe.getInputTool().getMatchingStacks()));
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+        ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(recipe.getInputTool().getItems()));
+        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ConvertToolExtension<T extends RecipeConvertTool> implements ICusto
     public void setRecipe(IRecipeLayout recipeLayout, IIngredients iIngredients) {
         IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-        guiItemStacks.set(0, recipe.getRecipeOutput());
-        guiItemStacks.set(1, Arrays.asList(recipe.getInputTool().getMatchingStacks()));
+        guiItemStacks.set(0, recipe.getResultItem());
+        guiItemStacks.set(1, Arrays.asList(recipe.getInputTool().getItems()));
     }
 }

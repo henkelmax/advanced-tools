@@ -16,21 +16,21 @@ import java.util.Set;
 
 public class AdvancedHoe extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.LEAVES, Material.SPONGE, Material.ORGANIC);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.LEAVES, Material.SPONGE, Material.GRASS);
 
     public AdvancedHoe() {
         setRegistryName(new ResourceLocation(Main.MODID, "hoe"));
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
+    public ActionResultType useOn(ItemUseContext context) {
+        ItemStack stack = context.getPlayer().getItemInHand(context.getHand());
         if (isBroken(stack)) {
             return ActionResultType.PASS;
         }
 
-        ActionResultType result = Items.DIAMOND_HOE.onItemUse(context);
-        if (result.isSuccessOrConsume()) {
+        ActionResultType result = Items.DIAMOND_HOE.useOn(context);
+        if (result.consumesAction()) {
             StackUtils.incrementToolStat(stack, StackUtils.Stat.STAT_HOED, 1);
         }
         return result;
@@ -102,8 +102,8 @@ public class AdvancedHoe extends AbstractTool {
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damageItem(1, attacker, livingEntity -> {
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.hurtAndBreak(1, attacker, livingEntity -> {
         });
         return true;
     }

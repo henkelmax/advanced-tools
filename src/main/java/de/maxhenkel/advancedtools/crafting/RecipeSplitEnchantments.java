@@ -28,7 +28,7 @@ public class RecipeSplitEnchantments extends SpecialRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         ItemStack[] result = getResult(inv);
         if (result == null) {
             return ItemStack.EMPTY;
@@ -40,13 +40,13 @@ public class RecipeSplitEnchantments extends SpecialRecipe {
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         int index = 0;
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            if (!inv.getStackInSlot(i).isEmpty()) {
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            if (!inv.getItem(i).isEmpty()) {
                 index = i;
                 break;
             }
         }
-        NonNullList<ItemStack> items = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> items = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
         ItemStack[] result = getResult(inv);
         if (result == null) {
             return items;
@@ -57,8 +57,8 @@ public class RecipeSplitEnchantments extends SpecialRecipe {
 
     private ItemStack[] getResult(CraftingInventory inv) {
         ItemStack enchantment = null;
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
 
             if (stack.getItem() instanceof ItemEnchantment) {
                 if (enchantment != null) {
@@ -79,12 +79,12 @@ public class RecipeSplitEnchantments extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 2 && height >= 2;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return ItemStack.EMPTY;
     }
 

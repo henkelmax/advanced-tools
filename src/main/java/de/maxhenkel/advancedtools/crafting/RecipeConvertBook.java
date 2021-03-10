@@ -35,14 +35,14 @@ public class RecipeConvertBook extends SpecialRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         return new ItemStack(Items.BOOK);
     }
 
     public NonNullList<ItemStack> doCrafting(CraftingInventory inv) {
         ItemStack book = null;
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
 
             if (stack.getItem() instanceof EnchantedBookItem) {
                 if (book != null) {
@@ -62,13 +62,13 @@ public class RecipeConvertBook extends SpecialRecipe {
 
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(book);
 
-        if (enchantments.size() > inv.getSizeInventory() && inv.getSizeInventory() < 9) {
+        if (enchantments.size() > inv.getContainerSize() && inv.getContainerSize() < 9) {
             return null;
         }
 
         NonNullList<ItemStack> list = NonNullList.create();
         List<Map.Entry<Enchantment, Integer>> entries = new ArrayList<>(enchantments.entrySet());
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
+        for (int i = 0; i < inv.getContainerSize(); i++) {
             if (i >= entries.size()) {
                 list.add(ItemStack.EMPTY);
                 continue;
@@ -99,12 +99,12 @@ public class RecipeConvertBook extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 2 && height >= 2;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return new ItemStack(Items.BOOK);
     }
 

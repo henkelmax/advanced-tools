@@ -25,26 +25,26 @@ public class SwordEvents {
             return;
         }
 
-        if (!(player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof AdvancedSword)) {
+        if (!(player.getItemInHand(Hand.MAIN_HAND).getItem() instanceof AdvancedSword)) {
             return;
         }
 
-        if (!targetEntity.canBeAttackedWithItem()) {
+        if (!targetEntity.isAttackable()) {
             return;
         }
-        if (targetEntity.hitByEntity(player)) {
+        if (targetEntity.skipAttackInteraction(player)) {
             return;
         }
         float damage = (float) player.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
         float f1;
 
         if (targetEntity instanceof LivingEntity) {
-            f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), ((LivingEntity) targetEntity).getCreatureAttribute());
+            f1 = EnchantmentHelper.getDamageBonus(player.getMainHandItem(), ((LivingEntity) targetEntity).getMobType());
         } else {
-            f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), CreatureAttribute.UNDEFINED);
+            f1 = EnchantmentHelper.getDamageBonus(player.getMainHandItem(), CreatureAttribute.UNDEFINED);
         }
 
-        float cooldown = player.getCooledAttackStrength(0.5F);
+        float cooldown = player.getAttackStrengthScale(0.5F);
         damage = damage * (0.2F + cooldown * cooldown * 0.8F);
         f1 = f1 * cooldown;
 
@@ -52,36 +52,36 @@ public class SwordEvents {
             boolean flag = cooldown > 0.9F;
             boolean flag1 = false;
             int i = 0;
-            i = i + EnchantmentHelper.getKnockbackModifier(player);
+            i = i + EnchantmentHelper.getKnockbackBonus(player);
 
             if (player.isSprinting() && flag) {
                 ++i;
                 flag1 = true;
             }
 
-            boolean flag2 = flag && player.fallDistance > 0.0F && !player.isOnGround() && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(Effects.BLINDNESS) /*&& !player.isRiding()*/ && targetEntity instanceof LivingEntity;
+            boolean flag2 = flag && player.fallDistance > 0.0F && !player.isOnGround() && !player.onClimbable() && !player.isInWater() && !player.hasEffect(Effects.BLINDNESS) /*&& !player.isRiding()*/ && targetEntity instanceof LivingEntity;
             flag2 = flag2 && !player.isSprinting();
 
             damage = damage + f1;
             boolean flag3 = false;
-            double d0 = (double) (player.distanceWalkedModified - player.prevDistanceWalkedModified);
+            double d0 = (double) (player.walkDist - player.walkDistO);
 
-            if (flag && !flag2 && !flag1 && player.isOnGround() && d0 < (double) player.getAIMoveSpeed()) {
+            if (flag && !flag2 && !flag1 && player.isOnGround() && d0 < (double) player.getSpeed()) {
                 flag3 = true;
             }
 
             if (flag3) {
                 float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(player) * damage;
 
-                for (LivingEntity entitylivingbase : player.world.getEntitiesWithinAABB(LivingEntity.class, targetEntity.getBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
-                    if (entitylivingbase != player && entitylivingbase != targetEntity && !player.isOnSameTeam(entitylivingbase) && player.getDistanceSq(entitylivingbase) < 9.0D) {
-                        entitylivingbase.applyKnockback(0.4F, (double) MathHelper.sin(entitylivingbase.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(entitylivingbase.rotationYaw * ((float) Math.PI / 180F))));
-                        entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage(player), f3);
+                for (LivingEntity entitylivingbase : player.level.getEntitiesOfClass(LivingEntity.class, targetEntity.getBoundingBox().inflate(1.0D, 0.25D, 1.0D))) {
+                    if (entitylivingbase != player && entitylivingbase != targetEntity && !player.isAlliedTo(entitylivingbase) && player.distanceToSqr(entitylivingbase) < 9.0D) {
+                        entitylivingbase.knockback(0.4F, MathHelper.sin(entitylivingbase.yRot * ((float) Math.PI / 180F)), -MathHelper.cos(entitylivingbase.yRot * ((float) Math.PI / 180F)));
+                        entitylivingbase.hurt(DamageSource.playerAttack(player), f3);
                     }
                 }
 
-                player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, player.getSoundCategory(), 1.0F, 1.0F);
-                player.spawnSweepParticles();
+                player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
+                player.sweepAttack();
             }
         }
     }

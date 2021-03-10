@@ -8,8 +8,8 @@ public class RecipeHelper {
 
     public static boolean matchesRecipe(CraftingInventory inv, RecipeIngredient... ingredients) {
         int[] counts = new int[ingredients.length];
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
             boolean flag = false;
             for (int j = 0; j < counts.length; j++) {
                 RecipeIngredient ingredient = ingredients[j];

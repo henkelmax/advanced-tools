@@ -33,7 +33,7 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         RecipeResult res = doCrafting(inv);
 
         if (res == null) {
@@ -49,8 +49,8 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
         int toolSlot = -1;
         int removerSlot = -1;
 
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack stack = inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
 
             if (stack.getItem() instanceof AbstractTool) {
                 if (tool != null) {
@@ -75,7 +75,7 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
             return null;
         }
 
-        NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
         list.set(removerSlot, enchantment.copy());
         Enchantment en = ModItems.ENCHANTMENT_REMOVER.getEnchantment(enchantment);
@@ -83,7 +83,7 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
             ItemStack e = new ItemStack(ModItems.ENCHANTMENT);
             for (EnchantmentData data : EnchantmentTools.getEnchantments(tool)) {
                 if (data.enchantment.equals(en)) {
-                    ModItems.ENCHANTMENT.setEnchantment(e, en, data.enchantmentLevel);
+                    ModItems.ENCHANTMENT.setEnchantment(e, en, data.level);
                     list.set(toolSlot, e);
                     break;
                 }
@@ -119,12 +119,12 @@ public class RecipeRemoveEnchantment extends SpecialRecipe {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 2 && height >= 2;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return ItemStack.EMPTY;
     }
 

@@ -40,7 +40,7 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
         ModItems.ENCHANTMENT_REMOVER.setEnchantment(enchantment, recipe.getEnchantment().enchantment);
         ItemStack tool = new ItemStack(recipe.getAbstractTool());
         StackUtils.setMaterial(tool, recipe.getMaterial());
-        StackUtils.addEnchantment(tool, recipe.getEnchantment().enchantment, recipe.getEnchantment().enchantmentLevel);
+        StackUtils.addEnchantment(tool, recipe.getEnchantment().enchantment, recipe.getEnchantment().level);
         ingredients.setInputs(VanillaTypes.ITEM, ImmutableList.of(enchantment, tool));
         ItemStack tool2 = recipe.getAbstractTool().removeEnchantment(tool, enchantment);
         ingredients.setOutput(VanillaTypes.ITEM, tool2);
@@ -68,7 +68,7 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
         group.init(0, true, 0, 0);
         ItemStack stack = new ItemStack(wrapper.getAbstractTool());
         StackUtils.setMaterial(stack, wrapper.getMaterial());
-        StackUtils.addEnchantment(stack, wrapper.getEnchantment().enchantment, wrapper.getEnchantment().enchantmentLevel);
+        StackUtils.addEnchantment(stack, wrapper.getEnchantment().enchantment, wrapper.getEnchantment().level);
         group.set(0, stack);
 
         group.init(1, true, 18, 0);
@@ -98,7 +98,7 @@ public class RemoveEnchantmentRecipeCategory implements IRecipeCategory<Enchantm
         group.init(18, true, 168, 36);
 
         ItemStack ench = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(ench, wrapper.getEnchantment().enchantment, wrapper.getEnchantment().enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(ench, wrapper.getEnchantment().enchantment, wrapper.getEnchantment().level);
         group.set(10, stack1);
         group.set(11, ench);
     }

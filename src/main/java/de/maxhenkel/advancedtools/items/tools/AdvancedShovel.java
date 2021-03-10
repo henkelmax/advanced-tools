@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class AdvancedShovel extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.CLAY, Material.SNOW, Material.SNOW_BLOCK, Material.EARTH, Material.SAND, Material.SNOW);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.CLAY, Material.SNOW, Material.TOP_SNOW, Material.DIRT, Material.SAND);
 
     public AdvancedShovel() {
         setRegistryName(new ResourceLocation(Main.MODID, "shovel"));
@@ -90,14 +90,14 @@ public class AdvancedShovel extends AbstractTool {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        if (isBroken(context.getItem())) {
+    public ActionResultType useOn(ItemUseContext context) {
+        if (isBroken(context.getItemInHand())) {
             return ActionResultType.PASS;
         }
 
-        ActionResultType result = Items.DIAMOND_SHOVEL.onItemUse(context);
-        if (result.isSuccessOrConsume()) {
-            StackUtils.incrementToolStat(context.getItem(), StackUtils.Stat.STAT_PATHS_CREATED, 1);
+        ActionResultType result = Items.DIAMOND_SHOVEL.useOn(context);
+        if (result.consumesAction()) {
+            StackUtils.incrementToolStat(context.getItemInHand(), StackUtils.Stat.STAT_PATHS_CREATED, 1);
         }
         return result;
     }

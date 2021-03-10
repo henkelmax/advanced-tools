@@ -69,7 +69,7 @@ public class JEIPlugin implements IModPlugin {
             if (data == null) {
                 return "";
             }
-            return data.enchantment.getRegistryName().toString() + ":" + data.enchantmentLevel;
+            return data.enchantment.getRegistryName().toString() + ":" + data.level;
         });
     }
 
@@ -240,7 +240,7 @@ public class JEIPlugin implements IModPlugin {
 
     private <T extends IRecipe> List<T> getAllRecipes(Class<T> clazz) {
         List<T> convertRecipes = new ArrayList<>();
-        ClientWorld world = Minecraft.getInstance().world;
+        ClientWorld world = Minecraft.getInstance().level;
         RecipeManager recipeManager = world.getRecipeManager();
         Collection<IRecipe<?>> recipes = recipeManager.getRecipes();
         for (IRecipe recipe : recipes) {

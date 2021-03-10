@@ -19,7 +19,7 @@ public class StackUtils {
     private static final String TAG_TOOL_DATA = "ToolData";
 
     public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level) {
-        stack.addEnchantment(enchantment, level);
+        stack.enchant(enchantment, level);
     }
 
     public static void updateFlags(ItemStack stack) {
@@ -68,7 +68,7 @@ public class StackUtils {
         Map<Stat, Integer> stats = new HashMap<>();
         CompoundNBT statTag = getStatTag(stack);
 
-        Set<String> keys = statTag.keySet();
+        Set<String> keys = statTag.getAllKeys();
         for (String key : keys) {
             Stat stat = Stat.getStatFromNBTName(key);
             if (stat != null) {

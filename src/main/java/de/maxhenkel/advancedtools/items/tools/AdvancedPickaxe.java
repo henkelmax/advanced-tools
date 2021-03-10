@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class AdvancedPickaxe extends AbstractTool {
 
-    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.ANVIL, Material.ICE, Material.IRON, Material.PACKED_ICE, Material.ROCK);
+    private static final Set<Material> EFFECTIVE_ON = Sets.newHashSet(Material.HEAVY_METAL, Material.ICE, Material.METAL, Material.ICE_SOLID, Material.STONE);
 
     public AdvancedPickaxe() {
         setRegistryName(new ResourceLocation(Main.MODID, "pickaxe"));
@@ -86,12 +86,12 @@ public class AdvancedPickaxe extends AbstractTool {
 
     @Override
     public boolean canHarvestBlock(ItemStack stack, BlockState state) {
-        int i = getTier().getHarvestLevel();
+        int i = getTier().getLevel();
         if (state.getHarvestTool() == net.minecraftforge.common.ToolType.PICKAXE) {
             return i >= state.getHarvestLevel();
         }
         Material material = state.getMaterial();
-        return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
+        return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL;
     }
 
 }

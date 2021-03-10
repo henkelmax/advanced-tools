@@ -37,11 +37,11 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
     @Override
     public void setIngredients(EnchantmentData recipe, IIngredients ingredients) {
         ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.enchantment, recipe.enchantmentLevel - 1);
+        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.enchantment, recipe.level - 1);
         ingredients.setInput(VanillaTypes.ITEM, enchantment);
 
         ItemStack enchantmentOut = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantmentOut, recipe.enchantment, recipe.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(enchantmentOut, recipe.enchantment, recipe.level);
         ingredients.setOutput(VanillaTypes.ITEM, enchantmentOut);
     }
 
@@ -66,7 +66,7 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
 
         group.init(0, true, 0, 0);
         ItemStack stack = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(stack, wrapper.enchantment, wrapper.enchantmentLevel - 1);
+        ModItems.ENCHANTMENT.setEnchantment(stack, wrapper.enchantment, wrapper.level - 1);
         group.set(0, stack);
 
         group.init(1, true, 18, 0);
@@ -82,7 +82,7 @@ public class CombineEnchantmentRecipeCategory implements IRecipeCategory<Enchant
 
         group.init(9, false, 94, 18);
         ItemStack stack1 = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(stack1, wrapper.enchantment, wrapper.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(stack1, wrapper.enchantment, wrapper.level);
         group.set(9, stack1);
     }
 

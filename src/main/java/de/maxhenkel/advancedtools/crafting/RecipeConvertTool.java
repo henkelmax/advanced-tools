@@ -42,17 +42,17 @@ public class RecipeConvertTool implements ICraftingRecipe, net.minecraftforge.co
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-        return NonNullList.from(Ingredient.EMPTY, getInputTool());
+        return NonNullList.of(Ingredient.EMPTY, getInputTool());
     }
 
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
         boolean found = false;
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            if (!inv.getStackInSlot(i).isEmpty()) {
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            if (!inv.getItem(i).isEmpty()) {
                 if (found) {
                     return false;
-                } else if (inputTool.test(inv.getStackInSlot(i))) {
+                } else if (inputTool.test(inv.getItem(i))) {
                     found = true;
                 }
             }
@@ -61,17 +61,17 @@ public class RecipeConvertTool implements ICraftingRecipe, net.minecraftforge.co
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         ItemStack input = getInputItem(inv);
         return getCraftingResult(input);
     }
 
     public ItemStack getCraftingResult(ItemStack input) {
-        float percentage = (float) input.getDamage() / (float) input.getMaxDamage();
+        float percentage = (float) input.getDamageValue() / (float) input.getMaxDamage();
 
-        ItemStack output = getRecipeOutput().copy();
+        ItemStack output = getResultItem().copy();
 
-        output.setDamage((int) ((float) output.getMaxDamage() * percentage));
+        output.setDamageValue((int) ((float) output.getMaxDamage() * percentage));
 
         EnchantmentHelper.setEnchantments(EnchantmentHelper.getEnchantments(input), output);
 
@@ -79,10 +79,10 @@ public class RecipeConvertTool implements ICraftingRecipe, net.minecraftforge.co
     }
 
     private ItemStack getInputItem(CraftingInventory inv) {
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            if (!inv.getStackInSlot(i).isEmpty()) {
-                if (inputTool.test(inv.getStackInSlot(i))) {
-                    return inv.getStackInSlot(i);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            if (!inv.getItem(i).isEmpty()) {
+                if (inputTool.test(inv.getItem(i))) {
+                    return inv.getItem(i);
                 }
             }
         }
@@ -90,12 +90,12 @@ public class RecipeConvertTool implements ICraftingRecipe, net.minecraftforge.co
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 1 && height >= 1;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return StackUtils.setMaterial(outputTool, outputMaterial);
     }
 
@@ -129,21 +129,21 @@ public class RecipeConvertTool implements ICraftingRecipe, net.minecraftforge.co
         }
 
         @Override
-        public RecipeConvertTool read(ResourceLocation resourceLocation, JsonObject jsonObject) {
-            return new RecipeConvertTool(resourceLocation, Ingredient.deserialize(jsonObject.get("input")), ShapedRecipe.deserializeItem(jsonObject.getAsJsonObject("result")), AdvancedToolMaterial.byName(jsonObject.getAsJsonObject("result").get("material").getAsString()));
+        public RecipeConvertTool fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+            return new RecipeConvertTool(resourceLocation, Ingredient.fromJson(jsonObject.get("input")), ShapedRecipe.itemFromJson(jsonObject.getAsJsonObject("result")), AdvancedToolMaterial.byName(jsonObject.getAsJsonObject("result").get("material").getAsString()));
         }
 
         @Override
-        public RecipeConvertTool read(ResourceLocation resourceLocation, PacketBuffer packetBuffer) {
-            return new RecipeConvertTool(packetBuffer.readResourceLocation(), Ingredient.read(packetBuffer), packetBuffer.readItemStack(), AdvancedToolMaterial.byName(packetBuffer.readString()));
+        public RecipeConvertTool fromNetwork(ResourceLocation resourceLocation, PacketBuffer packetBuffer) {
+            return new RecipeConvertTool(packetBuffer.readResourceLocation(), Ingredient.fromNetwork(packetBuffer), packetBuffer.readItem(), AdvancedToolMaterial.byName(packetBuffer.readUtf()));
         }
 
         @Override
-        public void write(PacketBuffer packetBuffer, RecipeConvertTool recipe) {
+        public void toNetwork(PacketBuffer packetBuffer, RecipeConvertTool recipe) {
             packetBuffer.writeResourceLocation(recipe.getId());
-            recipe.getInputTool().write(packetBuffer);
-            packetBuffer.writeItemStack(recipe.getOutputTool());
-            packetBuffer.writeString(recipe.getOutputMaterial().getName());
+            recipe.getInputTool().toNetwork(packetBuffer);
+            packetBuffer.writeItem(recipe.getOutputTool());
+            packetBuffer.writeUtf(recipe.getOutputMaterial().getName());
         }
     }
 }

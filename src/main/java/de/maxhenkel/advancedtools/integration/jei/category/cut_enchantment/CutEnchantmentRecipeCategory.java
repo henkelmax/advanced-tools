@@ -38,10 +38,10 @@ public class CutEnchantmentRecipeCategory implements IRecipeCategory<Enchantment
     public void setIngredients(EnchantmentData recipe, IIngredients ingredients) {
         ItemStack plier = new ItemStack(ModItems.PLIER);
         ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.enchantment, recipe.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(enchantment, recipe.enchantment, recipe.level);
         ingredients.setInputs(VanillaTypes.ITEM, ImmutableList.of(enchantment, plier));
         ItemStack brokenEnchantment = new ItemStack(ModItems.BROKEN_ENCHANTMENT, 2);
-        ModItems.ENCHANTMENT.setEnchantment(brokenEnchantment, recipe.enchantment, recipe.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(brokenEnchantment, recipe.enchantment, recipe.level);
         ingredients.setOutput(VanillaTypes.ITEM, brokenEnchantment);
     }
 
@@ -70,7 +70,7 @@ public class CutEnchantmentRecipeCategory implements IRecipeCategory<Enchantment
 
         group.init(1, true, 18, 0);
         ItemStack enchantment = new ItemStack(ModItems.ENCHANTMENT);
-        ModItems.ENCHANTMENT.setEnchantment(enchantment, wrapper.enchantment, wrapper.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(enchantment, wrapper.enchantment, wrapper.level);
         group.set(1, enchantment);
 
         group.init(2, true, 36, 0);
@@ -83,7 +83,7 @@ public class CutEnchantmentRecipeCategory implements IRecipeCategory<Enchantment
 
         group.init(9, false, 94, 18);
         ItemStack brokenEnchantment = new ItemStack(ModItems.BROKEN_ENCHANTMENT, 2);
-        ModItems.ENCHANTMENT.setEnchantment(brokenEnchantment, wrapper.enchantment, wrapper.enchantmentLevel);
+        ModItems.ENCHANTMENT.setEnchantment(brokenEnchantment, wrapper.enchantment, wrapper.level);
         group.set(9, brokenEnchantment);
 
         group.init(10, true, 132, 0);
@@ -97,7 +97,7 @@ public class CutEnchantmentRecipeCategory implements IRecipeCategory<Enchantment
         group.init(18, true, 168, 36);
 
         ItemStack plierUsed = new ItemStack(ModItems.PLIER);
-        plierUsed.setDamage(1);
+        plierUsed.setDamageValue(1);
         group.set(10, plierUsed);
     }
 
