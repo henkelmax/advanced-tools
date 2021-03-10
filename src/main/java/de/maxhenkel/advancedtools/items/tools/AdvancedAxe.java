@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.maxhenkel.advancedtools.Main;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
@@ -98,4 +100,10 @@ public class AdvancedAxe extends AbstractTool {
     public int getRepairCost(ItemStack stack, AdvancedToolMaterial material) {
         return material == AdvancedToolMaterial.NETHERITE ? 1 : 3;
     }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return enchantment.category.equals(EnchantmentType.WEAPON) || super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
 }

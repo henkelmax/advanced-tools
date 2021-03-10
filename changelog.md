@@ -1,1 +1,1 @@
-- Updated to official mappings
+- Fixed sharpness not working on axes
