@@ -1,1 +1,1 @@
-- Fixed sharpness not working on axes
+- Fixed exception on startup
