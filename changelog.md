@@ -1,1 +1,1 @@
-- Fixed exception on startup
+- Fixed mixin connector
