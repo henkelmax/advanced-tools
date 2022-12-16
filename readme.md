@@ -3,9 +3,6 @@
 
 ## Links
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/advanced_tools)
-- [ModRepo](https://modrepo.de/minecraft/advancedtools/overview)
-- [GitHub](https://github.com/henkelmax/advanced-tools)
-- [FAQ](https://modrepo.de/minecraft/advancedtools/faq)
 - [Credits](https://modrepo.de/minecraft/advancedtools/credits)
 
 ---
